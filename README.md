@@ -1,6 +1,6 @@
-# {Insert Repository Name Here}
+# Roster-Starter-Kit-for-Vendors
 
-{Insert project information here}
+The Roster Starter Kit provides a step-by-step process that can be used to integrate rostering via the Ed-Fi ODS / API into a technology provider platform.
 
 ## Legal Information
 
