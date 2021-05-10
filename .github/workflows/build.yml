@@ -23,4 +23,3 @@ jobs:
         dotnet-version: '5.0.100'
     - name: Build
       run: pwsh ./build.ps1
-      working-directory: src

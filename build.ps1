@@ -8,5 +8,5 @@ function step($command) {
 }
 
 step { dotnet --version }
-step { dotnet clean -c Release --nologo -v minimal }
-step { dotnet build -c Release --nologo }
+step { dotnet clean src -c Release --nologo -v minimal }
+step { dotnet build src -c Release --nologo }
