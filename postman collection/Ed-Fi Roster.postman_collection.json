@@ -1,0 +1,694 @@
+{
+	"info": {
+		"_postman_id": "d61d6562-f3f7-4e94-8707-f76e0d04f91a",
+		"name": "Ed-Fi Roster",
+		"description": "Postman collection for Ed-Fi Roster information\n\n## Installation\n\nFrom the Collection, click on 'Run in postman'\n\n## Environment\n\nIn order to test this API, it is necessary to generate a Client ID and Client Secret from Admin App, and set in the environment variables included in this collection.\n\nFor testing purposes, there are valid values in the Client ID and Client Secret variables (these are the same testing values used on Swagger). Use these values to test and explore the API Calls.\n\nThen, go to the Authorization tab for the collection and click on 'Get New Access Token'. After getting the confirmation, the API calls can be executed successfully",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Enrollment Composite",
+			"item": [
+				{
+					"name": "All Local Education Agencies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of LEAs\", function() {\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(json[0]) {\r",
+									"    pm.environment.set(\"lea_id\", json[0].id);\r",
+									"}\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/LocalEducationAgencies",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"LocalEducationAgencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Schools",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of schools\", function() {\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(json[0]) {\r",
+									"    pm.environment.set(\"school_id\", json[0].id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/schools",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"schools"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Sections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of sections\", function() {\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(json[0]) {\r",
+									"    pm.environment.set(\"section_id\", json[0].id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/section",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"section"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"let json = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of staff\", function() {\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(json[0]) {\r",
+									"    pm.environment.set(\"staff_id\", json[0].id);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/staff",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"staff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Schools by LEA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check list of schools\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/localeducationagencies/{{lea_id}}/schools",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"localeducationagencies",
+								"{{lea_id}}",
+								"schools"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sections by LEA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check list of sections\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/localeducationagencies/{{lea_id}}/section",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"localeducationagencies",
+								"{{lea_id}}",
+								"section"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff by LEA",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check list of staff\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/localeducationagencies/{{lea_id}}/staff",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"localeducationagencies",
+								"{{lea_id}}",
+								"staff"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sections by School",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check list of sections\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/schools/{{school_id}}/sections",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"schools",
+								"{{school_id}}",
+								"sections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sections by Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check list of sections\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/staffs/{{staff_id}}/sections",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"staffs",
+								"{{staff_id}}",
+								"sections"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Students by Section",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check list of students\", function() {\r",
+									"    let json = pm.response.json();\r",
+									"    pm.expect(json.length).to.be.gte(0);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/composites/v1/ed-fi/enrollment/sections/{{section_id}}/students",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"composites",
+								"v1",
+								"ed-fi",
+								"enrollment",
+								"sections",
+								"{{section_id}}",
+								"students"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Local Education Agencies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check list of LEAs\", function() {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.length).to.be.gte(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/data/v3/ed-fi/localEducationAgencies",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"data",
+						"v3",
+						"ed-fi",
+						"localEducationAgencies"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Schools",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check list of schools\", function() {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.length).to.be.gte(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/data/v3/ed-fi/schools",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"data",
+						"v3",
+						"ed-fi",
+						"schools"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Staff",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check list of schools\", function() {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.length).to.be.gte(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/data/v3/ed-fi/staffs",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"data",
+						"v3",
+						"ed-fi",
+						"staffs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Section",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check list of schools\", function() {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.length).to.be.gte(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/data/v3/ed-fi/sections",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"data",
+						"v3",
+						"ed-fi",
+						"sections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Students",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check list of students\", function() {\r",
+							"    let json = pm.response.json();\r",
+							"    pm.expect(json.length).to.be.gte(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/data/v3/ed-fi/students",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"data",
+						"v3",
+						"ed-fi",
+						"students"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientId",
+				"value": "{{client_id}}",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "auth_token",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{token_URL}}",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{client_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
