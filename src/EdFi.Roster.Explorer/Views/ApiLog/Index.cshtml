@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ApiLogEntry>
+
+@{
+    ViewData["Title"] = "API Call Logs";
+    int cnt = 0;
+}
+
+<h1>@ViewData["Title"]</h1>
+<div>
+    <button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("ClearLogs")'">Clear Logs</button>
+    <button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("RawLog")'">View Raw Logs</button>
+</div>
+<div class="con">
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date/Time</th>
+                <th>Status</th>
+                <th>Method</th>
+                <th>Resource</th>
+                <th>Raw Data</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="parent-row">
+                <td>
+                    @Html.DisplayFor(modelItem => item.LogDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StatusCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Method)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Uri)
+                </td>
+                <td style="text-align:justify">
+                    <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
+                </td>
+            </tr>
+            <tr class="child-content">
+                <td colspan="12">
+                    <table class="table table-striped table-hover table-bordered table-responsive">
+                        <tbody class="content-tbody">
+                        <tr><td><pre class="json-container prettify">@item.Content</pre></td></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

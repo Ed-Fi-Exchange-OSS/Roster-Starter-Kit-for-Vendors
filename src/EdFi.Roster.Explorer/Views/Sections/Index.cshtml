@@ -1,0 +1,65 @@
+﻿@model ExtendedInfoResponse<List<Section>>
+
+@{
+    ViewData["Title"] = "Sections";
+}
+
+<h1>Sections</h1>
+
+Operations
+
+Load / Reload
+<p> Get Sections From Ed - Fi Api (This will overwrite the currently stored section records)</p>
+
+<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadSections")'">Get Sections</button></div>
+
+@if (Model.IsExtendedInfoAvailable)
+{
+    await Html.RenderPartialAsync("_ExtendedInfoResponsePage", Model.GeneralInfo);
+}
+<hr />
+<form>
+    Current Sections Saved (@Model.FullDataSet.Count Records)
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Local Course Code</th>
+                <th>SectionIdentifier</th>
+                <th>Local Course Title</th>
+                <th>Api Resource Id</th>
+                <th>Json Payload</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.FullDataSet)
+            {
+                <tr class="parent-row">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocalCourseCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SectionIdentifier)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocalCourseTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td style="text-align:justify">
+                        <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
+                    </td>
+                </tr>
+                <tr class="child-content">
+                    <td colspan="12">
+                        <table class="table table-striped table-hover table-bordered table-responsive">
+                            <tbody class="content-tbody">
+                            <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

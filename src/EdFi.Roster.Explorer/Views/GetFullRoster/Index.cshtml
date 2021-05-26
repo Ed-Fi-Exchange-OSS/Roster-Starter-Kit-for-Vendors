@@ -1,0 +1,238 @@
+﻿
+@{
+    ViewData["Title"] = "Get Full Roster";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<button id="btnGetFullRoster" type="button" class="btn btn-primary">Pull All Roster Data</button>
+
+<p>
+    This will pull all the sample data roster information from the public Ed-Fi deployment of the <a href="https://api.ed-fi.org/v5.0.0/docs/" target="_blank">Ed-Fi ODS / API Suite 3 v5.0.0</a> through
+    the <a href="https://api.ed-fi.org/v5.0.0/docs/index.html?urls.primaryName=Composites:%20Enrollment" target="_blank">Enrollment Composite</a>.
+    Once complete, you can show the call details to see how the data was paged while being pulled. More information on building an Ed-Fi API client is available at the
+    Ed-Fi ODS / API Suite 4 v5.0.0 - <a href="https://techdocs.ed-fi.org/display/ODSAPIS3V500/API+Client+Developers%27+Guide" target="_blank">API Client Developers' Guide</a>.
+
+</p>
+
+<div id="dvContainerLeas" class="container mt-2 border border-info">
+    <div class="row border-bottom border-primary">
+        <div class="col-3">
+            <h6>Local Education Agencies</h6>
+        </div>
+        <div id="dvLoadingLeas" class="col collapse">
+            Loading...<div class="spinner-border spinner-border-sm text-primary mr-2 ml-2" role="status"></div>
+        </div>
+    </div>
+    <div id="dvResultsRowLeas" class="row collapse">
+        <div class="col">
+            <div>
+                <span id="spTotalCallsLeas"></span>
+                <div id="dvTotalRecordsRowLeas" class="row collapse">
+                    <div class="col">
+                        Total records returned: <span id="spTotalRecordsLeas"></span>
+                    </div>
+                </div>
+                <input id="btnCallDetailsLeas" class="btn btn-link btn-xs pb-2 ml-2" type="button" data-toggle="collapse" data-target="#dvCallDetailsLeas" aria-expanded="false" aria-controls="collapseExample" value="Show call details">
+            </div>
+            <div id="dvCallDetailsLeas" class="collapse mt-1">
+                <ul id="ulResultsLeas" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvContainerSchools" class="container mt-2 border border-info">
+    <div class="row border-bottom border-primary">
+        <div class="col-3">
+            <h6>Schools</h6>
+        </div>
+        <div id="dvLoadingSchools" class="col collapse">
+            Loading...<div class="spinner-border spinner-border-sm text-primary mr-2 ml-2" role="status"></div>
+        </div>
+    </div>
+    <div id="dvResultsRowSchools" class="row collapse">
+        <div class="col">
+            <div>
+                <span id="spTotalCallsSchools"></span>
+                <div id="dvTotalRecordsRowSchools" class="row collapse">
+                    <div class="col">
+                        Total records returned: <span id="spTotalRecordsSchools"></span>
+                    </div>
+                </div>
+                <input id="btnCallDetailsSchools" class="btn btn-link btn-xs pb-2 ml-2" type="button" data-toggle="collapse" data-target="#dvCallDetailsSchools" aria-expanded="false" aria-controls="collapseExample" value="Show call details">
+            </div>
+            <div id="dvCallDetailsSchools" class="collapse mt-1">
+                <ul id="ulResultsSchools" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvContainerSections" class="container mt-2 border border-info">
+    <div class="row border-bottom border-primary">
+        <div class="col-3">
+            <h6>Sections</h6>
+        </div>
+        <div id="dvLoadingSections" class="col collapse">
+            Loading...<div class="spinner-border spinner-border-sm text-primary mr-2 ml-2" role="status"></div>
+        </div>
+    </div>
+    <div id="dvResultsRowSections" class="row collapse">
+        <div class="col">
+            <div>
+                <span id="spTotalCallsSections"></span>
+                <div id="dvTotalRecordsRowSections" class="row collapse">
+                    <div class="col">
+                        Total records returned: <span id="spTotalRecordsSections"></span>
+                    </div>
+                </div>
+                <input id="btnCallDetailsSections" class="btn btn-link btn-xs pb-2 ml-2" type="button" data-toggle="collapse" data-target="#dvCallDetailsSections" aria-expanded="false" aria-controls="collapseExample" value="Show call details">
+            </div>
+            <div id="dvCallDetailsSections" class="collapse mt-1">
+                <ul id="ulResultsSections" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvContainerStaff" class="container mt-2 border border-info">
+    <div class="row border-bottom border-primary">
+        <div class="col-3">
+            <h6>Staff</h6>
+        </div>
+        <div id="dvLoadingStaff" class="col collapse">
+            Loading...<div class="spinner-border spinner-border-sm text-primary mr-2 ml-2" role="status"></div>
+        </div>
+    </div>
+    <div id="dvResultsRowStaff" class="row collapse">
+        <div class="col">
+            <div>
+                <span id="spTotalCallsStaff"></span>
+                <div id="dvTotalRecordsRowStaff" class="row collapse">
+                    <div class="col">
+                        Total records returned: <span id="spTotalRecordsStaff"></span>
+                    </div>
+                </div>
+                <input id="btnCallDetailsStaff" class="btn btn-link btn-xs pb-2 ml-2" type="button" data-toggle="collapse" data-target="#dvCallDetailsStaff" aria-expanded="false" aria-controls="collapseExample" value="Show call details">
+            </div>
+            <div id="dvCallDetailsStaff" class="collapse mt-1">
+                <ul id="ulResultsStaff" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvContainerStudents" class="container mt-2 border border-info">
+    <div class="row border-bottom border-primary">
+        <div class="col-3">
+            <h6>Students</h6>
+        </div>
+        <div id="dvLoadingStudents" class="col collapse">
+            Loading...<div class="spinner-border spinner-border-sm text-primary mr-2 ml-2" role="status"></div>
+        </div>
+    </div>
+    <div id="dvResultsRowStudents" class="row collapse">
+        <div class="col">
+            <div>
+                <span id="spTotalCallsStudents"></span>
+                <div id="dvTotalRecordsRowStudents" class="row collapse">
+                    <div class="col">
+                        Total records returned: <span id="spTotalRecordsStudents"></span>
+                    </div>
+                </div>
+                <input id="btnCallDetailsStudents" class="btn btn-link btn-xs pb-2 ml-2" type="button" data-toggle="collapse" data-target="#dvCallDetailsStudents" aria-expanded="false" aria-controls="collapseExample" value="Show call details">
+            </div>
+            <div id="dvCallDetailsStudents" class="collapse mt-1">
+                <ul id="ulResultsStudents" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(DocumentReadyActivities);
+
+        function DocumentReadyActivities() {
+            $('#btnGetFullRoster').on('click', GetFullRoster);
+            $("[id^='btnCallDetails']").on('click', function () {
+                var text = $(this).val();
+                if (text === "Show call details") {
+                    $(this).val('Hide call details');
+                } else {
+                    $(this).val('Show call details');
+                }
+            });
+        }
+
+        function GetFullRoster() {
+            //disable button
+            $('#btnGetFullRoster').prop("disabled", true);
+
+            GetDisplayData('Leas');
+            GetDisplayData('Schools');
+            GetDisplayData('Sections');
+            GetDisplayData('Staff');
+            GetDisplayData('Students');
+            //re enable button
+        }
+
+        function GetDisplayData(resourceName) {
+            $('#ulResults' + resourceName).empty();
+            $('#dvTotalRecordsRow' + resourceName).collapse('hide');
+            $('#dvResultsRow' + resourceName).collapse('hide');
+            $('#dvLoading' + resourceName).collapse('show');
+            GetData('/Get' + resourceName + 'Async', resourceName);
+            $('#dvLoading' + resourceName).collapse('hide');
+        }
+
+        function GetData(urlIn, resourceName) {
+            $.ajax({
+                type: "GET",
+                url: urlIn,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                dataType: "json",
+                success: function (response, textStatus, jqXHR) {
+                    AjaxSuccess(response, textStatus, jqXHR, resourceName)
+                },
+                error: AjaxError
+            });
+        }
+
+        function AjaxSuccess(response, textStatus, jqXHR, resultsName) {
+            var ulResults = $('#ulResults' + resultsName);
+            var dvResultsRow = $('#dvResultsRow' + resultsName);
+            var dvTotalRecordsRow = $('#dvTotalRecordsRow' + resultsName);
+            var spTotalRecords = $('#spTotalRecords' + resultsName);
+            $.each(response.pages, function (i, item) {
+                var newLi = $('<li>', {
+                    id: 'li' + resultsName + 'Page' + (i + 1),
+                    class: 'list-group-item'
+                });
+                $('<div>', { id: 'div' + resultsName + 'Page' + (i + 1) + 'Records' }).text('Page ' + (i + 1) + ' - Records Returned-' + item.recordsCount + '.').appendTo(newLi);
+                $('<div>', { id: 'li' + resultsName + 'Page' + (i + 1) + 'Url' }).text('Url: ' + item.responseUri).appendTo(newLi);
+                newLi.appendTo(ulResults);
+            });
+            $('#spTotalCalls' + resultsName).text('Total API Calls: ' + response.pages.length);
+            spTotalRecords.text(response.totalRecords);
+            dvTotalRecordsRow.collapse('show');
+            dvResultsRow.collapse('show');
+            $('#dvLoading' + resultsName).collapse('hide');
+        }
+
+        function AjaxError(response, textStatus, jqXHR) {
+            alert(textStatus);
+        }
+
+    </script>
+}

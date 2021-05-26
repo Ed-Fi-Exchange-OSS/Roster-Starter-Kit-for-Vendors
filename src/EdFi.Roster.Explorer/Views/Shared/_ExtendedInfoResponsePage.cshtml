@@ -1,0 +1,69 @@
+﻿@model EdFi.Roster.Models.GeneralInfoResponse
+
+<div id="dvResultsRowLeas" class="row">
+    <div class="col">
+        <div>
+            <span id="spTotalCallsLeas"></span>
+            <div id="dvToalApiCalls" class="row">
+                <div class="col">
+                    Total API Calls: <span>@(Model.Pages.Count)</span>
+                </div>
+            </div>
+            <div id="dvTotalRecords" class="row">
+                <div class="col">
+                    Total Records Returned: <span>@(Model.TotalRecords)</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <table style="width: 100%">
+                <tr class="parent-row">
+                    <td style="text-align: justify">
+                        <span class="collapsible btn btn-outline-primary" style="margin-right: 5px">Call Details</span>
+                    </td>
+                </tr>
+                <tr class="child-content">
+                    <td colspan="12">
+                        <table class="table table-striped table-hover table-bordered table-responsive">
+                            <tbody class="content-tbody">
+                                <tr>
+                                    <td>
+                                        <div class="json-container">
+                                            <ul id="ulResultsLeas" class="list-group">
+                                                @for (int i = 0; i < Model.Pages.Count; i++)
+                                                {
+                                                    <li class="list-group-item">
+                                                        <div>Page @(i + 1) - Records Returned-@(Model.Pages[i].RecordsCount).</div>
+                                                        <div>Url:@(Model.Pages[i].ResponseUri.OriginalString)</div>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <table style="width: 100%">
+                <tr class="parent-row">
+                    <td style="text-align: justify">
+                        <span class="collapsible btn btn-outline-primary" style="margin-right: 5px">Full Content</span>
+                    </td>
+                </tr>
+                <tr class="child-content">
+                    <td colspan="12">
+                        <table class="table table-striped table-hover table-bordered table-responsive">
+                            <tbody class="content-tbody">
+                                <tr><td><pre class="json-container prettify">@Model.ResponseData</pre></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

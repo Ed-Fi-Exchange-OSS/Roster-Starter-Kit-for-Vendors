@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewData["Title"] = "Roster";
+}
+
+<h1>Roster</h1>
+<h5>Below are a few different views of the roster data retrieved</h5>
+<hr />
+<div>
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Roster" asp-action="HierarchyWithTerms">View Roster Hierarchy with Terms</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Roster" asp-action="HierarchyByStaff">View Sections by Staff</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-area="" asp-controller="Roster" asp-action="HierarchyBySchoolSection">View Sections by School and Section</a>
+        </li>
+    </ul>
+</div>

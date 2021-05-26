@@ -35,3 +35,4 @@ bld/
 /tools/nuget.exe
 **/.vs/
 **/.vscode/
+**/EdFi.Roster.Explorer/*.db

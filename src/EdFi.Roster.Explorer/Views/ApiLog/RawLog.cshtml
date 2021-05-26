@@ -1,0 +1,10 @@
+﻿@model string
+@{
+    ViewData["Title"] = "RawLog";
+}
+
+<h1>RawLog</h1>
+<div>
+    <button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("Index")'">Back to List</button>
+</div>
+<pre style="max-height: 820px;overflow-y: scroll;" class="prettify">@Model</pre>
