@@ -1,0 +1,85 @@
+﻿@model EdFi.Roster.Explorer.Models.RosterViewModel
+@{
+    ViewData["Title"] = "Ed-Fi Roster - Hierarchy View (By Staff)";
+}
+
+<style>
+    ul:before {
+        content: attr(aria-label);
+        font-size: 120%;
+        font-weight: bold;
+        margin-left: -15px;
+    }
+</style>
+<div>
+    <a class="nav-link p-0" asp-area="" asp-controller="Roster" asp-action="Index"><- Back to Rosters</a>
+</div>
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to view the Full Hirarcy View of the Roster.</p>
+
+<form>
+    <h3>@Model.Roster.LocalEducationAgency.NameOfInstitution</h3>
+    <div class="just-padding">
+        <div class="list-group pl-2 list-group-root well">
+            @for (int i = 0; i < Model.Roster.SchoolRosters.Count; i++)
+            {
+                <a href="#roster-@i" class="list-group-item" data-toggle="collapse">
+                    <i class="glyphicon glyphicon-chevron-right"></i>@Model.Roster.SchoolRosters[i].School.NameOfInstitution
+                </a>
+                <div class="list-group pl-2 collapse" id="roster-@i">
+                    @for (int j = 0; j < @Model.Roster.SchoolRosters[i].StaffSections.Count; j++)
+                    {
+                        <a href="#roster-@i-@j" class="list-group-item" data-toggle="collapse">
+                            <i class="glyphicon glyphicon-chevron-right"></i>
+                            @Model.Roster.SchoolRosters[i].StaffSections[j].StaffInformation.StaffUniqueId -
+                            @Model.Roster.SchoolRosters[i].StaffSections[j].StaffInformation.FirstName&nbsp;@Model.Roster.SchoolRosters[i].StaffSections[j].StaffInformation.LastSurname
+                        </a>
+                        <div class="list-group pl-2 collapse" id="roster-@i-@j">
+
+                            @for (int x = 0; x < @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull.Count; x++)
+                            {
+                                <a href="#roster-@i-@j-@x" class="list-group-item" data-toggle="collapse">
+                                    <i class="glyphicon glyphicon-chevron-right"></i>
+                                    @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].SectionIdentifier -
+                                    @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].LocalCourseCode -
+                                    @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].LocalCourseTitle
+                                </a>
+                                <div class="list-group pl-2 collapse" id="roster-@i-@j-@x">
+
+                                    <a href="#roster-@i-@j-@x-students" class="list-group-item" data-toggle="collapse">
+                                        <i class="glyphicon glyphicon-chevron-right"></i>
+                                        Students - @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].Students.Count
+                                    </a>
+                                    <div class="list-group pl-2 collapse" id="roster-@i-@j-@x-students">
+                                        @for (int z = 0; z < Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].Students.Count; z++)
+                                        {
+                                            <div class="list-group-item">
+                                                @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].Students[z].StudentUniqueId -
+                                                @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].Students[z].FirstName&nbsp;@Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull[x].Students[z].LastSurname
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(function () {
+
+            $('.list-group-item').on('click', function () {
+                $('.glyphicon', this)
+                    .toggleClass('glyphicon-chevron-right')
+                    .toggleClass('glyphicon-chevron-down');
+            });
+
+        });
+    </script>
+}
