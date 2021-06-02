@@ -29,6 +29,9 @@
             "label": "watch",
             "command": "dotnet",
             "type": "process",
+            "options": {
+                "cwd": "${workspaceRoot}/src/EdFi.Roster.Explorer"
+            },
             "args": [
                 "watch",
                 "run",
