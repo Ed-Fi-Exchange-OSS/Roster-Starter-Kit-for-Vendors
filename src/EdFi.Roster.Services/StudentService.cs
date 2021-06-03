@@ -1,4 +1,4 @@
-﻿using EdFi.Roster.Models;
+using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,8 +34,8 @@ namespace EdFi.Roster.Services
 
         public async Task Save(List<Student> students)
         {
-            var studentList = students.Select(JsonConvert.SerializeObject)
-                .Select(content => new RosterStudent { Content = content }).ToList();
+            var studentList = students
+                .Select(student => new RosterStudent { Content = JsonConvert.SerializeObject(student), ResourceId = student.Id}).ToList();
             await _dataService.SaveAsync(studentList);
         }
 
