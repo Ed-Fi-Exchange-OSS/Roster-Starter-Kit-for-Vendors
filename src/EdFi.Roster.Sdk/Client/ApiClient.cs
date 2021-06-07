@@ -9,19 +9,27 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters;
+using System.Text;
+using System.Threading;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using EdFi.Roster.Sdk.Models.EnrollmentComposites;
+using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Polly;
+using ErrorEventArgs = Newtonsoft.Json.Serialization.ErrorEventArgs;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharpMethod = RestSharp.Method;
+using Polly;
 
 namespace EdFi.Roster.Sdk.Client
 {
@@ -63,10 +71,10 @@ namespace EdFi.Roster.Sdk.Client
         /// <returns>A JSON string.</returns>
         public string Serialize(object obj)
         {
-            if (obj != null && obj is AbstractOpenAPISchema)
+            if (obj != null && obj is EdFi.Roster.Sdk.Models.Resources.AbstractOpenAPISchema)
             {
                 // the object to be serialized is an oneOf/anyOf schema
-                return ((AbstractOpenAPISchema)obj).ToJson();
+                return ((EdFi.Roster.Sdk.Models.Resources.AbstractOpenAPISchema)obj).ToJson();
             }
             else
             {
@@ -192,7 +200,7 @@ namespace EdFi.Roster.Sdk.Client
         /// </summary>
         public ApiClient()
         {
-            _baseUrl = GlobalConfiguration.Instance.BasePath;
+            _baseUrl = EdFi.Roster.Sdk.Client.GlobalConfiguration.Instance.BasePath;
         }
 
         /// <summary>
@@ -485,7 +493,7 @@ namespace EdFi.Roster.Sdk.Client
             }
 
             // if the response type is oneOf/anyOf, call FromJSON to deserialize the data
-            if (typeof(AbstractOpenAPISchema).IsAssignableFrom(typeof(T)))
+            if (typeof(EdFi.Roster.Sdk.Models.Resources.AbstractOpenAPISchema).IsAssignableFrom(typeof(T)))
             {
                 response.Data = (T) typeof(T).GetMethod("FromJson").Invoke(null, new object[] { response.Content });
             }
@@ -597,7 +605,7 @@ namespace EdFi.Roster.Sdk.Client
             }
 
             // if the response type is oneOf/anyOf, call FromJSON to deserialize the data
-            if (typeof(AbstractOpenAPISchema).IsAssignableFrom(typeof(T)))
+            if (typeof(EdFi.Roster.Sdk.Models.Resources.AbstractOpenAPISchema).IsAssignableFrom(typeof(T)))
             {
                 response.Data = (T) typeof(T).GetMethod("FromJson").Invoke(null, new object[] { response.Content });
             }
