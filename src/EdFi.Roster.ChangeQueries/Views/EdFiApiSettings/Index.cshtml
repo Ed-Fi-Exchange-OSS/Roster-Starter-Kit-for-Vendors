@@ -1,0 +1,134 @@
+@model EdFi.Roster.Models.ApiSettings
+@{
+    ViewData["Title"] = "Ed-Fi API Settings";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Use this page to configure the connection to an Ed-Fi API.</p>
+
+<form method="post">
+    <div class="form-group">
+        <label for="rootUrl">Ed-Fi API Root URL:</label>
+        <input type="url" class="form-control" id="rootUrl" asp-for="RootUrl" />
+        <small id="urllHelp" class="form-text text-muted">This URL is meant to be the root of the Ed-Fi that you are interacting with.</small>
+        <small id="urlInfo" class="form-text text-muted">Ed-Fi public deployment Suite 3 version 5.0.0 root url: <a href="https://api.ed-fi.org/v5.0.0/api/" target="_blank">https://api.ed-fi.org/v5.0.0/api/</a></small>
+        <small id="urlInfo" class="form-text text-muted">Additional Ed-Fi api information can be viewed at the metadata endpoint: <a href="https://api.ed-fi.org/v5.0.0/api/metadata" target="_blank">https://api.ed-fi.org/v5.0.0/api/metadata</a></small>
+    </div>
+    <div class="form-group">
+        <label for="apiKey">Ed-Fi API Key:</label>
+        <input type="text" class="form-control" id="apiKey" asp-for="Key" />
+    </div>
+    <div class="form-group">
+        <label for="apiSecret">Ed-Fi API Secret:</label>
+        <input type="text" class="form-control" id="apiSecret" asp-for="Secret" />
+    </div>
+    <button type="button" id="btnSave" class="btn btn-primary">Save</button>
+    <button type="button" id="btnTest" class="btn btn-primary" title="Test via auth call">Test Connection</button>
+    <div id="divInfoAlert" class="alert hide" role="alert"></div>
+
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(DocumentReadyActivities);
+
+        function DocumentReadyActivities() {
+            $('#btnTest').on('click', TestConnection);
+            $('#btnSave').on('click', SaveSettings);
+        }
+
+        function TestConnection() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("TestConnection")",
+                dataType: "json",
+                data: {
+                    "rootUrl": $('#rootUrl').val(),
+                    "key": $('#apiKey').val(),
+                    "secret": $('#apiSecret').val()
+                },
+                success: TestConnectionSuccess,
+                error: AjaxError
+            });
+        }
+
+        function SaveSettings() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("SaveSettings")",
+                dataType: "json",
+                data: {
+                    "rootUrl": $('#rootUrl').val(),
+                    "key": $('#apiKey').val(),
+                    "secret": $('#apiSecret').val()
+                },
+                success: SaveSettingsSuccess,
+                error: AjaxError
+            });
+        }
+
+        function TestConnectionSuccess(response, textStatus, jqXHR) {
+            var dvAlert = $("#divInfoAlert");
+            dvAlert.empty();
+            dvAlert.removeClass('hide');
+            dvAlert.addClass('alert-success alert-dismissible fade show');
+            dvAlert.html('<strong>' + textStatus + '</strong>');
+            dvAlert.append('<div>The connection was tested by attempting to authenticate with the information provided above.</div>');
+            $.each(response,
+                function (i, item) {
+                    if (i != 'Headers') {
+                        if (i === 'Data') {
+                            $.each(item, function (idx, idxItem) {
+                                var itemValue = idxItem;
+                                if (idx === 'access_token') {
+                                    itemValue = idxItem.replace(/.(?=.{4,}$)/g, '*');
+                                }
+                                var $li = $('<li>').append(idx + ': ' + itemValue).appendTo(dvAlert);
+                            })
+                        }
+                        else
+                            var $li = $('<li>').append(i + ': ' + item).appendTo(dvAlert);
+                    }
+                });
+            dvAlert.append('More information about authentication can be found in the <a href="https://techdocs.ed-fi.org/display/ODSAPIS3V500/Authentication" target="_blank">API Client Developers\' Guide - Authentication</a>');
+            dvAlert.append('<button type="button" id="alertClose" class="close">&times;</button>');
+            $('#alertClose').click(function () {
+                dvAlert.removeClass('show');
+                dvAlert.addClass('hide');
+            });
+        }
+
+        function SaveSettingsSuccess(response, textStatus, jqXHR) {
+            var dvAlert = $("#divInfoAlert");
+            dvAlert.empty();
+            dvAlert.removeClass('hide');
+            dvAlert.addClass('alert-success alert-dismissible fade show');
+            dvAlert.html('<strong>' + textStatus + '</strong>');
+            dvAlert.append('<div>Information saved.</div>');
+            $.each(response,
+                function (i, item) {
+                    var $li = $('<li>').append(i + ': ' + item).appendTo(dvAlert);
+                });
+            dvAlert.append('<button type="button" id="alertClose" class="close">&times;</button>');
+            $('#alertClose').click(function () {
+                dvAlert.removeClass('show');
+                dvAlert.addClass('hide');
+            });
+        }
+
+        function AjaxError(response, textStatus, jqXHR) {
+            var dvAlert = $("#divInfoAlert");
+            dvAlert.empty();
+            dvAlert.removeClass('hide');
+            dvAlert.addClass('alert-danger alert-dismissible fade show');
+            dvAlert.html('<strong>Error</strong>');
+            $('<div>').append(textStatus + ' - ' + response).appendTo(dvAlert);
+            dvAlert.append('<button type="button" id="alertClose" class="close">&times;</button>');
+            $('#alertClose').click(function () {
+                dvAlert.removeClass('show');
+                dvAlert.addClass('hide');
+            });
+        }
+    </script>
+}
