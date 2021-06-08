@@ -36,3 +36,4 @@ bld/
 **/.vs/
 **/.vscode/
 **/EdFi.Roster.Explorer/*.db
+**/EdFi.Roster.ChangeQueries/*.db
