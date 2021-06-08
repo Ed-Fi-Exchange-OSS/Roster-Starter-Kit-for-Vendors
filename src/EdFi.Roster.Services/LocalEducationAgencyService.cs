@@ -29,14 +29,14 @@ namespace EdFi.Roster.Services
         public async Task Save(List<LocalEducationAgency> localEducationAgencies)
         {
             var leas = localEducationAgencies.Select(lea =>
-                new RosterLocalEducationAgency {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
+                new RosterLocalEducationAgencyComposite {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
 
              await _rosterDataService.SaveAsync(leas);
         }
 
         public async Task<IEnumerable<LocalEducationAgency>> ReadAllAsync()
         {
-            var leas = await _rosterDataService.ReadAllAsync<RosterLocalEducationAgency>();
+            var leas = await _rosterDataService.ReadAllAsync<RosterLocalEducationAgencyComposite>();
             return leas.Select(lea => JsonConvert.DeserializeObject<LocalEducationAgency>(lea.Content)).ToList();
         }
 
