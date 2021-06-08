@@ -14,7 +14,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
+using System.Text;
 
 namespace EdFi.Roster.Sdk.Client
 {
@@ -105,7 +107,7 @@ namespace EdFi.Roster.Sdk.Client
         {
             Proxy = null;
             UserAgent = "OpenAPI-Generator/1.0.0/csharp";
-            BasePath = "https://api.ed-fi.org:443/v5.2/api/composites/v1";
+            BasePath = "https://api.ed-fi.org:443/v5.2/api/data/v3";
             DefaultHeaders = new ConcurrentDictionary<string, string>();
             ApiKey = new ConcurrentDictionary<string, string>();
             ApiKeyPrefix = new ConcurrentDictionary<string, string>();
@@ -113,7 +115,7 @@ namespace EdFi.Roster.Sdk.Client
             {
                 {
                     new Dictionary<string, object> {
-                        {"url", "https://api.ed-fi.org:443/v5.2/api/composites/v1"},
+                        {"url", "https://api.ed-fi.org:443/v5.2/api/data/v3"},
                         {"description", "No description provided"},
                     }
                 }
@@ -131,7 +133,7 @@ namespace EdFi.Roster.Sdk.Client
             IDictionary<string, string> defaultHeaders,
             IDictionary<string, string> apiKey,
             IDictionary<string, string> apiKeyPrefix,
-            string basePath = "https://api.ed-fi.org:443/v5.2/api/composites/v1") : this()
+            string basePath = "https://api.ed-fi.org:443/v5.2/api/data/v3") : this()
         {
             if (string.IsNullOrWhiteSpace(basePath))
                 throw new ArgumentException("The provided basePath is invalid.", "basePath");
@@ -445,7 +447,7 @@ namespace EdFi.Roster.Sdk.Client
         /// </summary>
         public static String ToDebugReport()
         {
-            String report = "C# SDK (EdFi.Roster.Sdk.Core) Debug Report:\n";
+            String report = "C# SDK (EdFi.Roster.Sdk) Debug Report:\n";
             report += "    OS: " + System.Environment.OSVersion + "\n";
             report += "    .NET Framework Version: " + System.Environment.Version  + "\n";
             report += "    Version of the API: 3\n";

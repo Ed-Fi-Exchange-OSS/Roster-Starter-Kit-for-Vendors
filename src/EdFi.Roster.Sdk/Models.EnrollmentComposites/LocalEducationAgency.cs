@@ -9,12 +9,19 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+using System.ComponentModel.DataAnnotations;
+using OpenAPIDateConverter = EdFi.Roster.Sdk.Client.OpenAPIDateConverter;
 
 namespace EdFi.Roster.Sdk.Models.EnrollmentComposites
 {
@@ -27,7 +34,7 @@ namespace EdFi.Roster.Sdk.Models.EnrollmentComposites
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalEducationAgency" /> class.
         /// </summary>
-        [JsonConstructor]
+        [JsonConstructorAttribute]
         protected LocalEducationAgency() { }
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalEducationAgency" /> class.

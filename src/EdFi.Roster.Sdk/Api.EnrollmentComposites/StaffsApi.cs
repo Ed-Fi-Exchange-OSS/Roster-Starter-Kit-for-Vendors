@@ -10,6 +10,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using EdFi.Roster.Sdk.Client;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 
@@ -28,7 +32,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -43,7 +47,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -57,7 +61,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation retrieves a resource by the specified resource identifier.
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -71,7 +75,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation retrieves a resource by the specified resource identifier.
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -84,7 +88,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -100,7 +104,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -115,7 +119,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -131,7 +135,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -146,7 +150,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -162,7 +166,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -177,7 +181,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -193,7 +197,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -217,7 +221,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -233,7 +237,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -248,7 +252,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation retrieves a resource by the specified resource identifier.
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -263,7 +267,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation retrieves a resource by the specified resource identifier.
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -277,7 +281,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -294,7 +298,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -310,7 +314,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -327,7 +331,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -343,7 +347,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -360,7 +364,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -376,7 +380,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -393,7 +397,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <remarks>
         /// This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </remarks>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -419,7 +423,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
     /// </summary>
     public partial class StaffsApi : IStaffsApi
     {
-        private ExceptionFactory _exceptionFactory = (name, response) => null;
+        private EdFi.Roster.Sdk.Client.ExceptionFactory _exceptionFactory = (name, response) => null;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StaffsApi"/> class.
@@ -435,13 +439,13 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns></returns>
         public StaffsApi(String basePath)
         {
-            this.Configuration = Sdk.Client.Configuration.MergeConfigurations(
-                GlobalConfiguration.Instance,
-                new Configuration { BasePath = basePath }
+            this.Configuration = EdFi.Roster.Sdk.Client.Configuration.MergeConfigurations(
+                EdFi.Roster.Sdk.Client.GlobalConfiguration.Instance,
+                new EdFi.Roster.Sdk.Client.Configuration { BasePath = basePath }
             );
-            this.Client = new ApiClient(this.Configuration.BasePath);
-            this.AsynchronousClient = new ApiClient(this.Configuration.BasePath);
-            this.ExceptionFactory = Sdk.Client.Configuration.DefaultExceptionFactory;
+            this.Client = new EdFi.Roster.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            this.AsynchronousClient = new EdFi.Roster.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            this.ExceptionFactory = EdFi.Roster.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -450,17 +454,17 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// </summary>
         /// <param name="configuration">An instance of Configuration</param>
         /// <returns></returns>
-        public StaffsApi(Configuration configuration)
+        public StaffsApi(EdFi.Roster.Sdk.Client.Configuration configuration)
         {
             if (configuration == null) throw new ArgumentNullException("configuration");
 
-            this.Configuration = Sdk.Client.Configuration.MergeConfigurations(
-                GlobalConfiguration.Instance,
+            this.Configuration = EdFi.Roster.Sdk.Client.Configuration.MergeConfigurations(
+                EdFi.Roster.Sdk.Client.GlobalConfiguration.Instance,
                 configuration
             );
-            this.Client = new ApiClient(this.Configuration.BasePath);
-            this.AsynchronousClient = new ApiClient(this.Configuration.BasePath);
-            ExceptionFactory = Sdk.Client.Configuration.DefaultExceptionFactory;
+            this.Client = new EdFi.Roster.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            this.AsynchronousClient = new EdFi.Roster.Sdk.Client.ApiClient(this.Configuration.BasePath);
+            ExceptionFactory = EdFi.Roster.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
@@ -470,7 +474,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="client">The client interface for synchronous API access.</param>
         /// <param name="asyncClient">The client interface for asynchronous API access.</param>
         /// <param name="configuration">The configuration object.</param>
-        public StaffsApi(ISynchronousClient client, IAsynchronousClient asyncClient, IReadableConfiguration configuration)
+        public StaffsApi(EdFi.Roster.Sdk.Client.ISynchronousClient client, EdFi.Roster.Sdk.Client.IAsynchronousClient asyncClient, EdFi.Roster.Sdk.Client.IReadableConfiguration configuration)
         {
             if (client == null) throw new ArgumentNullException("client");
             if (asyncClient == null) throw new ArgumentNullException("asyncClient");
@@ -479,18 +483,18 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             this.Client = client;
             this.AsynchronousClient = asyncClient;
             this.Configuration = configuration;
-            this.ExceptionFactory = Sdk.Client.Configuration.DefaultExceptionFactory;
+            this.ExceptionFactory = EdFi.Roster.Sdk.Client.Configuration.DefaultExceptionFactory;
         }
 
         /// <summary>
         /// The client for accessing this underlying API asynchronously.
         /// </summary>
-        public IAsynchronousClient AsynchronousClient { get; set; }
+        public EdFi.Roster.Sdk.Client.IAsynchronousClient AsynchronousClient { get; set; }
 
         /// <summary>
         /// The client for accessing this underlying API synchronously.
         /// </summary>
-        public ISynchronousClient Client { get; set; }
+        public EdFi.Roster.Sdk.Client.ISynchronousClient Client { get; set; }
 
         /// <summary>
         /// Gets the base path of the API client.
@@ -505,12 +509,12 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// Gets or sets the configuration object
         /// </summary>
         /// <value>An instance of the Configuration</value>
-        public IReadableConfiguration Configuration { get; set; }
+        public EdFi.Roster.Sdk.Client.IReadableConfiguration Configuration { get; set; }
 
         /// <summary>
         /// Provides a factory method hook for the creation of exceptions.
         /// </summary>
-        public ExceptionFactory ExceptionFactory
+        public EdFi.Roster.Sdk.Client.ExceptionFactory ExceptionFactory
         {
             get
             {
@@ -526,7 +530,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -535,23 +539,23 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>List&lt;Staff&gt;</returns>
         public List<Staff> GetStaffs(int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
-            ApiResponse<List<Staff>> localVarResponse = GetStaffsWithHttpInfo(offset, limit, fields, q, snapshotIdentifier);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = GetStaffsWithHttpInfo(offset, limit, fields, q, snapshotIdentifier);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
         /// <param name="q">Specifies a query filter expression for the request. Currently only supports range-based queries on dates and numbers (e.g. \&quot;schoolId:[255901000...255901002]\&quot; and \&quot;BeginDate:[2016-03-07...2016-03-10]\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <returns>ApiResponse of List&lt;Staff&gt;</returns>
-        public ApiResponse<List<Staff>> GetStaffsWithHttpInfo(int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
+        public EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> GetStaffsWithHttpInfo(int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -561,31 +565,31 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
                 "application/json"
             };
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -610,7 +614,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -620,14 +624,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Task of List&lt;Staff&gt;</returns>
         public async System.Threading.Tasks.Task<List<Staff>> GetStaffsAsync(int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            ApiResponse<List<Staff>> localVarResponse = await GetStaffsWithHttpInfoAsync(offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = await GetStaffsWithHttpInfoAsync(offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -635,10 +639,10 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (List&lt;Staff&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<Staff>>> GetStaffsWithHttpInfoAsync(int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>>> GetStaffsWithHttpInfoAsync(int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -649,31 +653,31 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             };
 
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -699,7 +703,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves a specific resource using the resource&#39;s identifier (using the \&quot;Get By Id\&quot; pattern). This GET operation retrieves a resource by the specified resource identifier.
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -707,26 +711,26 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Staff</returns>
         public Staff GetStaffsById(string id, string ifNoneMatch = default(string), string fields = default(string), string snapshotIdentifier = default(string))
         {
-            ApiResponse<Staff> localVarResponse = GetStaffsByIdWithHttpInfo(id, ifNoneMatch, fields, snapshotIdentifier);
+            EdFi.Roster.Sdk.Client.ApiResponse<Staff> localVarResponse = GetStaffsByIdWithHttpInfo(id, ifNoneMatch, fields, snapshotIdentifier);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves a specific resource using the resource&#39;s identifier (using the \&quot;Get By Id\&quot; pattern). This GET operation retrieves a resource by the specified resource identifier.
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <returns>ApiResponse of Staff</returns>
-        public ApiResponse<Staff> GetStaffsByIdWithHttpInfo(string id, string ifNoneMatch = default(string), string fields = default(string), string snapshotIdentifier = default(string))
+        public EdFi.Roster.Sdk.Client.ApiResponse<Staff> GetStaffsByIdWithHttpInfo(string id, string ifNoneMatch = default(string), string fields = default(string), string snapshotIdentifier = default(string))
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling StaffsApi->GetStaffsById");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'id' when calling StaffsApi->GetStaffsById");
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -736,24 +740,24 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
                 "application/json"
             };
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("id", ClientUtils.ParameterToString(id)); // path parameter
+            localVarRequestOptions.PathParameters.Add("id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(id)); // path parameter
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (ifNoneMatch != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("If-None-Match", ClientUtils.ParameterToString(ifNoneMatch)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("If-None-Match", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(ifNoneMatch)); // header parameter
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -778,7 +782,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves a specific resource using the resource&#39;s identifier (using the \&quot;Get By Id\&quot; pattern). This GET operation retrieves a resource by the specified resource identifier.
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
@@ -787,28 +791,28 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Task of Staff</returns>
         public async System.Threading.Tasks.Task<Staff> GetStaffsByIdAsync(string id, string ifNoneMatch = default(string), string fields = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            ApiResponse<Staff> localVarResponse = await GetStaffsByIdWithHttpInfoAsync(id, ifNoneMatch, fields, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
+            EdFi.Roster.Sdk.Client.ApiResponse<Staff> localVarResponse = await GetStaffsByIdWithHttpInfoAsync(id, ifNoneMatch, fields, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves a specific resource using the resource&#39;s identifier (using the \&quot;Get By Id\&quot; pattern). This GET operation retrieves a resource by the specified resource identifier.
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="id">A resource identifier that uniquely identifies the resource.</param>
         /// <param name="ifNoneMatch">The previously returned ETag header value, used here to prevent the unnecessary data transfer of an unchanged resource. (optional)</param>
         /// <param name="fields">Specifies a subset of properties that should be returned for each entity (e.g. \&quot;property1,collection1(collProp1,collProp2)\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (Staff)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<Staff>> GetStaffsByIdWithHttpInfoAsync(string id, string ifNoneMatch = default(string), string fields = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<EdFi.Roster.Sdk.Client.ApiResponse<Staff>> GetStaffsByIdWithHttpInfoAsync(string id, string ifNoneMatch = default(string), string fields = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'id' is set
             if (id == null)
-                throw new ApiException(400, "Missing required parameter 'id' when calling StaffsApi->GetStaffsById");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'id' when calling StaffsApi->GetStaffsById");
 
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -819,24 +823,24 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             };
 
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("id", ClientUtils.ParameterToString(id)); // path parameter
+            localVarRequestOptions.PathParameters.Add("id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(id)); // path parameter
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (ifNoneMatch != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("If-None-Match", ClientUtils.ParameterToString(ifNoneMatch)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("If-None-Match", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(ifNoneMatch)); // header parameter
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -862,7 +866,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -872,14 +876,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>List&lt;Staff&gt;</returns>
         public List<Staff> GetStaffsByLocalEducationAgency(string localEducationAgencyId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
-            ApiResponse<List<Staff>> localVarResponse = GetStaffsByLocalEducationAgencyWithHttpInfo(localEducationAgencyId, offset, limit, fields, q, snapshotIdentifier);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = GetStaffsByLocalEducationAgencyWithHttpInfo(localEducationAgencyId, offset, limit, fields, q, snapshotIdentifier);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -887,13 +891,13 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="q">Specifies a query filter expression for the request. Currently only supports range-based queries on dates and numbers (e.g. \&quot;schoolId:[255901000...255901002]\&quot; and \&quot;BeginDate:[2016-03-07...2016-03-10]\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <returns>ApiResponse of List&lt;Staff&gt;</returns>
-        public ApiResponse<List<Staff>> GetStaffsByLocalEducationAgencyWithHttpInfo(string localEducationAgencyId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
+        public EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> GetStaffsByLocalEducationAgencyWithHttpInfo(string localEducationAgencyId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
             // verify the required parameter 'localEducationAgencyId' is set
             if (localEducationAgencyId == null)
-                throw new ApiException(400, "Missing required parameter 'localEducationAgencyId' when calling StaffsApi->GetStaffsByLocalEducationAgency");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'localEducationAgencyId' when calling StaffsApi->GetStaffsByLocalEducationAgency");
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -903,32 +907,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
                 "application/json"
             };
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("localEducationAgency_id", ClientUtils.ParameterToString(localEducationAgencyId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("localEducationAgency_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(localEducationAgencyId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -953,7 +957,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -964,14 +968,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Task of List&lt;Staff&gt;</returns>
         public async System.Threading.Tasks.Task<List<Staff>> GetStaffsByLocalEducationAgencyAsync(string localEducationAgencyId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            ApiResponse<List<Staff>> localVarResponse = await GetStaffsByLocalEducationAgencyWithHttpInfoAsync(localEducationAgencyId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = await GetStaffsByLocalEducationAgencyWithHttpInfoAsync(localEducationAgencyId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="localEducationAgencyId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -980,14 +984,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (List&lt;Staff&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<Staff>>> GetStaffsByLocalEducationAgencyWithHttpInfoAsync(string localEducationAgencyId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>>> GetStaffsByLocalEducationAgencyWithHttpInfoAsync(string localEducationAgencyId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'localEducationAgencyId' is set
             if (localEducationAgencyId == null)
-                throw new ApiException(400, "Missing required parameter 'localEducationAgencyId' when calling StaffsApi->GetStaffsByLocalEducationAgency");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'localEducationAgencyId' when calling StaffsApi->GetStaffsByLocalEducationAgency");
 
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -998,32 +1002,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             };
 
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("localEducationAgency_id", ClientUtils.ParameterToString(localEducationAgencyId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("localEducationAgency_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(localEducationAgencyId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -1049,7 +1053,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1059,14 +1063,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>List&lt;Staff&gt;</returns>
         public List<Staff> GetStaffsBySchool(string schoolId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
-            ApiResponse<List<Staff>> localVarResponse = GetStaffsBySchoolWithHttpInfo(schoolId, offset, limit, fields, q, snapshotIdentifier);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = GetStaffsBySchoolWithHttpInfo(schoolId, offset, limit, fields, q, snapshotIdentifier);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1074,13 +1078,13 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="q">Specifies a query filter expression for the request. Currently only supports range-based queries on dates and numbers (e.g. \&quot;schoolId:[255901000...255901002]\&quot; and \&quot;BeginDate:[2016-03-07...2016-03-10]\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <returns>ApiResponse of List&lt;Staff&gt;</returns>
-        public ApiResponse<List<Staff>> GetStaffsBySchoolWithHttpInfo(string schoolId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
+        public EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> GetStaffsBySchoolWithHttpInfo(string schoolId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
             // verify the required parameter 'schoolId' is set
             if (schoolId == null)
-                throw new ApiException(400, "Missing required parameter 'schoolId' when calling StaffsApi->GetStaffsBySchool");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'schoolId' when calling StaffsApi->GetStaffsBySchool");
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -1090,32 +1094,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
                 "application/json"
             };
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("school_id", ClientUtils.ParameterToString(schoolId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("school_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(schoolId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -1140,7 +1144,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1151,14 +1155,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Task of List&lt;Staff&gt;</returns>
         public async System.Threading.Tasks.Task<List<Staff>> GetStaffsBySchoolAsync(string schoolId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            ApiResponse<List<Staff>> localVarResponse = await GetStaffsBySchoolWithHttpInfoAsync(schoolId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = await GetStaffsBySchoolWithHttpInfoAsync(schoolId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="schoolId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1167,14 +1171,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (List&lt;Staff&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<Staff>>> GetStaffsBySchoolWithHttpInfoAsync(string schoolId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>>> GetStaffsBySchoolWithHttpInfoAsync(string schoolId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'schoolId' is set
             if (schoolId == null)
-                throw new ApiException(400, "Missing required parameter 'schoolId' when calling StaffsApi->GetStaffsBySchool");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'schoolId' when calling StaffsApi->GetStaffsBySchool");
 
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -1185,32 +1189,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             };
 
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("school_id", ClientUtils.ParameterToString(schoolId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("school_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(schoolId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -1236,7 +1240,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1246,14 +1250,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>List&lt;Staff&gt;</returns>
         public List<Staff> GetStaffsBySection(string sectionId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
-            ApiResponse<List<Staff>> localVarResponse = GetStaffsBySectionWithHttpInfo(sectionId, offset, limit, fields, q, snapshotIdentifier);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = GetStaffsBySectionWithHttpInfo(sectionId, offset, limit, fields, q, snapshotIdentifier);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1261,13 +1265,13 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="q">Specifies a query filter expression for the request. Currently only supports range-based queries on dates and numbers (e.g. \&quot;schoolId:[255901000...255901002]\&quot; and \&quot;BeginDate:[2016-03-07...2016-03-10]\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <returns>ApiResponse of List&lt;Staff&gt;</returns>
-        public ApiResponse<List<Staff>> GetStaffsBySectionWithHttpInfo(string sectionId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
+        public EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> GetStaffsBySectionWithHttpInfo(string sectionId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
             // verify the required parameter 'sectionId' is set
             if (sectionId == null)
-                throw new ApiException(400, "Missing required parameter 'sectionId' when calling StaffsApi->GetStaffsBySection");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'sectionId' when calling StaffsApi->GetStaffsBySection");
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -1277,32 +1281,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
                 "application/json"
             };
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("section_id", ClientUtils.ParameterToString(sectionId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("section_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(sectionId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -1327,7 +1331,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1338,14 +1342,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Task of List&lt;Staff&gt;</returns>
         public async System.Threading.Tasks.Task<List<Staff>> GetStaffsBySectionAsync(string sectionId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            ApiResponse<List<Staff>> localVarResponse = await GetStaffsBySectionWithHttpInfoAsync(sectionId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = await GetStaffsBySectionWithHttpInfoAsync(sectionId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="sectionId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1354,14 +1358,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (List&lt;Staff&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<Staff>>> GetStaffsBySectionWithHttpInfoAsync(string sectionId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>>> GetStaffsBySectionWithHttpInfoAsync(string sectionId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'sectionId' is set
             if (sectionId == null)
-                throw new ApiException(400, "Missing required parameter 'sectionId' when calling StaffsApi->GetStaffsBySection");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'sectionId' when calling StaffsApi->GetStaffsBySection");
 
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -1372,32 +1376,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             };
 
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("section_id", ClientUtils.ParameterToString(sectionId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("section_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(sectionId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -1423,7 +1427,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1433,14 +1437,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>List&lt;Staff&gt;</returns>
         public List<Staff> GetStaffsByStudent(string studentId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
-            ApiResponse<List<Staff>> localVarResponse = GetStaffsByStudentWithHttpInfo(studentId, offset, limit, fields, q, snapshotIdentifier);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = GetStaffsByStudentWithHttpInfo(studentId, offset, limit, fields, q, snapshotIdentifier);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1448,13 +1452,13 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="q">Specifies a query filter expression for the request. Currently only supports range-based queries on dates and numbers (e.g. \&quot;schoolId:[255901000...255901002]\&quot; and \&quot;BeginDate:[2016-03-07...2016-03-10]\&quot;). (optional)</param>
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <returns>ApiResponse of List&lt;Staff&gt;</returns>
-        public ApiResponse<List<Staff>> GetStaffsByStudentWithHttpInfo(string studentId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
+        public EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> GetStaffsByStudentWithHttpInfo(string studentId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string))
         {
             // verify the required parameter 'studentId' is set
             if (studentId == null)
-                throw new ApiException(400, "Missing required parameter 'studentId' when calling StaffsApi->GetStaffsByStudent");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'studentId' when calling StaffsApi->GetStaffsByStudent");
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -1464,32 +1468,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
                 "application/json"
             };
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("student_id", ClientUtils.ParameterToString(studentId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("student_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(studentId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required
@@ -1514,7 +1518,7 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1525,14 +1529,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <returns>Task of List&lt;Staff&gt;</returns>
         public async System.Threading.Tasks.Task<List<Staff>> GetStaffsByStudentAsync(string studentId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
-            ApiResponse<List<Staff>> localVarResponse = await GetStaffsByStudentWithHttpInfoAsync(studentId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
+            EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>> localVarResponse = await GetStaffsByStudentWithHttpInfoAsync(studentId, offset, limit, fields, q, snapshotIdentifier, cancellationToken).ConfigureAwait(false);
             return localVarResponse.Data;
         }
 
         /// <summary>
         /// Retrieves specific resources using the resource&#39;s property values (using the \&quot;Get\&quot; pattern). This GET operation provides access to resources using the \&quot;Get\&quot; search pattern.  The values of any properties of the resource that are specified will be used to return all matching results (if it exists).
         /// </summary>
-        /// <exception cref="ApiException">Thrown when fails to make API call</exception>
+        /// <exception cref="EdFi.Roster.Sdk.Client.ApiException">Thrown when fails to make API call</exception>
         /// <param name="studentId"></param>
         /// <param name="offset">Indicates how many items should be skipped before returning results. (optional, default to 0)</param>
         /// <param name="limit">Indicates the maximum number of items that should be returned in the results. (optional, default to 25)</param>
@@ -1541,14 +1545,14 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
         /// <param name="snapshotIdentifier">Indicates the Snapshot-Identifier that should be used. (optional)</param>
         /// <param name="cancellationToken">Cancellation Token to cancel the request.</param>
         /// <returns>Task of ApiResponse (List&lt;Staff&gt;)</returns>
-        public async System.Threading.Tasks.Task<ApiResponse<List<Staff>>> GetStaffsByStudentWithHttpInfoAsync(string studentId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
+        public async System.Threading.Tasks.Task<EdFi.Roster.Sdk.Client.ApiResponse<List<Staff>>> GetStaffsByStudentWithHttpInfoAsync(string studentId, int? offset = default(int?), int? limit = default(int?), string fields = default(string), string q = default(string), string snapshotIdentifier = default(string), System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken))
         {
             // verify the required parameter 'studentId' is set
             if (studentId == null)
-                throw new ApiException(400, "Missing required parameter 'studentId' when calling StaffsApi->GetStaffsByStudent");
+                throw new EdFi.Roster.Sdk.Client.ApiException(400, "Missing required parameter 'studentId' when calling StaffsApi->GetStaffsByStudent");
 
 
-            RequestOptions localVarRequestOptions = new RequestOptions();
+            EdFi.Roster.Sdk.Client.RequestOptions localVarRequestOptions = new EdFi.Roster.Sdk.Client.RequestOptions();
 
             String[] _contentTypes = new String[] {
             };
@@ -1559,32 +1563,32 @@ namespace EdFi.Roster.Sdk.Api.EnrollmentComposites
             };
 
 
-            var localVarContentType = ClientUtils.SelectHeaderContentType(_contentTypes);
+            var localVarContentType = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderContentType(_contentTypes);
             if (localVarContentType != null) localVarRequestOptions.HeaderParameters.Add("Content-Type", localVarContentType);
 
-            var localVarAccept = ClientUtils.SelectHeaderAccept(_accepts);
+            var localVarAccept = EdFi.Roster.Sdk.Client.ClientUtils.SelectHeaderAccept(_accepts);
             if (localVarAccept != null) localVarRequestOptions.HeaderParameters.Add("Accept", localVarAccept);
 
-            localVarRequestOptions.PathParameters.Add("student_id", ClientUtils.ParameterToString(studentId)); // path parameter
+            localVarRequestOptions.PathParameters.Add("student_id", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(studentId)); // path parameter
             if (offset != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "offset", offset));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "offset", offset));
             }
             if (limit != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "limit", limit));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "limit", limit));
             }
             if (fields != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "fields", fields));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "fields", fields));
             }
             if (q != null)
             {
-                localVarRequestOptions.QueryParameters.Add(ClientUtils.ParameterToMultiMap("", "q", q));
+                localVarRequestOptions.QueryParameters.Add(EdFi.Roster.Sdk.Client.ClientUtils.ParameterToMultiMap("", "q", q));
             }
             if (snapshotIdentifier != null)
             {
-                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
+                localVarRequestOptions.HeaderParameters.Add("Snapshot-Identifier", EdFi.Roster.Sdk.Client.ClientUtils.ParameterToString(snapshotIdentifier)); // header parameter
             }
 
             // authentication (oauth2_client_credentials) required

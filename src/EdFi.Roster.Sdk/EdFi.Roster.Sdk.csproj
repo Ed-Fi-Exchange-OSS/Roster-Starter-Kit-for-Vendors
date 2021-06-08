@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>EdFi.Roster.Sdk.Core</AssemblyName>
-    <PackageId>EdFi.Roster.Sdk.Core</PackageId>
+    <AssemblyName>EdFi.Roster.Sdk</AssemblyName>
+    <PackageId>EdFi.Roster.Sdk</PackageId>
     <OutputType>Library</OutputType>
     <RootNamespace>EdFi.Roster.Sdk</RootNamespace>
   </PropertyGroup>
