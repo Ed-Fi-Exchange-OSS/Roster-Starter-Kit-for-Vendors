@@ -3,14 +3,16 @@ using System;
 using EdFi.Roster.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EdFi.Roster.Data.Migrations
 {
     [DbContext(typeof(RosterDbContext))]
-    partial class RosterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210608112339_RenameRosterTablesToSpecifyComposites")]
+    partial class RenameRosterTablesToSpecifyComposites
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
