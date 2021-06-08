@@ -5,79 +5,71 @@ using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using EdFi.Roster.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace EdFi.Roster.Explorer.Controllers
 {
     public class SyncedResourcesController : Controller
     {
-        private readonly LocalEducationAgencyService _localEducationAgencyService;
-        private readonly SchoolService _schoolService;
-        private readonly StaffService _staffService;
-        private readonly StudentService _studentService;
-        private readonly SectionService _sectionsService;
+        private readonly IRosterDataService _rosterDataService;
 
-        public SyncedResourcesController(
-            LocalEducationAgencyService localEducationAgencyService,
-            SchoolService schoolService,
-            StaffService staffService,
-            StudentService studentService,
-            SectionService sectionService)
+        public SyncedResourcesController(IRosterDataService rosterDataService)
         {
-            _localEducationAgencyService = localEducationAgencyService;
-            _schoolService = schoolService;
-            _staffService = staffService;
-            _studentService = studentService;
-            _sectionsService = sectionService;
+            _rosterDataService = rosterDataService;
         }
 
         public async Task<IActionResult> LocalEducationAgencies()
         {
-            var leaList = await _localEducationAgencyService.ReadAllAsync();
             return View(new ExtendedInfoResponse<List<LocalEducationAgency>>
             {
-                FullDataSet = leaList.ToList(),
+                FullDataSet = await QueryAsync<RosterLocalEducationAgencyComposite, LocalEducationAgency>(),
                 IsExtendedInfoAvailable = false
             });
         }
 
         public async Task<IActionResult> Schools()
         {
-            var schools = await _schoolService.ReadAllAsync();
             return View(new ExtendedInfoResponse<List<School>>
             {
-                FullDataSet = schools.ToList(),
+                FullDataSet = await QueryAsync<RosterSchoolComposite, School>(),
                 IsExtendedInfoAvailable = false
             });
         }
 
         public async Task<IActionResult> Staff()
         {
-            var staffList = await _staffService.ReadAllAsync();
             return View(new ExtendedInfoResponse<List<Staff>>
             {
-                FullDataSet = staffList.ToList(),
+                FullDataSet = await QueryAsync<RosterStaffComposite, Staff>(),
                 IsExtendedInfoAvailable = false
             });
         }
 
         public async Task<IActionResult> Students()
         {
-            var students = await _studentService.ReadAllAsync();
             return View(new ExtendedInfoResponse<List<Student>>
             {
-                FullDataSet = students.ToList(),
+                FullDataSet = await QueryAsync<RosterStudentComposite, Student>(),
                 IsExtendedInfoAvailable = false
             });
         }
 
         public async Task<IActionResult> Sections()
         {
-            var sections = await _sectionsService.ReadAllAsync();
             return View(new ExtendedInfoResponse<List<Section>>
             {
-                FullDataSet = sections.ToList(),
+                FullDataSet = await QueryAsync<RosterSectionComposite, Section>(),
                 IsExtendedInfoAvailable = false
             });
+        }
+
+        private async Task<List<TApiModel>> QueryAsync<TEntityModel, TApiModel>()
+            where TEntityModel : RosterDataRecord
+        {
+            var entities = await _rosterDataService.ReadAllAsync<TEntityModel>();
+            var deserializedApiModels = entities.Select(lea => JsonConvert.DeserializeObject<TApiModel>(lea.Content)).ToList();
+
+            return deserializedApiModels;
         }
     }
 }
