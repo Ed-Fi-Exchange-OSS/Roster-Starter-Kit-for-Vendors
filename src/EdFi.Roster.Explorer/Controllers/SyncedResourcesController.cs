@@ -14,54 +14,22 @@ namespace EdFi.Roster.Explorer.Controllers
         private readonly IRosterDataService _rosterDataService;
 
         public SyncedResourcesController(IRosterDataService rosterDataService)
-        {
-            _rosterDataService = rosterDataService;
-        }
+            => _rosterDataService = rosterDataService;
 
         public async Task<IActionResult> LocalEducationAgencies()
-        {
-            return View(new ExtendedInfoResponse<List<LocalEducationAgency>>
-            {
-                FullDataSet = await QueryAsync<RosterLocalEducationAgencyComposite, LocalEducationAgency>(),
-                IsExtendedInfoAvailable = false
-            });
-        }
+            => View(await QueryAsync<RosterLocalEducationAgencyComposite, LocalEducationAgency>());
 
         public async Task<IActionResult> Schools()
-        {
-            return View(new ExtendedInfoResponse<List<School>>
-            {
-                FullDataSet = await QueryAsync<RosterSchoolComposite, School>(),
-                IsExtendedInfoAvailable = false
-            });
-        }
+            => View(await QueryAsync<RosterSchoolComposite, School>());
 
         public async Task<IActionResult> Staff()
-        {
-            return View(new ExtendedInfoResponse<List<Staff>>
-            {
-                FullDataSet = await QueryAsync<RosterStaffComposite, Staff>(),
-                IsExtendedInfoAvailable = false
-            });
-        }
+            => View(await QueryAsync<RosterStaffComposite, Staff>());
 
         public async Task<IActionResult> Students()
-        {
-            return View(new ExtendedInfoResponse<List<Student>>
-            {
-                FullDataSet = await QueryAsync<RosterStudentComposite, Student>(),
-                IsExtendedInfoAvailable = false
-            });
-        }
+            => View(await QueryAsync<RosterStudentComposite, Student>());
 
         public async Task<IActionResult> Sections()
-        {
-            return View(new ExtendedInfoResponse<List<Section>>
-            {
-                FullDataSet = await QueryAsync<RosterSectionComposite, Section>(),
-                IsExtendedInfoAvailable = false
-            });
-        }
+            => View(await QueryAsync<RosterSectionComposite, Section>());
 
         private async Task<List<TApiModel>> QueryAsync<TEntityModel, TApiModel>()
             where TEntityModel : RosterDataRecord

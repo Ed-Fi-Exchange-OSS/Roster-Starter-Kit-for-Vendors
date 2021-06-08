@@ -1,61 +1,47 @@
-﻿@model ExtendedInfoResponse<List<LocalEducationAgency>>
+@model List<LocalEducationAgency>
 
 @{
     ViewData["Title"] = "Local Education Agencies";
 }
 
-<h1>Local Education Agencies</h1>
-Operations
+<h1>@ViewData["Title"]</h1>
 
-Load / Reload
-<p> Get Local Education Agencies from the configured Ed - Fi API (This will overwrite the currently stored local education agencies)</p>
-
-<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadLeas")'">Get Local Education Agencies</button></div>
-
-@if (Model.IsExtendedInfoAvailable)
-{
-    await Html.RenderPartialAsync("_ExtendedInfoResponsePage", Model.GeneralInfo);
-}
-<hr />
-<form>
-    Current Local Education Agencies Saved
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Local Education Agency Id</th>
-                <th>Name Of Institution</th>
-                <th>Api Resource Id</th>
-                <th>Json Payload</th>
+Current Local Education Agencies Synced (@Model.Count Records)
+<table class="table">
+    <thead>
+        <tr>
+            <th>Local Education Agency Id</th>
+            <th>Name Of Institution</th>
+            <th>Api Resource Id</th>
+            <th>Json Payload</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="parent-row">
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocalEducationAgencyId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameOfInstitution)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td style="text-align:justify">
+                    <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.FullDataSet)
-            {
-                <tr class="parent-row">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LocalEducationAgencyId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.NameOfInstitution)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td style="text-align:justify">
-                        <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
-                    </td>
-                </tr>
-                <tr class="child-content">
-                    <td colspan="12">
-                        <table class="table table-striped table-hover table-bordered table-responsive">
-                            <tbody class="content-tbody">
-                                <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-</form>
+            <tr class="child-content">
+                <td colspan="12">
+                    <table class="table table-striped table-hover table-bordered table-responsive">
+                        <tbody class="content-tbody">
+                            <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
