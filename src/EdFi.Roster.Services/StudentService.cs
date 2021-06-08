@@ -28,14 +28,14 @@ namespace EdFi.Roster.Services
 
         public async Task<IEnumerable<Student>> ReadAllAsync()
         {
-            var students = await _dataService.ReadAllAsync<RosterStudent>();
+            var students = await _dataService.ReadAllAsync<RosterStudentComposite>();
             return students.Select(st => JsonConvert.DeserializeObject<Student>(st.Content)).ToList();
         }
 
         public async Task Save(List<Student> students)
         {
             var studentList = students
-                .Select(student => new RosterStudent { Content = JsonConvert.SerializeObject(student), ResourceId = student.Id}).ToList();
+                .Select(student => new RosterStudentComposite { Content = JsonConvert.SerializeObject(student), ResourceId = student.Id}).ToList();
             await _dataService.SaveAsync(studentList);
         }
 

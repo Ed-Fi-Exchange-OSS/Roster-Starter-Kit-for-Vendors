@@ -11,11 +11,11 @@ namespace EdFi.Roster.Data
 
         }
 
-        public DbSet<RosterLocalEducationAgency> LocalEducationAgencies { get; set; }
-        public DbSet<RosterSchool> Schools { get; set; }
-        public DbSet<RosterSection> Sections { get; set; }
-        public DbSet<RosterStaff> Staff { get; set; }
-        public DbSet<RosterStudent> Students { get; set; }
+        public DbSet<RosterLocalEducationAgencyComposite> RosterLocalEducationAgenciesComposite { get; set; }
+        public DbSet<RosterSchoolComposite> RosterSchoolsComposite { get; set; }
+        public DbSet<RosterSectionComposite> RosterSectionsComposite { get; set; }
+        public DbSet<RosterStaffComposite> RosterStaffComposite { get; set; }
+        public DbSet<RosterStudentComposite> RosterStudentsComposite { get; set; }
         public DbSet<ApiSettings> ApiSettings { get; set; }
         public DbSet<ApiLogEntry> ApiLogEntries { get; set; }
     }

@@ -29,13 +29,13 @@ namespace EdFi.Roster.Services
         public async Task Save(List<Section> sections)
         {
             var sectionsList = sections.Select(section =>
-                new RosterSection { Content = JsonConvert.SerializeObject(section), ResourceId = section.Id}).ToList();
+                new RosterSectionComposite { Content = JsonConvert.SerializeObject(section), ResourceId = section.Id}).ToList();
             await _rosterDataService.SaveAsync(sectionsList);
         }
 
         public async Task<IEnumerable<Section>> ReadAllAsync()
         {
-            var sections = await _rosterDataService.ReadAllAsync<RosterSection>();
+            var sections = await _rosterDataService.ReadAllAsync<RosterSectionComposite>();
             return sections.Select(section => JsonConvert.DeserializeObject<Section>(section.Content)).ToList();
         }
 
