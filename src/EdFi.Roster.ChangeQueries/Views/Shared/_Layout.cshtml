@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - EdFi.Roster.ChangeQueries</title>
+    <title>@ViewData["Title"] - Ed-Fi ChangeQueries</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EdFi.Roster.ChangeQueries</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ed-Fi ChangeQueries</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,7 +22,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi Api Settings</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="ApiLog" asp-action="Index">API Logs</a>
                         </li>
                     </ul>
                 </div>
@@ -37,7 +40,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - EdFi.Roster.ChangeQueries - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - Ed-Fi Alliance
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -45,4 +48,18 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
 </body>
+<script>
+    var expand = function (event) {
+        event.preventDefault();
+        var parent = $(this).closest("tr");
+        parent.toggleClass('expand').nextUntil('tr.parent-row').slideToggle(100);
+    };
+    var prettifyContent = function () {
+        var content = JSON.stringify($(this).InnerHTML(), undefined, 4);
+        $(this).InnerHTML(content);
+    };
+    $(document).on('click', '.sign', expand);
+    $(document).on('click', '.collapsible', expand);
+    $(document).on('load', '.prettify', prettifyContent);
+</script>
 </html>
