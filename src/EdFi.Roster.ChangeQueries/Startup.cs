@@ -1,3 +1,5 @@
+using System.Linq;
+using EdFi.Roster.ChangeQueries.Services;
 using EdFi.Roster.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,6 +24,31 @@ namespace EdFi.Roster.ChangeQueries
         {
             services.AddControllersWithViews();
             services.AddDbContext<ChangeQueryDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("ResourceData")));
+            RegisterEdFiResourceServices(services);
+        }
+
+        private static void RegisterEdFiResourceServices(IServiceCollection services)
+        {
+            foreach (var type in typeof(IMarkerForEdFiResourceServices).Assembly.GetTypes())
+            {
+                if (!type.IsClass || type.IsAbstract || !type.IsPublic && !type.IsNestedPublic) continue;
+                var concreteClass = type;
+
+                var interfaces = concreteClass.GetInterfaces().ToArray();
+
+                if (interfaces.Length == 1)
+                {
+                    var serviceType = interfaces.Single();
+
+                    if (serviceType.FullName == $"{concreteClass.Namespace}.I{concreteClass.Name}")
+                        services.AddTransient(serviceType, concreteClass);
+                }
+                else if (interfaces.Length == 0)
+                {
+                    if (concreteClass.Name.EndsWith("Service"))
+                        services.AddTransient(concreteClass);
+                }
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
