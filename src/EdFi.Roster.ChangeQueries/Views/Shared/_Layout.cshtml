@@ -47,19 +47,19 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
+    <script>
+        var expand = function (event) {
+            event.preventDefault();
+            var parent = $(this).closest("tr");
+            parent.toggleClass('expand').nextUntil('tr.parent-row').slideToggle(100);
+        };
+        var prettifyContent = function () {
+            var content = JSON.stringify($(this).InnerHTML(), undefined, 4);
+            $(this).InnerHTML(content);
+        };
+        $(document).on('click', '.sign', expand);
+        $(document).on('click', '.collapsible', expand);
+        $(document).on('load', '.prettify', prettifyContent);
+    </script>
 </body>
-<script>
-    var expand = function (event) {
-        event.preventDefault();
-        var parent = $(this).closest("tr");
-        parent.toggleClass('expand').nextUntil('tr.parent-row').slideToggle(100);
-    };
-    var prettifyContent = function () {
-        var content = JSON.stringify($(this).InnerHTML(), undefined, 4);
-        $(this).InnerHTML(content);
-    };
-    $(document).on('click', '.sign', expand);
-    $(document).on('click', '.collapsible', expand);
-    $(document).on('load', '.prettify', prettifyContent);
-</script>
 </html>
