@@ -13,7 +13,7 @@ Current Staff Synced (@Model.Count Records)
             <th>Staff UniqueId</th>
             <th>First Name</th>
             <th>Last Surname</th>
-            <th>Staff Classification</th>
+            <th>Level of Education</th>
             <th>Api Resource Id</th>
             <th>Json Payload</th>
         </tr>
@@ -33,7 +33,7 @@ Current Staff Synced (@Model.Count Records)
                 </td>
                 <td>
                     @{
-                        var tempDescriptor = item.EducationOrganizationAssignments[0].StaffClassificationDescriptor;
+                        var tempDescriptor = item.HighestCompletedLevelOfEducationDescriptor;
                         tempDescriptor = tempDescriptor.Substring(tempDescriptor.IndexOf("#", StringComparison.InvariantCulture) + 1);
                     }
 
