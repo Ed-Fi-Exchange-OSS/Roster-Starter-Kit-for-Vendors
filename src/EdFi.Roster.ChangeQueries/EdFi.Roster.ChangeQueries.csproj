@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\EdFi.Common\EdFi.Common.csproj" />
       <ProjectReference Include="..\EdFi.Roster.Data\EdFi.Roster.Data.csproj" />
       <ProjectReference Include="..\EdFi.Roster.Models\EdFi.Roster.Models.csproj" />
     </ItemGroup>

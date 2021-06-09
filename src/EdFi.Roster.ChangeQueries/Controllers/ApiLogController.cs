@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using EdFi.Roster.ChangeQueries.Services;
+using EdFi.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.ChangeQueries.Controllers

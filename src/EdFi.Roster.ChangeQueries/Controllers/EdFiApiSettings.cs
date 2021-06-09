@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using EdFi.Roster.ChangeQueries.Services;
+using EdFi.Common;
 using EdFi.Roster.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ApiSettingsService = EdFi.Roster.ChangeQueries.Services.ApiSettingsService;
+using ApiSettingsService = EdFi.Common.ApiSettingsService;
 
 namespace EdFi.Roster.ChangeQueries.Controllers
 {
