@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EdFi.Roster.Data
 {
-    public class ChangeQueryDbContext : DbContext
+    public class ChangeQueryDbContext : BaseDbContext
     {
         public ChangeQueryDbContext(DbContextOptions<ChangeQueryDbContext> options)
             : base(options)

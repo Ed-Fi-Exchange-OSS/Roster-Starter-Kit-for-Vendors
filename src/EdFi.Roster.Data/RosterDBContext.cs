@@ -1,9 +1,9 @@
-﻿using EdFi.Roster.Models;
+using EdFi.Roster.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace EdFi.Roster.Data
 {
-    public class RosterDbContext : DbContext
+    public class RosterDbContext : BaseDbContext
     {
         public RosterDbContext(DbContextOptions<RosterDbContext> options)
             : base(options)
