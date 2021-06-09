@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using EdFi.Common;
 using EdFi.Roster.Sdk.Api.EnrollmentComposites;
 using EdFi.Roster.Sdk.Client;
-using EdFi.Roster.Services.ApiSdk;
 using Newtonsoft.Json;
 
 namespace EdFi.Roster.Services
 {
     public class SectionService
     {
-        private readonly IRosterDataService _rosterDataService;
+        private readonly IDataService _rosterDataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public SectionService(IRosterDataService rosterDataService
+        public SectionService(IDataService rosterDataService
             , IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
@@ -50,7 +50,7 @@ namespace EdFi.Roster.Services
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.Sections, offset, limit);
+                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.SectionsComposite, offset, limit);
                 ApiResponse<List<Section>> currentApiResponse = null;
                 try
                 {

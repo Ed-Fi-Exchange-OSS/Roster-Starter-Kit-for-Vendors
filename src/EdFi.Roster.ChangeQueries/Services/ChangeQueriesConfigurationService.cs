@@ -1,20 +1,16 @@
 using System.IO;
 using System.Threading.Tasks;
+using EdFi.Common;
 using EdFi.Roster.Sdk.Client;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public interface IConfigurationService
-    {
-        Task<Configuration> ApiConfiguration(bool refreshToken = false, bool isChangeQueries = false);
-    }
-
-    public class ConfigurationService : IConfigurationService
+    public class ChangeQueriesConfigurationService : IConfigurationService
     {
         private readonly ApiSettingsService _apiSettingsService;
         private readonly BearerTokenService _bearerTokenService;
 
-        public ConfigurationService(ApiSettingsService apiSettingsService,
+        public ChangeQueriesConfigurationService(ApiSettingsService apiSettingsService,
             BearerTokenService bearerTokenService)
         {
             _apiSettingsService = apiSettingsService;
@@ -24,7 +20,7 @@ namespace EdFi.Roster.ChangeQueries.Services
         public async Task<Configuration> ApiConfiguration(bool refreshToken = false, bool isChangeQueries = false)
         {
             var apiSettings = await _apiSettingsService.Read();
-            var token =  await _bearerTokenService.GetBearerToken(apiSettings, refreshToken);
+            var token = await _bearerTokenService.GetBearerToken(apiSettings, refreshToken);
 
             var urlRoute = "data/v3";
             if (isChangeQueries)

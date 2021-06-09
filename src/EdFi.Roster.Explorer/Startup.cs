@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using EdFi.Common;
 using EdFi.Roster.Data;
 using EdFi.Roster.Services;
 using Microsoft.AspNetCore.Builder;
@@ -23,13 +25,20 @@ namespace EdFi.Roster.Explorer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<RosterDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("RosterData")));
-            RegisterEdFiRosterServices(services);
+            services.AddScoped<BaseDbContext>(x =>
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<RosterDbContext>();
+                optionsBuilder.UseSqlite(Configuration.GetConnectionString("RosterData"));
+                return new RosterDbContext(optionsBuilder.Options);
+            });
+            RegisterServices(services, typeof(IMarkerForEdFiRosterServices));
+            RegisterServices(services, typeof(IMarkerForCommonServices));
+            services.AddTransient<IConfigurationService, CompositeConfigurationService>();
         }
 
-        private static void RegisterEdFiRosterServices(IServiceCollection services)
+        private static void RegisterServices(IServiceCollection services, Type servicesType)
         {
-            foreach (var type in typeof(IMarkerForEdFiRosterServices).Assembly.GetTypes())
+            foreach (var type in servicesType.Assembly.GetTypes())
             {
                 if (!type.IsClass || type.IsAbstract || !type.IsPublic && !type.IsNestedPublic) continue;
                 var concreteClass = type;
@@ -52,7 +61,7 @@ namespace EdFi.Roster.Explorer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RosterDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BaseDbContext dbContext)
         {
             if (env.IsDevelopment())
             {

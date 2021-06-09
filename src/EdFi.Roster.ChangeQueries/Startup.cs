@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using EdFi.Common;
 using EdFi.Roster.ChangeQueries.Services;
 using EdFi.Roster.Data;
 using Microsoft.AspNetCore.Builder;
@@ -23,13 +25,20 @@ namespace EdFi.Roster.ChangeQueries
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<ChangeQueryDbContext>(options => options.UseSqlite(Configuration.GetConnectionString("ResourceData")));
-            RegisterEdFiResourceServices(services);
+            services.AddScoped<BaseDbContext>(x =>
+            {
+                var optionsBuilder = new DbContextOptionsBuilder<ChangeQueryDbContext>();
+                optionsBuilder.UseSqlite(Configuration.GetConnectionString("ResourceData"));
+                return new ChangeQueryDbContext(optionsBuilder.Options);
+            });
+            RegisterServices(services, typeof(IMarkerForEdFiResourceServices));
+            RegisterServices(services, typeof(IMarkerForCommonServices));
+            services.AddTransient<IConfigurationService, ChangeQueriesConfigurationService>();
         }
 
-        private static void RegisterEdFiResourceServices(IServiceCollection services)
+        private static void RegisterServices(IServiceCollection services, Type servicesType)
         {
-            foreach (var type in typeof(IMarkerForEdFiResourceServices).Assembly.GetTypes())
+            foreach (var type in servicesType.Assembly.GetTypes())
             {
                 if (!type.IsClass || type.IsAbstract || !type.IsPublic && !type.IsNestedPublic) continue;
                 var concreteClass = type;
@@ -52,7 +61,7 @@ namespace EdFi.Roster.ChangeQueries
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ChangeQueryDbContext dbContext)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, BaseDbContext dbContext)
         {
             if (env.IsDevelopment())
             {

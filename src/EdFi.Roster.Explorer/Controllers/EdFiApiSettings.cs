@@ -1,9 +1,9 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
+using EdFi.Common;
 using EdFi.Roster.Models;
-using EdFi.Roster.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ApiSettingsService = EdFi.Roster.Services.ApiSettingsService;
+using ApiSettingsService = EdFi.Common.ApiSettingsService;
 
 namespace EdFi.Roster.Explorer.Controllers
 {

@@ -5,7 +5,7 @@ using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Client;
 using Newtonsoft.Json;
 
-namespace EdFi.Roster.ChangeQueries.Services
+namespace EdFi.Common
 {
     public interface IResponseHandleService
     {

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Threading.Tasks;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Client;
 using RestSharp;
 
-namespace EdFi.Roster.Services
+namespace EdFi.Common
 {
     public class BearerTokenService
     {

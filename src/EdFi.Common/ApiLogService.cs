@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using EdFi.Roster.Models;
 
-namespace EdFi.Roster.Services
+namespace EdFi.Common
 {
     public class ApiLogService
     {
-        private readonly IRosterDataService _dataService;
+        private readonly IDataService _dataService;
 
-        public ApiLogService(IRosterDataService dataService)
+        public ApiLogService(IDataService dataService)
         {
             _dataService = dataService;
         }

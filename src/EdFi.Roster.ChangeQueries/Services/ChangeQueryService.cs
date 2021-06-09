@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using EdFi.Roster.ChangeQueries.Services.ApiSdk;
+using EdFi.Common;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.ChangeQueries;
 using EdFi.Roster.Sdk.Client;
@@ -12,11 +12,11 @@ namespace EdFi.Roster.ChangeQueries.Services
 {
     public class ChangeQueryService
     {
-        private readonly IResourceDataService _dataService;
+        private readonly IDataService _dataService;
         private readonly IApiFacade _apiFacade;
         private readonly IResponseHandleService _responseHandleService;
 
-        public ChangeQueryService(IResourceDataService dataService
+        public ChangeQueryService(IDataService dataService
             , IApiFacade apiFacade
             , IResponseHandleService responseHandleService)
         {

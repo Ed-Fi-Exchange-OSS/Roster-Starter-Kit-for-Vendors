@@ -1,23 +1,23 @@
-using EdFi.Roster.Models;
-using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
-using EdFi.Roster.Sdk.Api.EnrollmentComposites;
+using EdFi.Roster.Models;
+using EdFi.Roster.Sdk.Api.Resources;
 using EdFi.Roster.Sdk.Client;
+using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
 
-namespace EdFi.Roster.Services
+namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class StudentService
+    public class LocalEducationAgencyService
     {
         private readonly IDataService _dataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public StudentService(IDataService dataService
+        public LocalEducationAgencyService(IDataService dataService
             , IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
@@ -26,43 +26,44 @@ namespace EdFi.Roster.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task<IEnumerable<Student>> ReadAllAsync()
+        public async Task Save(List<EdFiLocalEducationAgency> localEducationAgencies)
         {
-            var students = await _dataService.ReadAllAsync<RosterStudentComposite>();
-            return students.Select(st => JsonConvert.DeserializeObject<Student>(st.Content)).ToList();
+            var leas = localEducationAgencies.Select(lea =>
+                new RosterLocalEducationAgencyResource {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
+
+             await _dataService.SaveAsync(leas);
         }
 
-        public async Task Save(List<Student> students)
+        public async Task<IEnumerable<EdFiLocalEducationAgency>> ReadAllAsync()
         {
-            var studentList = students
-                .Select(student => new RosterStudentComposite { Content = JsonConvert.SerializeObject(student), ResourceId = student.Id}).ToList();
-            await _dataService.SaveAsync(studentList);
+            var leas = await _dataService.ReadAllAsync<RosterLocalEducationAgencyResource>();
+            return leas.Select(lea => JsonConvert.DeserializeObject<EdFiLocalEducationAgency>(lea.Content)).ToList();
         }
 
-        public async Task<ExtendedInfoResponse<List<Student>>> GetAllStudentsWithExtendedInfoAsync()
+        public async Task<ExtendedInfoResponse<List<EdFiLocalEducationAgency>>> GetAllLocalEducationAgenciesWithExtendedInfoAsync()
         {
-            var api = await _apiFacade.GetApiClassInstance<StudentsApi>();
+            var leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>();
             var limit = 100;
             var offset = 0;
-            var response = new ExtendedInfoResponse<List<Student>>();
+            var response = new ExtendedInfoResponse<List<EdFiLocalEducationAgency>>();
             int currResponseRecordCount = 0;
 
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.StudentsComposite, offset, limit);
-                ApiResponse<List<Student>> currentApiResponse = null;
+                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.LocalEducationAgenciesResource, offset, limit);
+                ApiResponse<List<EdFiLocalEducationAgency>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await api.GetStudentsWithHttpInfoAsync(offset, limit);
+                    currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
                 }
                 catch (ApiException exception)
                 {
                     errorMessage = exception.Message;
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
-                        api = await _apiFacade.GetApiClassInstance<StudentsApi>(true);
-                        currentApiResponse = await api.GetStudentsWithHttpInfoAsync(offset, limit);
+                        leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>(true);
+                        currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
                         errorMessage = string.Empty;
                     }
                 }
@@ -76,7 +77,9 @@ namespace EdFi.Roster.Services
 
             response.GeneralInfo.TotalRecords = response.FullDataSet.Count;
             response.GeneralInfo.ResponseData = JsonConvert.SerializeObject(response.FullDataSet, Formatting.Indented);
+
             return response;
         }
     }
 }
+

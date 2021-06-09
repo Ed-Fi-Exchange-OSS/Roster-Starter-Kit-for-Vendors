@@ -4,9 +4,9 @@ using EdFi.Roster.Data;
 using EdFi.Roster.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EdFi.Roster.ChangeQueries.Services
+namespace EdFi.Common
 {
-    public interface IResourceDataService
+    public interface IDataService
     {
         Task<IEnumerable<TEntity>> ReadAllAsync<TEntity>() where TEntity : class;
 
@@ -17,11 +17,11 @@ namespace EdFi.Roster.ChangeQueries.Services
         void ClearRecords<TDataIn>() where TDataIn : class;
     }
 
-    public class ResourceDataService : IResourceDataService
+    public class DataService : IDataService
     {
-        private readonly ChangeQueryDbContext _dbContext;
+        private readonly BaseDbContext _dbContext;
 
-        public ResourceDataService(ChangeQueryDbContext dbContext)
+        public DataService(BaseDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -47,7 +47,8 @@ namespace EdFi.Roster.ChangeQueries.Services
 
         public async Task SaveAsync(ChangeQuery entity)
         {
-            var existingRecord = await _dbContext.ChangeQueries.SingleOrDefaultAsync(x => x.ResourceType == entity.ResourceType);
+            var existingRecord = await _dbContext.Set<ChangeQuery>()
+                .SingleOrDefaultAsync(q => q.ResourceType == entity.ResourceType);
 
             if (existingRecord != null)
             {
@@ -55,7 +56,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             }
             else
             {
-                await _dbContext.ChangeQueries.AddAsync(entity);
+                await _dbContext.Set<ChangeQuery>().AddAsync(entity);
             }
 
             await _dbContext.SaveChangesAsync();

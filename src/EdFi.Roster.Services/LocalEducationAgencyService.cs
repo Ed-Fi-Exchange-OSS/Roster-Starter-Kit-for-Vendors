@@ -1,23 +1,23 @@
-﻿using EdFi.Roster.Models;
+using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using EdFi.Common;
 using EdFi.Roster.Sdk.Api.EnrollmentComposites;
 using EdFi.Roster.Sdk.Client;
-using EdFi.Roster.Services.ApiSdk;
 using Newtonsoft.Json;
 
 namespace EdFi.Roster.Services
 {
     public class LocalEducationAgencyService
     {
-        private readonly IRosterDataService _rosterDataService;
+        private readonly IDataService _rosterDataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public LocalEducationAgencyService(IRosterDataService rosterDataService
+        public LocalEducationAgencyService(IDataService rosterDataService
             , IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
@@ -51,7 +51,7 @@ namespace EdFi.Roster.Services
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.LocalEducationAgencies, offset, limit);
+                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.LocalEducationAgenciesComposite, offset, limit);
                 ApiResponse<List<LocalEducationAgency>> currentApiResponse = null;
                 try
                 {

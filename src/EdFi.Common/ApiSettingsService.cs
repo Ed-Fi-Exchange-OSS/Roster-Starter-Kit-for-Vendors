@@ -3,13 +3,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using EdFi.Roster.Models;
 
-namespace EdFi.Roster.ChangeQueries.Services
+namespace EdFi.Common
 {
     public class ApiSettingsService
     {
-        private readonly IResourceDataService _dataService;
+        private readonly IDataService _dataService;
 
-        public ApiSettingsService(IResourceDataService dataService)
+        public ApiSettingsService(IDataService dataService)
         {
             _dataService = dataService;
         }
