@@ -1,7 +1,7 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using EdFi.Roster.Services;
+using EdFi.Common;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.Explorer.Controllers
