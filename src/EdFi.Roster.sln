@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.Data", "EdFi.Ro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.Sdk", "EdFi.Roster.Sdk\EdFi.Roster.Sdk.csproj", "{10FAC0AC-CF4D-4BB1-9F6F-E2754FA30EC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EdFi.Roster.ChangeQueries", "EdFi.Roster.ChangeQueries\EdFi.Roster.ChangeQueries.csproj", "{77051F64-0D93-4E1E-9014-A3F54AAE291F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.ChangeQueries", "EdFi.Roster.ChangeQueries\EdFi.Roster.ChangeQueries.csproj", "{77051F64-0D93-4E1E-9014-A3F54AAE291F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Common", "EdFi.Common\EdFi.Common.csproj", "{AEBC8FF2-17C7-4AC5-B4A4-55B7A59870DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{77051F64-0D93-4E1E-9014-A3F54AAE291F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77051F64-0D93-4E1E-9014-A3F54AAE291F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{77051F64-0D93-4E1E-9014-A3F54AAE291F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEBC8FF2-17C7-4AC5-B4A4-55B7A59870DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEBC8FF2-17C7-4AC5-B4A4-55B7A59870DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEBC8FF2-17C7-4AC5-B4A4-55B7A59870DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEBC8FF2-17C7-4AC5-B4A4-55B7A59870DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
