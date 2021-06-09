@@ -1,35 +1,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EdFi.Roster.ChangeQueries.Services;
 using EdFi.Roster.Models;
-using EdFi.Roster.Sdk.Models.EnrollmentComposites;
-using EdFi.Roster.Services;
+using EdFi.Roster.Sdk.Models.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace EdFi.Roster.Explorer.Controllers
+namespace EdFi.Roster.ChangeQueries.Controllers
 {
     public class SyncedResourcesController : Controller
     {
-        private readonly IRosterDataService _rosterDataService;
+        private readonly IResourceDataService _rosterDataService;
 
-        public SyncedResourcesController(IRosterDataService rosterDataService)
+        public SyncedResourcesController(IResourceDataService rosterDataService)
             => _rosterDataService = rosterDataService;
 
         public async Task<IActionResult> LocalEducationAgencies()
-            => View(await QueryAsync<RosterLocalEducationAgencyComposite, LocalEducationAgency>());
+            => View(await QueryAsync<RosterLocalEducationAgencyResource, EdFiLocalEducationAgency>());
 
         public async Task<IActionResult> Schools()
-            => View(await QueryAsync<RosterSchoolComposite, School>());
+            => View(await QueryAsync<RosterSchoolResource, EdFiSchool>());
 
         public async Task<IActionResult> Staff()
-            => View(await QueryAsync<RosterStaffComposite, Staff>());
+            => View(await QueryAsync<RosterStaffResource, EdFiStaff>());
 
         public async Task<IActionResult> Students()
-            => View(await QueryAsync<RosterStudentComposite, Student>());
+            => View(await QueryAsync<RosterStudentResource, EdFiStudent>());
 
         public async Task<IActionResult> Sections()
-            => View(await QueryAsync<RosterSectionComposite, Section>());
+            => View(await QueryAsync<RosterSectionResource, EdFiSection>());
 
         private async Task<List<TApiModel>> QueryAsync<TEntityModel, TApiModel>()
             where TEntityModel : RosterDataRecord
