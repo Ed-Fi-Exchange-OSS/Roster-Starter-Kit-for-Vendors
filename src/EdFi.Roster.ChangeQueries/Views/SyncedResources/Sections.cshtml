@@ -12,7 +12,7 @@ Current Sections Synced (@Model.Count Records)
         <tr>
             <th>Local Course Code</th>
             <th>SectionIdentifier</th>
-            <th>Local Course Title</th>
+            <th>Session Name</th>
             <th>Api Resource Id</th>
             <th>Json Payload</th>
         </tr>
@@ -22,13 +22,13 @@ Current Sections Synced (@Model.Count Records)
         {
             <tr class="parent-row">
                 <td>
-                    @Html.DisplayFor(modelItem => item.LocalCourseCode)
+                    @Html.DisplayFor(modelItem => item.CourseOfferingReference.LocalCourseCode)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.SectionIdentifier)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LocalCourseTitle)
+                    @Html.DisplayFor(modelItem => item.CourseOfferingReference.SessionName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Id)
