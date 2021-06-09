@@ -4,24 +4,24 @@ using EdFi.Roster.Data;
 using EdFi.Roster.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EdFi.Roster.ChangeQueries.Services
+namespace EdFi.Common
 {
-    public interface IResourceDataService
+    public interface IDataService
     {
         Task<IEnumerable<TEntity>> ReadAllAsync<TEntity>() where TEntity : class;
 
         Task SaveAsync<TDataIn>(List<TDataIn> entities, bool doNotDeleteExistingRecords = false) where TDataIn : class;
 
-        Task SaveAsync(ChangeQuery entity);
+        Task SaveAsync<TDataIn>(TDataIn entity) where TDataIn : ChangeQuery;
 
         void ClearRecords<TDataIn>() where TDataIn : class;
     }
 
-    public class ResourceDataService : IResourceDataService
+    public class DataService : IDataService
     {
-        private readonly ChangeQueryDbContext _dbContext;
+        private readonly BaseDbContext _dbContext;
 
-        public ResourceDataService(ChangeQueryDbContext dbContext)
+        public DataService(BaseDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -45,9 +45,10 @@ namespace EdFi.Roster.ChangeQueries.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SaveAsync(ChangeQuery entity)
+        public async Task SaveAsync<TDataIn>(TDataIn entity) where TDataIn : ChangeQuery
         {
-            var existingRecord = await _dbContext.ChangeQueries.SingleOrDefaultAsync(x => x.ResourceType == entity.ResourceType);
+            var existingRecord = await _dbContext.Set<TDataIn>()
+                .FirstOrDefaultAsync(q => q.ResourceType == entity.ResourceType);
 
             if (existingRecord != null)
             {
@@ -55,7 +56,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             }
             else
             {
-                await _dbContext.ChangeQueries.AddAsync(entity);
+                await _dbContext.Set<TDataIn>().AddAsync(entity);
             }
 
             await _dbContext.SaveChangesAsync();

@@ -13,15 +13,15 @@ namespace EdFi.Roster.ChangeQueries.Services
 {
     public class LocalEducationAgencyService
     {
-        private readonly IRosterDataService _rosterDataService;
+        private readonly IDataService _dataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public LocalEducationAgencyService(IRosterDataService rosterDataService
+        public LocalEducationAgencyService(IDataService dataService
             , IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
-            _rosterDataService = rosterDataService;
+            _dataService = dataService;
             _responseHandleService = responseHandleService;
             _apiFacade = apiFacade;
         }
@@ -31,12 +31,12 @@ namespace EdFi.Roster.ChangeQueries.Services
             var leas = localEducationAgencies.Select(lea =>
                 new RosterLocalEducationAgencyResource {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
 
-             await _rosterDataService.SaveAsync(leas);
+             await _dataService.SaveAsync(leas);
         }
 
         public async Task<IEnumerable<EdFiLocalEducationAgency>> ReadAllAsync()
         {
-            var leas = await _rosterDataService.ReadAllAsync<RosterLocalEducationAgencyResource>();
+            var leas = await _dataService.ReadAllAsync<RosterLocalEducationAgencyResource>();
             return leas.Select(lea => JsonConvert.DeserializeObject<EdFiLocalEducationAgency>(lea.Content)).ToList();
         }
 

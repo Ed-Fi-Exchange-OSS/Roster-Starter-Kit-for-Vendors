@@ -11,6 +11,9 @@ namespace EdFi.Common
     {
         Task<ExtendedInfoResponse<List<T>>> Handle<T>(ApiResponse<List<T>> apiResponse, ExtendedInfoResponse<List<T>> response, Uri responseUri, string errorMessage)
             where T : class;
+
+        Task<ApiResponse<T>> Handle<T>(ApiResponse<T> apiResponse, Uri responseUri, string errorMessage)
+            where T : class;
     }
 
     public class ResponseHandleService : IResponseHandleService
@@ -47,6 +50,24 @@ namespace EdFi.Common
             await _logService.WriteLog(apiLogEntry);
 
             return response;
+        }
+
+        public async Task<ApiResponse<T>> Handle<T>(ApiResponse<T> apiResponse, Uri responseUri, string errorMessage) where T : class
+        {
+            // log entry
+            var apiLogEntry = new ApiLogEntry
+            {
+                LogDateTime = DateTime.Now,
+                Method = "GET",
+                StatusCode = apiResponse.StatusCode.ToString(),
+                Content = string.IsNullOrEmpty(errorMessage)
+                    ? JsonConvert.SerializeObject(apiResponse.Data, Formatting.Indented)
+                    : errorMessage,
+                Uri = responseUri.ToString()
+            };
+            await _logService.WriteLog(apiLogEntry);
+
+            return apiResponse;
         }
     }
 }

@@ -7,9 +7,9 @@ namespace EdFi.Common
 {
     public class ApiSettingsService
     {
-        private readonly IRosterDataService _dataService;
+        private readonly IDataService _dataService;
 
-        public ApiSettingsService(IRosterDataService dataService)
+        public ApiSettingsService(IDataService dataService)
         {
             _dataService = dataService;
         }

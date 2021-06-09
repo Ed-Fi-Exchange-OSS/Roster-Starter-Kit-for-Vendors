@@ -13,11 +13,11 @@ namespace EdFi.Roster.Services
 {
     public class StaffService
     {
-        private readonly IRosterDataService _rosterDataService;
+        private readonly IDataService _rosterDataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public StaffService(IRosterDataService rosterDataService
+        public StaffService(IDataService rosterDataService
             , IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
