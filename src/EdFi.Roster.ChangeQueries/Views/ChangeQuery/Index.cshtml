@@ -1,0 +1,14 @@
+@model ChangeQueryViewModel
+
+@{
+    ViewData["Title"] = "Change Queries";
+}
+
+<h1>Change Queries</h1>
+<p> Sync data from the configured Ed - Fi API</p>
+
+<div class="alert alert-info" role="alert">
+    @Model.ChangeSummaryMessage
+</div>
+
+<div><button class="btn btn-primary btn">Sync Data</button></div>
