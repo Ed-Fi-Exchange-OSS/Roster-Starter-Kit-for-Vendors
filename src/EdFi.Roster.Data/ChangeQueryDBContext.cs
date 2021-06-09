@@ -18,5 +18,6 @@ namespace EdFi.Roster.Data
         public DbSet<RosterStudentResource> RosterStudentsResource { get; set; }
         public DbSet<ApiSettings> ApiSettings { get; set; }
         public DbSet<ApiLogEntry> ApiLogEntries { get; set; }
+        public DbSet<ChangeQuery> ChangeQueries { get; set; }
     }
 }

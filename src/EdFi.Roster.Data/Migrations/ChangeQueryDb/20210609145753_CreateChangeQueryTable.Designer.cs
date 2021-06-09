@@ -3,14 +3,16 @@ using System;
 using EdFi.Roster.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EdFi.Roster.Data.Migrations.ChangeQueryDb
 {
     [DbContext(typeof(ChangeQueryDbContext))]
-    partial class ChangeQueryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210609145753_CreateChangeQueryTable")]
+    partial class CreateChangeQueryTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
