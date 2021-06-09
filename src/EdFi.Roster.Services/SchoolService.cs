@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using EdFi.Common;
 using EdFi.Roster.Sdk.Api.EnrollmentComposites;
 using EdFi.Roster.Sdk.Client;
-using EdFi.Roster.Services.ApiSdk;
 using Newtonsoft.Json;
 
 namespace EdFi.Roster.Services
@@ -51,7 +51,7 @@ namespace EdFi.Roster.Services
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.Schools, offset, limit);
+                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.SchoolsComposite, offset, limit);
                 ApiResponse<List<School>> currentApiResponse = null;
                 try
                 {
