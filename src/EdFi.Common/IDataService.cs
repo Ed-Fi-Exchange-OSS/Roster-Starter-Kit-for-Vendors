@@ -12,7 +12,7 @@ namespace EdFi.Common
 
         Task SaveAsync<TDataIn>(List<TDataIn> entities, bool doNotDeleteExistingRecords = false) where TDataIn : class;
 
-        Task SaveAsync<TDataIn>(TDataIn entity) where TDataIn : ChangeQuery;
+        Task SaveAsync(ChangeQuery entity);
 
         void ClearRecords<TDataIn>() where TDataIn : class;
     }
@@ -45,10 +45,10 @@ namespace EdFi.Common
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task SaveAsync<TDataIn>(TDataIn entity) where TDataIn : ChangeQuery
+        public async Task SaveAsync(ChangeQuery entity)
         {
-            var existingRecord = await _dbContext.Set<TDataIn>()
-                .FirstOrDefaultAsync(q => q.ResourceType == entity.ResourceType);
+            var existingRecord = await _dbContext.Set<ChangeQuery>()
+                .SingleOrDefaultAsync(q => q.ResourceType == entity.ResourceType);
 
             if (existingRecord != null)
             {
@@ -56,7 +56,7 @@ namespace EdFi.Common
             }
             else
             {
-                await _dbContext.Set<TDataIn>().AddAsync(entity);
+                await _dbContext.Set<ChangeQuery>().AddAsync(entity);
             }
 
             await _dbContext.SaveChangesAsync();

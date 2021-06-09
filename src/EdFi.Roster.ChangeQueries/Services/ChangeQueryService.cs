@@ -33,7 +33,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 ResourceType = resourceType
             };
 
-            await _dataService.SaveAsync<ChangeQuery>(changeQuery);
+            await _dataService.SaveAsync(changeQuery);
         }
 
         public async Task<long> GetAvailableVersionAsync()
