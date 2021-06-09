@@ -23,24 +23,28 @@ Current Staff Synced (@Model.Count Records)
         {
             <tr class="parent-row">
                 <td>
-                    @Html.DisplayFor(modelItem => item.StaffUniqueId)
+                    @item.StaffUniqueId
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
+                    @item.FirstName
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.LastSurname)
+                    @item.LastSurname
                 </td>
                 <td>
                     @{
-                        var tempDescriptor = item.HighestCompletedLevelOfEducationDescriptor;
-                        tempDescriptor = tempDescriptor.Substring(tempDescriptor.IndexOf("#", StringComparison.InvariantCulture) + 1);
+                        var education = item.HighestCompletedLevelOfEducationDescriptor ?? "";
+                        var hashIndex = education.IndexOf("#", StringComparison.InvariantCulture);
+                        if (hashIndex >= 0)
+                        {
+                            education = education.Substring(hashIndex + 1);
+                        }
                     }
 
-                    @Html.DisplayFor(modelItem => tempDescriptor)
+                    @education
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @item.Id
                 </td>
                 <td style="text-align:justify">
                     <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>

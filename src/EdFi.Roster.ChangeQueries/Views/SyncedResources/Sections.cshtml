@@ -22,16 +22,16 @@ Current Sections Synced (@Model.Count Records)
         {
             <tr class="parent-row">
                 <td>
-                    @Html.DisplayFor(modelItem => item.CourseOfferingReference.LocalCourseCode)
+                    @item.CourseOfferingReference?.LocalCourseCode
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SectionIdentifier)
+                    @item.SectionIdentifier
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CourseOfferingReference.SessionName)
+                    @item.CourseOfferingReference?.SessionName
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @item.Id
                 </td>
                 <td style="text-align:justify">
                     <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
