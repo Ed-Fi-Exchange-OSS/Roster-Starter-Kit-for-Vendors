@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EdFi.Roster.ChangeQueries.Services;
+using EdFi.Common;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.Resources;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +11,10 @@ namespace EdFi.Roster.ChangeQueries.Controllers
 {
     public class SyncedResourcesController : Controller
     {
-        private readonly IResourceDataService _rosterDataService;
+        private readonly IDataService _dataService;
 
-        public SyncedResourcesController(IResourceDataService rosterDataService)
-            => _rosterDataService = rosterDataService;
+        public SyncedResourcesController(IDataService rosterDataService)
+            => _dataService = rosterDataService;
 
         public async Task<IActionResult> LocalEducationAgencies()
             => View(await QueryAsync<RosterLocalEducationAgencyResource, EdFiLocalEducationAgency>());
@@ -34,7 +34,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         private async Task<List<TApiModel>> QueryAsync<TEntityModel, TApiModel>()
             where TEntityModel : RosterDataRecord
         {
-            var entities = await _rosterDataService.ReadAllAsync<TEntityModel>();
+            var entities = await _dataService.ReadAllAsync<TEntityModel>();
             var deserializedApiModels = entities.Select(lea => JsonConvert.DeserializeObject<TApiModel>(lea.Content)).ToList();
 
             return deserializedApiModels;
