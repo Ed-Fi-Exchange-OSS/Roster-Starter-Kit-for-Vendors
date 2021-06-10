@@ -72,7 +72,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             // Sync retrieved records to local db
             var leas = response.FullDataSet.Select(lea =>
                 new RosterLocalEducationAgencyResource { Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id }).ToList();
-            var addedRecords = await _dataService.SyncAsync(leas);
+            var addedRecords = await _dataService.AddOrUpdateAllAsync(leas);
 
             // TODO: Call Deletes endpoint to get deleted records and update local db accordingly
 
