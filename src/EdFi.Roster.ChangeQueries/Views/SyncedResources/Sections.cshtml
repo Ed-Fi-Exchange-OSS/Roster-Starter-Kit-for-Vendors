@@ -6,46 +6,53 @@
 
 <h1>@ViewData["Title"]</h1>
 
-Current Sections Synced (@Model.Count Records)
-<table class="table">
-    <thead>
-        <tr>
-            <th>Local Course Code</th>
-            <th>SectionIdentifier</th>
-            <th>Session Name</th>
-            <th>Api Resource Id</th>
-            <th>Json Payload</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr class="parent-row">
-                <td>
-                    @item.CourseOfferingReference?.LocalCourseCode
-                </td>
-                <td>
-                    @item.SectionIdentifier
-                </td>
-                <td>
-                    @item.CourseOfferingReference?.SessionName
-                </td>
-                <td>
-                    @item.Id
-                </td>
-                <td style="text-align:justify">
-                    <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
-                </td>
+@if (Model.Count == 0)
+{
+    await Html.RenderPartialAsync("_ZeroResourcesSynced", ViewData["Title"]);
+}
+else
+{
+    <span>@Model.Count @ViewData["Title"] resources have been synced</span>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Local Course Code</th>
+                <th>SectionIdentifier</th>
+                <th>Session Name</th>
+                <th>Api Resource Id</th>
+                <th>Json Payload</th>
             </tr>
-            <tr class="child-content">
-                <td colspan="12">
-                    <table class="table table-striped table-hover table-bordered table-responsive">
-                        <tbody class="content-tbody">
-                            <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="parent-row">
+                    <td>
+                        @item.CourseOfferingReference?.LocalCourseCode
+                    </td>
+                    <td>
+                        @item.SectionIdentifier
+                    </td>
+                    <td>
+                        @item.CourseOfferingReference?.SessionName
+                    </td>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td style="text-align:justify">
+                        <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
+                    </td>
+                </tr>
+                <tr class="child-content">
+                    <td colspan="12">
+                        <table class="table table-striped table-hover table-bordered table-responsive">
+                            <tbody class="content-tbody">
+                                <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
