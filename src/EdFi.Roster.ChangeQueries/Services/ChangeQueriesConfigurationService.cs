@@ -22,10 +22,10 @@ namespace EdFi.Roster.ChangeQueries.Services
             var apiSettings = await _apiSettingsService.Read();
             var token = await _bearerTokenService.GetBearerToken(apiSettings, refreshToken);
 
-            var urlRoute = "data/v3";
+            var urlRoute = ApiRoutes.ResourcesBase;
             if (isChangeQueries)
             {
-                urlRoute = "ChangeQueries/v1";
+                urlRoute = ApiRoutes.ChangeQueriesBase;
             }
 
             return new Configuration

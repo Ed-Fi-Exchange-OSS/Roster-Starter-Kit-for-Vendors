@@ -24,7 +24,7 @@ namespace EdFi.Roster.Services
             return new Configuration
             {
                 AccessToken = token,
-                BasePath = Path.Combine(apiSettings.RootUrl, "composites/v1")
+                BasePath = Path.Combine(apiSettings.RootUrl, ApiRoutes.EnrollmentCompositesBase)
             };
         }
     }
