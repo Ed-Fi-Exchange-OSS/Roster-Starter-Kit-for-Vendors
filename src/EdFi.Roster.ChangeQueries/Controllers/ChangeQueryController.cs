@@ -26,7 +26,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             };
 
 
-            if (currentVersions.Select(x => x.ChangeVersion).Any(x => x < availableVersion))
+            if (currentVersions.Count == 0 || currentVersions.Select(x => x.ChangeVersion).Any(x => x < availableVersion))
             {
                 changeQueryModel.ChangeSummaryMessage = "There are pending changes to sync. Please click the Sync button to update your records.";
             }
