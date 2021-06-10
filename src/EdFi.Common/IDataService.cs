@@ -14,6 +14,8 @@ namespace EdFi.Common
 
         Task SaveAsync(ChangeQuery entity);
 
+        Task<int> AddOrUpdateAllAsync<TDataIn>(List<TDataIn> entities) where TDataIn : RosterDataRecord;
+
         void ClearRecords<TDataIn>() where TDataIn : class;
     }
 
@@ -60,6 +62,30 @@ namespace EdFi.Common
             }
 
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<int> AddOrUpdateAllAsync<TDataIn>(List<TDataIn> entities) where TDataIn : RosterDataRecord
+        {
+            var addedRecords = 0;
+            foreach (var entity in entities)
+            {
+                var existing = await _dbContext.Set<TDataIn>()
+                    .SingleOrDefaultAsync(q => q.ResourceId != null && q.ResourceId == entity.ResourceId);
+
+                if (existing != null)
+                {
+                    existing.Content = entity.Content;
+                }
+                else
+                {
+                    await _dbContext.Set<TDataIn>().AddAsync(entity);
+                    addedRecords++;
+                }
+
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return addedRecords;
         }
 
         public void ClearRecords<TDataIn>() where TDataIn : class
