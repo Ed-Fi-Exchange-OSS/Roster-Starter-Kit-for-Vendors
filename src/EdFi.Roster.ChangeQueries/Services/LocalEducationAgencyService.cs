@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
+using EdFi.Roster.ChangeQueries.Models;
+using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
 using EdFi.Roster.Sdk.Client;
@@ -26,27 +28,19 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task Save(List<EdFiLocalEducationAgency> localEducationAgencies)
-        {
-            var leas = localEducationAgencies.Select(lea =>
-                new RosterLocalEducationAgencyResource {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
-
-             await _dataService.SaveAsync(leas);
-        }
-
         public async Task<IEnumerable<EdFiLocalEducationAgency>> ReadAllAsync()
         {
             var leas = await _dataService.ReadAllAsync<RosterLocalEducationAgencyResource>();
             return leas.Select(lea => JsonConvert.DeserializeObject<EdFiLocalEducationAgency>(lea.Content)).ToList();
         }
 
-        public async Task<ExtendedInfoResponse<List<EdFiLocalEducationAgency>>> GetAllLocalEducationAgenciesWithExtendedInfoAsync()
+        public async Task<DataSyncResponseModel> RetrieveAndSyncLocalEducationAgencies(long minVersion, long maxVersion)
         {
             var leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>();
             var limit = 100;
             var offset = 0;
             var response = new ExtendedInfoResponse<List<EdFiLocalEducationAgency>>();
-            int currResponseRecordCount = 0;
+            var currResponseRecordCount = 0;
 
             do
             {
@@ -55,7 +49,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 ApiResponse<List<EdFiLocalEducationAgency>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+                    currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit, (int?)minVersion, (int?)maxVersion);
                 }
                 catch (ApiException exception)
                 {
@@ -63,7 +57,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
                         leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>(true);
-                        currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+                        currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit, (int?)minVersion, (int?)maxVersion);
                         errorMessage = string.Empty;
                     }
                 }
@@ -75,11 +69,22 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             } while (currResponseRecordCount >= limit);
 
-            response.GeneralInfo.TotalRecords = response.FullDataSet.Count;
-            response.GeneralInfo.ResponseData = JsonConvert.SerializeObject(response.FullDataSet, Formatting.Indented);
+            // Sync retrieved records to local db
+            var leas = response.FullDataSet.Select(lea =>
+                new RosterLocalEducationAgencyResource { Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id }).ToList();
+            var addedRecords = await _dataService.SyncAsync(leas);
 
-            return response;
+            // TODO: Call Deletes endpoint to get deleted records and update local db accordingly
+
+            // TODO: Update Change query table to reflect latest available version for LocalEducationAgencies
+
+            return new DataSyncResponseModel
+            {
+                ResourceName = ResourceTypes.LocalEducationAgencies,
+                AddedRecordsCount = addedRecords,
+                UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
+                DeletedRecordsCount = 0
+            };
         }
     }
 }
-
