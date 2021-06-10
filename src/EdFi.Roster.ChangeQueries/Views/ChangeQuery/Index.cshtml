@@ -11,4 +11,31 @@
     @Model.ChangeSummaryMessage
 </div>
 
-<div><button class="btn btn-primary btn">Sync Data</button></div>
+<div><div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("SyncData")'">Sync Data</button></div></div>
+
+@if (Model.SyncResponses != null)
+{
+   <table class="table">
+       <tbody>
+       @foreach (var item in Model.SyncResponses)
+       {
+           <tr>
+               <td>
+                   @item.ResourceName
+               </td>
+           </tr>
+           <tr>
+               <td colspan="12">
+                   <table class="table table-striped table-hover table-bordered table-responsive">
+                       <tbody class="content-tbody">
+                       <tr><td>Added Records: @item.AddedRecordsCount</td></tr>
+                       <tr><td>Updated Records: @item.UpdatedRecordsCount</td></tr>
+                       <tr><td>Deleted Records: @item.DeletedRecordsCount</td></tr>
+                       </tbody>
+                   </table>
+               </td>
+           </tr>
+       }
+       </tbody>
+   </table>
+}
