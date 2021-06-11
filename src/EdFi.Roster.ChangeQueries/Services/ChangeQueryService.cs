@@ -7,6 +7,7 @@ using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.ChangeQueries;
 using EdFi.Roster.Sdk.Client;
 using EdFi.Roster.Sdk.Models.ChangeQueries;
+using RestSharp;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
@@ -66,6 +67,25 @@ namespace EdFi.Roster.ChangeQueries.Services
             }
 
             return availableVersion;
+        }
+
+        public async Task<ApiResponse<AvailableChangeVersion>> TestChangeQueryApiAsync(ApiSettings apiSettings, string accessToken)
+        {
+            var testClient = new RestClient(apiSettings.RootUrl);
+            var changeQueryRequest = new RestRequest($"{ApiRoutes.ChangeQueriesBase}/{ApiRoutes.AvailableChangeVersions}", Method.GET);
+            changeQueryRequest.AddParameter("Authorization", "Bearer " + accessToken, ParameterType.HttpHeader);
+
+            var changeQueryResponse = await testClient.ExecuteAsync<AvailableChangeVersion>(changeQueryRequest);
+
+            var headersMap = new Multimap<string, string>();
+
+            foreach (var header in changeQueryResponse.Headers)
+            {
+                headersMap.Add(header.Name, header.Value?.ToString());
+            }
+
+            return new ApiResponse<AvailableChangeVersion>(changeQueryResponse.StatusCode,
+                headersMap, changeQueryResponse.Data);
         }
 
         public async Task<List<ChangeQuery>> ReadCurrentVersionsForResourcesAsync()

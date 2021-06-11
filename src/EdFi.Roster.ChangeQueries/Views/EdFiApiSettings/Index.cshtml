@@ -123,7 +123,7 @@
             dvAlert.removeClass('hide');
             dvAlert.addClass('alert-danger alert-dismissible fade show');
             dvAlert.html('<strong>Error</strong>');
-            $('<div>').append(textStatus + ' - ' + response).appendTo(dvAlert);
+            $('<div>').append(textStatus + ' - ' + response.responseText).appendTo(dvAlert);
             dvAlert.append('<button type="button" id="alertClose" class="close">&times;</button>');
             $('#alertClose').click(function () {
                 dvAlert.removeClass('show');

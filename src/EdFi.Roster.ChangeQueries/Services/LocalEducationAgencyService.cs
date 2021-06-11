@@ -18,14 +18,20 @@ namespace EdFi.Roster.ChangeQueries.Services
         private readonly IDataService _dataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
+        private readonly ApiService _apiService;
+        private readonly ChangeQueryService _changeQueryService;
 
         public LocalEducationAgencyService(IDataService dataService
             , IResponseHandleService responseHandleService
-            , IApiFacade apiFacade)
+            , IApiFacade apiFacade
+            , ApiService apiService
+            , ChangeQueryService changeQueryService)
         {
             _dataService = dataService;
             _responseHandleService = responseHandleService;
             _apiFacade = apiFacade;
+            _apiService = apiService;
+            _changeQueryService = changeQueryService;
         }
 
         public async Task<IEnumerable<EdFiLocalEducationAgency>> ReadAllAsync()
@@ -42,22 +48,32 @@ namespace EdFi.Roster.ChangeQueries.Services
             var response = new ExtendedInfoResponse<List<EdFiLocalEducationAgency>>();
             var currResponseRecordCount = 0;
 
+            if (minVersion >= maxVersion)
+                return new DataSyncResponseModel
+                {
+                    ResourceName = $"No pending changes to sync for {ResourceTypes.LocalEducationAgencies}"
+                };
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.LocalEducationAgenciesResource, offset, limit);
+                var responseUri =
+                    _apiFacade.BuildResponseUri(ApiRoutes.LocalEducationAgenciesResource, offset, limit);
                 ApiResponse<List<EdFiLocalEducationAgency>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit, (int?)minVersion, (int?)maxVersion);
+                    currentApiResponse =
+                        await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit, (int?) minVersion,
+                            (int?) maxVersion);
                 }
                 catch (ApiException exception)
                 {
                     errorMessage = exception.Message;
-                    if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
+                    if (exception.ErrorCode.Equals((int) HttpStatusCode.Unauthorized))
                     {
                         leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>(true);
-                        currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit, (int?)minVersion, (int?)maxVersion);
+                        currentApiResponse =
+                            await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit,
+                                (int?) minVersion, (int?) maxVersion);
                         errorMessage = string.Empty;
                     }
                 }
@@ -65,25 +81,42 @@ namespace EdFi.Roster.ChangeQueries.Services
                 if (currentApiResponse == null) continue;
                 currResponseRecordCount = currentApiResponse.Data.Count;
                 offset += limit;
-                response = await _responseHandleService.Handle(currentApiResponse, response, responseUri, errorMessage);
+                response = await _responseHandleService.Handle(currentApiResponse, response, responseUri,
+                    errorMessage);
 
             } while (currResponseRecordCount >= limit);
 
             // Sync retrieved records to local db
             var leas = response.FullDataSet.Select(lea =>
-                new RosterLocalEducationAgencyResource { Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id }).ToList();
+                new RosterLocalEducationAgencyResource
+                    {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
             var addedRecords = await _dataService.AddOrUpdateAllAsync(leas);
 
-            // TODO: Call Deletes endpoint to get deleted records and update local db accordingly
+            var deletesResponse =
+                await _apiService.GetAllResources<LocalEducationAgenciesApi, DeletedResource>(
+                    $"{ApiRoutes.LocalEducationAgenciesResource}/deletes",
+                    async (api, offset, limit) =>
+                        await api.DeletesLocalEducationAgenciesWithHttpInfoAsync(
+                            offset, limit, (int?) minVersion, (int?) maxVersion));
 
-            // TODO: Update Change query table to reflect latest available version for LocalEducationAgencies
+            // Sync deleted records to local db
+            var deletedLeasCount = 0;
+            if (deletesResponse.FullDataSet.Any())
+            {
+                var deletedLeas = deletesResponse.FullDataSet.Select(lea => lea.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterLocalEducationAgencyResource>(deletedLeas);
+                deletedLeasCount = deletedLeas.Count;
+            }
+
+            // Save latest change version 
+            await _changeQueryService.Save(maxVersion, ResourceTypes.LocalEducationAgencies);
 
             return new DataSyncResponseModel
             {
                 ResourceName = ResourceTypes.LocalEducationAgencies,
                 AddedRecordsCount = addedRecords,
                 UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
-                DeletedRecordsCount = 0
+                DeletedRecordsCount = deletedLeasCount
             };
         }
     }

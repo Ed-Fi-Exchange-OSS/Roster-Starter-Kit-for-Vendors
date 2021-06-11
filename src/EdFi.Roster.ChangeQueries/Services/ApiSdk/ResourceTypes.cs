@@ -7,5 +7,10 @@ namespace EdFi.Roster.ChangeQueries.Services.ApiSdk
         public static string Staff => "Staff";
         public static string Students => "Students";
         public static string Sections => "Sections";
+
+        public static int ResourceTypeCount()
+        {
+            return typeof(ResourceTypes).GetProperties().Length;
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             };
 
 
-            if (currentVersions.Select(x => x.ChangeVersion).Any(x => x < availableVersion))
+            if (currentVersions.Count < ResourceTypes.ResourceTypeCount() || currentVersions.Select(x => x.ChangeVersion).Any(x => x < availableVersion))
             {
                 changeQueryModel.ChangeSummaryMessage = "There are pending changes to sync. Please click the Sync button to update your records.";
             }
@@ -85,7 +85,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
 
             var changeQueryModel = new ChangeQueryViewModel
             {
-                ChangeSummaryMessage = "Changes synced successfully.",
+                ChangeSummaryMessage = "Please find sync status for individual resources.",
                 SyncResponses = responses
             };
             return View("Index", changeQueryModel);
