@@ -16,6 +16,8 @@ namespace EdFi.Common
 
         Task<int> AddOrUpdateAllAsync<TDataIn>(List<TDataIn> entities) where TDataIn : RosterDataRecord;
 
+        Task DeleteAllAsync<TDataIn>(List<TDataIn> entities) where TDataIn : RosterDataRecord;
+
         void ClearRecords<TDataIn>() where TDataIn : class;
     }
 
@@ -81,11 +83,24 @@ namespace EdFi.Common
                     await _dbContext.Set<TDataIn>().AddAsync(entity);
                     addedRecords++;
                 }
-
-                await _dbContext.SaveChangesAsync();
             }
-
+            await _dbContext.SaveChangesAsync();
             return addedRecords;
+        }
+
+        public async Task DeleteAllAsync<TDataIn>(List<TDataIn> entities) where TDataIn : RosterDataRecord
+        {
+            foreach (var entity in entities)
+            {
+                var existing = await _dbContext.Set<TDataIn>()
+                    .SingleOrDefaultAsync(q => q.ResourceId != null && q.ResourceId == entity.ResourceId);
+
+                if (existing != null)
+                {
+                    _dbContext.Set<TDataIn>().Remove(existing);
+                }
+            }
+            await _dbContext.SaveChangesAsync();
         }
 
         public void ClearRecords<TDataIn>() where TDataIn : class
