@@ -63,7 +63,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 var changeQueryResponse =
-                    await _changeQueryService.TestChangeQueryAPIAsync(apiSettings, response.Data.AccessToken);
+                    await _changeQueryService.TestChangeQueryApiAsync(apiSettings, response.Data.AccessToken);
 
                 if (changeQueryResponse.StatusCode != HttpStatusCode.OK)
                 {

@@ -69,7 +69,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             return availableVersion;
         }
 
-        public async Task<ApiResponse<AvailableChangeVersion>> TestChangeQueryAPIAsync(ApiSettings apiSettings, string accessToken)
+        public async Task<ApiResponse<AvailableChangeVersion>> TestChangeQueryApiAsync(ApiSettings apiSettings, string accessToken)
         {
             var testClient = new RestClient(apiSettings.RootUrl);
             var changeQueryRequest = new RestRequest($"{ApiRoutes.ChangeQueriesBase}/{ApiRoutes.AvailableChangeVersions}", Method.GET);
