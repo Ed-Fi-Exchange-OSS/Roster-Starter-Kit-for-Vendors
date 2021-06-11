@@ -12,12 +12,21 @@ namespace EdFi.Roster.ChangeQueries.Controllers
     {
         private readonly ChangeQueryService _changeQueryService;
         private readonly LocalEducationAgencyService _localEducationAgencyService;
+        private readonly SchoolService _schoolService;
+        private readonly SectionService _sectionService;
+        private readonly StaffService _staffService;
 
         public ChangeQueryController(ChangeQueryService changeQueryService
-        , LocalEducationAgencyService localEducationAgencyService)
+        , LocalEducationAgencyService localEducationAgencyService
+        , SchoolService schoolService
+        , SectionService sectionService
+        , StaffService staffService)
         {
             _changeQueryService = changeQueryService;
             _localEducationAgencyService = localEducationAgencyService;
+            _schoolService = schoolService;
+            _sectionService = sectionService;
+            _staffService = staffService;
         }
 
         public async Task<IActionResult> Index()
@@ -48,10 +57,31 @@ namespace EdFi.Roster.ChangeQueries.Controllers
 
             var leaChangeVersion =
                 currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.LocalEducationAgencies);
-            var minVersion = leaChangeVersion?.ChangeVersion ?? 0;
-            var laeResponse = await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(minVersion, availableVersion);
-            
-            responses.Add(laeResponse);
+            var leaMinVersion = leaChangeVersion?.ChangeVersion ?? 0;
+            var leaResponse = await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(leaMinVersion, availableVersion);
+
+            responses.Add(leaResponse);
+
+            var schoolChangeVersion =
+                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.Schools);
+            var schoolMinVersion = schoolChangeVersion?.ChangeVersion ?? 0;
+            var schoolResponse = await _schoolService.RetrieveAndSyncSchools(schoolMinVersion, availableVersion);
+
+            responses.Add(schoolResponse);
+
+            var sectionChangeVersion =
+                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.Sections);
+            var sectionMinVersion = sectionChangeVersion?.ChangeVersion ?? 0;
+            var sectionResponse = await _sectionService.RetrieveAndSyncSections(sectionMinVersion, availableVersion);
+
+            responses.Add(sectionResponse);
+
+            var staffChangeVersion =
+                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.Staff);
+            var staffMinVersion = staffChangeVersion?.ChangeVersion ?? 0;
+            var staffResponse = await _staffService.RetrieveAndSyncStaff(staffMinVersion, availableVersion);
+
+            responses.Add(staffResponse);
 
             var changeQueryModel = new ChangeQueryViewModel
             {
