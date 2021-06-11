@@ -34,7 +34,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         {
             //save the settings
             var model = new ApiSettings{Key = key, RootUrl = rootUrl, Secret = secret};
-            var testConnectionResult = (ObjectResult)await TestChangeQueryConnection(model);
+            var testConnectionResult = await TestChangeQueryConnection(model);
             if (testConnectionResult.StatusCode != (int)HttpStatusCode.OK)
             {
                 return testConnectionResult;
@@ -56,7 +56,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             return await TestChangeQueryConnection(apiSettings);
         }
 
-        private async Task<IActionResult> TestChangeQueryConnection(ApiSettings apiSettings)
+        private async Task<ObjectResult> TestChangeQueryConnection(ApiSettings apiSettings)
         {
             var response = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
 
