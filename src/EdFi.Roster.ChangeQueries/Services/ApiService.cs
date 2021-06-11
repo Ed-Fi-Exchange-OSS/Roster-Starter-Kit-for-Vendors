@@ -20,9 +20,10 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletedResources<T>(string methodName, string resourceRoute, long minVersion, long maxVersion)
+        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletedResources<TApiAccessor>(string methodName, string resourceRoute, long minVersion, long maxVersion)
+            where TApiAccessor : IApiAccessor
         {
-            var leaApi = await _apiFacade.GetApiClassInstance<T>();
+            var leaApi = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
             var offset = 0;
             var currResponseRecordCount = 0;
@@ -34,7 +35,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 ApiResponse<List<DeletedResource>> currentApiResponse = null;
                 try
                 {
-                    var method = (Task<ApiResponse<List<DeletedResource>>>) typeof(T)
+                    var method = (Task<ApiResponse<List<DeletedResource>>>) typeof(TApiAccessor)
                         .GetMethod(methodName)
                         ?.Invoke(leaApi,
                             new object[]
@@ -50,8 +51,8 @@ namespace EdFi.Roster.ChangeQueries.Services
                     errorMessage = exception.Message;
                     if (exception.ErrorCode.Equals((int) HttpStatusCode.Unauthorized))
                     {
-                        leaApi = await _apiFacade.GetApiClassInstance<T>(true);
-                        var method = (Task<ApiResponse<List<DeletedResource>>>) typeof(T)
+                        leaApi = await _apiFacade.GetApiClassInstance<TApiAccessor>(true);
+                        var method = (Task<ApiResponse<List<DeletedResource>>>) typeof(TApiAccessor)
                             .GetMethod(methodName)
                             ?.Invoke(leaApi,
                                 new object[]

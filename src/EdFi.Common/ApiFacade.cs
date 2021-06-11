@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using EdFi.Roster.Sdk.Client;
 using Microsoft.AspNetCore.WebUtilities;
 
 namespace EdFi.Common
 {
     public interface IApiFacade
     {
-        Task<T> GetApiClassInstance<T>(bool refreshToken = false, bool isChangeQueries= false);
+        Task<TApiAccessor> GetApiClassInstance<TApiAccessor>(bool refreshToken = false, bool isChangeQueries = false)
+            where TApiAccessor : IApiAccessor;
         Uri BuildResponseUri(string apiRoute, int offset, int limit);
         Uri BuildResponseUri(string apiRoute);
     }
@@ -23,6 +25,7 @@ namespace EdFi.Common
         }
 
         public async Task<T> GetApiClassInstance<T>(bool refreshToken = false, bool isChangeQueries = false)
+            where T : IApiAccessor
         {
             var apiConfiguration = await _configurationService.ApiConfiguration(refreshToken, isChangeQueries);
             BasePath = apiConfiguration.BasePath;
