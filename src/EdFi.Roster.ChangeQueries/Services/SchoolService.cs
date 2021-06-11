@@ -10,6 +10,7 @@ using EdFi.Roster.Sdk.Api.Resources;
 using EdFi.Roster.Sdk.Client;
 using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
+using DeletedResource = EdFi.Roster.Sdk.Models.Resources.DeletedResource;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
@@ -18,14 +19,20 @@ namespace EdFi.Roster.ChangeQueries.Services
         private readonly IDataService _dataService;
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
+        private readonly ApiService _apiService;
+        private readonly ChangeQueryService _changeQueryService;
 
         public SchoolService(IDataService dataService
             , IResponseHandleService responseHandleService
-            , IApiFacade apiFacade)
+            , IApiFacade apiFacade
+            , ApiService apiService
+            , ChangeQueryService changeQueryService)
         {
             _dataService = dataService;
             _responseHandleService = responseHandleService;
             _apiFacade = apiFacade;
+            _apiService = apiService;
+            _changeQueryService = changeQueryService;
         }
 
         public async Task<IEnumerable<EdFiSchool>> ReadAllAsync()
@@ -42,6 +49,11 @@ namespace EdFi.Roster.ChangeQueries.Services
             var response = new ExtendedInfoResponse<List<EdFiSchool>>();
             var currResponseRecordCount = 0;
 
+            if (minVersion >= maxVersion)
+                return new DataSyncResponseModel
+                {
+                    ResourceName = $"No pending changes to sync for {ResourceTypes.Schools}"
+                };
             do
             {
                 var errorMessage = string.Empty;
@@ -74,16 +86,31 @@ namespace EdFi.Roster.ChangeQueries.Services
                 new RosterSchoolResource { Content = JsonConvert.SerializeObject(school), ResourceId = school.Id }).ToList();
             var addedRecords = await _dataService.AddOrUpdateAllAsync(schools);
 
-            // TODO: Call Deletes endpoint to get deleted records and update local db accordingly
+            var deletesResponse =
+                await _apiService.GetAllResources<SchoolsApi, DeletedResource>(
+                    $"{ApiRoutes.SchoolsResource}/deletes",
+                    async (api, offset, limit) =>
+                        await api.DeletesSchoolsWithHttpInfoAsync(
+                            offset, limit, (int?)minVersion, (int?)maxVersion));
 
-            // TODO: Update Change query table to reflect latest available version for Schools
+            // Sync deleted records to local db
+            var deletedSchoolsCount = 0;
+            if (deletesResponse.FullDataSet.Any())
+            {
+                var deletedSchools = deletesResponse.FullDataSet.Select(school => school.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterSchoolResource>(deletedSchools);
+                deletedSchoolsCount = deletedSchools.Count;
+            }
+
+            // Save latest change version 
+            await _changeQueryService.Save(maxVersion, ResourceTypes.Schools);
 
             return new DataSyncResponseModel
             {
                 ResourceName = ResourceTypes.Schools,
                 AddedRecordsCount = addedRecords,
                 UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
-                DeletedRecordsCount = 0
+                DeletedRecordsCount = deletedSchoolsCount
             };
         }
     }
