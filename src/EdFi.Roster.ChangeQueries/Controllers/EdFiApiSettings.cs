@@ -1,5 +1,7 @@
+using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
+using EdFi.Roster.ChangeQueries.Services;
 using EdFi.Roster.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,11 +13,13 @@ namespace EdFi.Roster.ChangeQueries.Controllers
     {
         private readonly BearerTokenService _bearerTokenService;
         private readonly ApiSettingsService _apiSettingsService;
+        private readonly ChangeQueryService _changeQueryService;
 
-        public EdFiApiSettings(BearerTokenService bearerTokenService, ApiSettingsService apiSettingsService)
+        public EdFiApiSettings(BearerTokenService bearerTokenService, ApiSettingsService apiSettingsService, ChangeQueryService changeQueryService)
         {
             _bearerTokenService = bearerTokenService;
             _apiSettingsService = apiSettingsService;
+            _changeQueryService = changeQueryService;
         }
 
         [HttpGet]
@@ -30,6 +34,11 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         {
             //save the settings
             var model = new ApiSettings{Key = key, RootUrl = rootUrl, Secret = secret};
+            var testConnectionResult = await TestChangeQueryConnection(model);
+            if (testConnectionResult.StatusCode != (int)HttpStatusCode.OK)
+            {
+                return testConnectionResult;
+            }
             await _apiSettingsService.Save(model);
             return new JsonResult(model);
         }
@@ -37,15 +46,35 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         [HttpPost]
         public async Task<IActionResult> TestConnection(string rootUrl, string key, string secret)
         {
-            var response = await _bearerTokenService.GetNewBearerTokenResponse(new ApiSettings
+            var apiSettings = new ApiSettings
             {
-                RootUrl = rootUrl, 
-                Key = key, 
+                RootUrl = rootUrl,
+                Key = key,
                 Secret = secret
-            });
+            };
 
-            var content = JsonConvert.SerializeObject(response);
-            return Content(content, "application/json");
+            return await TestChangeQueryConnection(apiSettings);
+        }
+
+        private async Task<ObjectResult> TestChangeQueryConnection(ApiSettings apiSettings)
+        {
+            var response = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                var changeQueryResponse =
+                    await _changeQueryService.TestChangeQueryApiAsync(apiSettings, response.Data.AccessToken);
+
+                if (changeQueryResponse.StatusCode != HttpStatusCode.OK)
+                {
+                    return StatusCode((int) changeQueryResponse.StatusCode,
+                        changeQueryResponse.StatusCode == HttpStatusCode.NotFound ?
+                        "It looks like this ODS doesn't have Change Queries enabled. Review your Root URL and check that your ODS has Change Queries enabled."
+                        : JsonConvert.SerializeObject(changeQueryResponse));
+                }
+            }
+
+            return StatusCode((int) response.StatusCode, JsonConvert.SerializeObject(response));
         }
     }
 }
