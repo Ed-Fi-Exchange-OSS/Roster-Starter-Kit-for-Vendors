@@ -92,9 +92,13 @@ namespace EdFi.Roster.ChangeQueries.Services
                     {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
             var addedRecords = await _dataService.AddOrUpdateAllAsync(leas);
 
-            const string methodName = "DeletesLocalEducationAgenciesWithHttpInfoAsync";
             var deletesResponse =
-                await _apiService.DeletedResources<LocalEducationAgenciesApi>(methodName, ApiRoutes.LocalEducationAgenciesResource, minVersion, maxVersion);
+                await _apiService.GetAllResources<LocalEducationAgenciesApi, DeletedResource>(
+                    $"{ApiRoutes.LocalEducationAgenciesResource}/deletes",
+                    async (api, offset, limit) =>
+                        await api.DeletesLocalEducationAgenciesWithHttpInfoAsync(
+                            offset, limit, (int?) minVersion, (int?) maxVersion));
+
             // Sync deleted records to local db
             var deletedLeasCount = 0;
             if (deletesResponse.FullDataSet.Any())

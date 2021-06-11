@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using EdFi.Common;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Client;
-using EdFi.Roster.Sdk.Models.Resources;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
@@ -13,6 +12,9 @@ namespace EdFi.Roster.ChangeQueries.Services
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
+        public delegate Task<ApiResponse<List<TResource>>> GetPageAsync<in TApiAccessor, TResource>(TApiAccessor api, int offset, int limit)
+            where TApiAccessor : IApiAccessor;
+
         public ApiService(IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
@@ -20,47 +22,32 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletedResources<TApiAccessor>(string methodName, string resourceRoute, long minVersion, long maxVersion)
+        public async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TApiAccessor, TResource>(
+            string apiRoute, GetPageAsync<TApiAccessor, TResource> getPageAsync)
             where TApiAccessor : IApiAccessor
+            where TResource : class
         {
-            var leaApi = await _apiFacade.GetApiClassInstance<TApiAccessor>();
+            var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
             var offset = 0;
             var currResponseRecordCount = 0;
-            var response = new ExtendedInfoResponse<List<DeletedResource>>();
+            var response = new ExtendedInfoResponse<List<TResource>>();
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri($"{resourceRoute}/deletes", offset, limit);
-                ApiResponse<List<DeletedResource>> currentApiResponse = null;
+                var responseUri = _apiFacade.BuildResponseUri(apiRoute, offset, limit);
+                ApiResponse<List<TResource>> currentApiResponse = null;
                 try
                 {
-                    var method = (Task<ApiResponse<List<DeletedResource>>>) typeof(TApiAccessor)
-                        .GetMethod(methodName)
-                        ?.Invoke(leaApi,
-                            new object[]
-                            {
-                                offset, limit, (int?) minVersion, (int?) maxVersion, default(string),
-                                default(System.Threading.CancellationToken)
-                            });
-
-                    if (method != null) currentApiResponse = await method;
+                     currentApiResponse = await getPageAsync(api, offset, limit);
                 }
                 catch (ApiException exception)
                 {
                     errorMessage = exception.Message;
                     if (exception.ErrorCode.Equals((int) HttpStatusCode.Unauthorized))
                     {
-                        leaApi = await _apiFacade.GetApiClassInstance<TApiAccessor>(true);
-                        var method = (Task<ApiResponse<List<DeletedResource>>>) typeof(TApiAccessor)
-                            .GetMethod(methodName)
-                            ?.Invoke(leaApi,
-                                new object[]
-                                {
-                                    offset, limit, (int?) minVersion, (int?) maxVersion, default(string),
-                                    default(System.Threading.CancellationToken)
-                                });
-                        if (method != null) currentApiResponse = await method;
+                        api = await _apiFacade.GetApiClassInstance<TApiAccessor>(true);
+                        currentApiResponse = await getPageAsync(api, offset, limit);
                         errorMessage = string.Empty;
                     }
                 }
