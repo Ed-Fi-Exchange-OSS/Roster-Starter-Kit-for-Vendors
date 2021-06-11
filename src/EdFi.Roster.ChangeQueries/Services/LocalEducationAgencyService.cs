@@ -103,9 +103,8 @@ namespace EdFi.Roster.ChangeQueries.Services
             var deletedLeasCount = 0;
             if (deletesResponse.FullDataSet.Any())
             {
-                var deletedLeas = deletesResponse.FullDataSet.Select(lea =>
-                    new RosterLocalEducationAgencyResource {ResourceId = lea.Id}).ToList();
-                await _dataService.DeleteAllAsync(deletedLeas);
+                var deletedLeas = deletesResponse.FullDataSet.Select(lea => lea.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterLocalEducationAgencyResource>(deletedLeas);
                 deletedLeasCount = deletedLeas.Count;
             }
 
