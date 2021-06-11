@@ -35,5 +35,5 @@ bld/
 /tools/nuget.exe
 **/.vs/
 **/.vscode/
-**/EdFi.Roster.Explorer/*.db
-**/EdFi.Roster.ChangeQueries/*.db
+/src/EdFi.Roster.Explorer/RosterDatabase.db
+/src/EdFi.Roster.ChangeQueries/ChangeQueriesDatabase.db
