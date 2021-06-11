@@ -20,7 +20,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletesResources<T>(string methodName, long minVersion, long maxVersion)
+        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletedResources<T>(string methodName, long minVersion, long maxVersion)
         {
             var leaApi = await _apiFacade.GetApiClassInstance<T>();
             var limit = 100;
