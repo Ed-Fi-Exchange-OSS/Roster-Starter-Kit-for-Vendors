@@ -20,7 +20,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletedResources<T>(string methodName, long minVersion, long maxVersion)
+        public async Task<ExtendedInfoResponse<List<DeletedResource>>> DeletedResources<T>(string methodName, string resourceRoute, long minVersion, long maxVersion)
         {
             var leaApi = await _apiFacade.GetApiClassInstance<T>();
             var limit = 100;
@@ -30,7 +30,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri($"{ApiRoutes.LocalEducationAgenciesResource}//deletes", offset, limit);
+                var responseUri = _apiFacade.BuildResponseUri($"{resourceRoute}/deletes", offset, limit);
                 ApiResponse<List<DeletedResource>> currentApiResponse = null;
                 try
                 {

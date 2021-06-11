@@ -94,7 +94,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             const string methodName = "DeletesLocalEducationAgenciesWithHttpInfoAsync";
             var deletesResponse =
-                await _apiService.DeletedResources<LocalEducationAgenciesApi>(methodName, minVersion, maxVersion);
+                await _apiService.DeletedResources<LocalEducationAgenciesApi>(methodName, ApiRoutes.LocalEducationAgenciesResource, minVersion, maxVersion);
             // Sync deleted records to local db
             var deletedLeasCount = 0;
             if (deletesResponse.FullDataSet.Any())
