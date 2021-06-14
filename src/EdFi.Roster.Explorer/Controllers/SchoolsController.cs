@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using EdFi.Roster.Explorer.ActionFilters;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using EdFi.Roster.Services;
@@ -28,6 +29,7 @@ namespace EdFi.Roster.Explorer.Controllers
             });
         }
 
+        [ValidateApiConnection]
         public async Task<IActionResult> LoadSchools()
         {
             var response = await _schoolService.GetAllSchoolsWithExtendedInfoAsync();

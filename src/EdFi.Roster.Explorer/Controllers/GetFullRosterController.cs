@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
+using EdFi.Roster.Explorer.ActionFilters;
 using EdFi.Roster.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.Explorer.Controllers
 {
+    [ValidateApiConnection]
     public class GetFullRosterController : Controller
     {
         private readonly LocalEducationAgencyService _localEducationAgencyService;
@@ -29,6 +31,7 @@ namespace EdFi.Roster.Explorer.Controllers
         {
             return View();
         }
+
 
         [HttpGet("GetLeasAsync")]
         public async Task<IActionResult> GetLeasAsync()
