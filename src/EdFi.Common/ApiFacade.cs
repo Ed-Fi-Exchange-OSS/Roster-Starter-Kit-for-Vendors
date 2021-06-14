@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using EdFi.Roster.Sdk.Client;
 using Microsoft.AspNetCore.WebUtilities;
@@ -10,8 +11,8 @@ namespace EdFi.Common
     {
         Task<TApiAccessor> GetApiClassInstance<TApiAccessor>(bool refreshToken = false, bool isChangeQueries = false)
             where TApiAccessor : IApiAccessor;
-        Uri BuildResponseUri(string apiRoute, int offset, int limit);
-        Uri BuildResponseUri(string apiRoute);
+
+        Uri BuildResponseUri(string apiRoute, Dictionary<string, string> queryParameters = null);
     }
 
     public class ApiFacade : IApiFacade
@@ -32,18 +33,12 @@ namespace EdFi.Common
             return (T)Activator.CreateInstance(typeof(T), apiConfiguration);
         }
 
-        public Uri BuildResponseUri(string apiRoute, int offset, int limit)
+        public Uri BuildResponseUri(string apiRoute, Dictionary<string, string> queryParameters = null)
         {
             var url = $"{BasePath}/{apiRoute}";
-            var queryParams = new Dictionary<string, string> { { "offset", offset.ToString() }, { "limit", limit.ToString() } };
-
-            return new Uri(QueryHelpers.AddQueryString(url, queryParams), UriKind.Absolute);
-        }
-
-        public Uri BuildResponseUri(string apiRoute)
-        {
-            var url = $"{BasePath}/{apiRoute}";
-            return new Uri(url, UriKind.Absolute);
+            return queryParameters != null && queryParameters.Any()
+                ? new Uri(QueryHelpers.AddQueryString(url, queryParameters), UriKind.Absolute)
+                : new Uri(url, UriKind.Absolute);
         }
     }
 }

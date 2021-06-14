@@ -2,15 +2,15 @@ namespace EdFi.Roster.ChangeQueries.Services.ApiSdk
 {
     public static class ResourceTypes
     {
-        public static string LocalEducationAgencies => "LocalEducationAgencies";
-        public static string Schools => "Schools";
-        public static string Staff => "Staff";
-        public static string Students => "Students";
-        public static string Sections => "Sections";
+        public const string LocalEducationAgencies = "LocalEducationAgencies";
+        public const string Schools = "Schools";
+        public const string Staff = "Staff";
+        public const string Students = "Students";
+        public const string Sections = "Sections";
 
         public static int ResourceTypeCount()
         {
-            return typeof(ResourceTypes).GetProperties().Length;
+            return typeof(ResourceTypes).GetFields().Length;
         }
     }
 }
