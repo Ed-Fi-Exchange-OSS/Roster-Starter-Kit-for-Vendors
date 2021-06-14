@@ -1,0 +1,71 @@
+@model List<EdFiStaff>
+
+@{
+    ViewData["Title"] = "Staff";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Count == 0)
+{
+    await Html.RenderPartialAsync("_ZeroResourcesSynced", ViewData["Title"]);
+}
+else
+{
+    <span>@Model.Count @ViewData["Title"] resources have been synced</span>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Staff UniqueId</th>
+                <th>First Name</th>
+                <th>Last Surname</th>
+                <th>Level of Education</th>
+                <th>Api Resource Id</th>
+                <th>Json Payload</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="parent-row">
+                    <td>
+                        @item.StaffUniqueId
+                    </td>
+                    <td>
+                        @item.FirstName
+                    </td>
+                    <td>
+                        @item.LastSurname
+                    </td>
+                    <td>
+                        @{
+                            var education = item.HighestCompletedLevelOfEducationDescriptor ?? "";
+                            var hashIndex = education.IndexOf("#", StringComparison.InvariantCulture);
+                            if (hashIndex >= 0)
+                            {
+                                education = education.Substring(hashIndex + 1);
+                            }
+                        }
+
+                        @education
+                    </td>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td style="text-align:justify">
+                        <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
+                    </td>
+                </tr>
+                <tr class="child-content">
+                    <td colspan="12">
+                        <table class="table table-striped table-hover table-bordered table-responsive">
+                            <tbody class="content-tbody">
+                                <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
