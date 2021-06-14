@@ -11,7 +11,10 @@
     @Model.ChangeSummaryMessage
 </div>
 
-<div><div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("SyncData")'">Sync Data</button></div></div>
+@if (Model.HasPendingChanges)
+{
+    <div><div><button id="btnSyncData" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("SyncData")'">Sync Data</button></div></div>
+}
 
 @if (Model.SyncResponses != null)
 {
@@ -38,4 +41,15 @@
        }
        </tbody>
    </table>
+}
+
+@section Scripts {
+    <script>
+        var addSpinner = window.addSpinner;
+        $(document).ready(function () {
+            $("#btnSyncData").click(function () {
+                addSpinner($(this), "Syncing");
+            });
+        });
+    </script>
 }

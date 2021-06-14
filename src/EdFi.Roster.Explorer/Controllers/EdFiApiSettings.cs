@@ -1,3 +1,4 @@
+using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
 using EdFi.Roster.Models;
@@ -29,7 +30,12 @@ namespace EdFi.Roster.Explorer.Controllers
         public async Task<IActionResult> SaveSettings(string rootUrl, string key, string secret)
         {
             //save the settings
-            var model = new ApiSettings{Key = key, RootUrl = rootUrl, Secret = secret};
+            var model = new ApiSettings { Key = key, RootUrl = rootUrl, Secret = secret };
+            var testConnectionResult = await TestApiConnection(model);
+            if (testConnectionResult.StatusCode != (int)HttpStatusCode.OK)
+            {
+                return testConnectionResult;
+            }
             await _apiSettingsService.Save(model);
             return new JsonResult(model);
         }
@@ -37,15 +43,20 @@ namespace EdFi.Roster.Explorer.Controllers
         [HttpPost]
         public async Task<IActionResult> TestConnection(string rootUrl, string key, string secret)
         {
-            var response = await _bearerTokenService.GetNewBearerTokenResponse(new ApiSettings
+            var apiSettings = new ApiSettings
             {
                 RootUrl = rootUrl, 
                 Key = key, 
                 Secret = secret
-            });
+            };
 
-            var content = JsonConvert.SerializeObject(response);
-            return Content(content, "application/json");
+            return await TestApiConnection(apiSettings);
+        }
+
+        private async Task<ObjectResult> TestApiConnection(ApiSettings apiSettings)
+        {
+            var response = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
+            return StatusCode((int)response.StatusCode, JsonConvert.SerializeObject(response));
         }
     }
 }

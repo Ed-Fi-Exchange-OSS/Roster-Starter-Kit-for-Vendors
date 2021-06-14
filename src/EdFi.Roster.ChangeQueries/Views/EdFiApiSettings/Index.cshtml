@@ -12,8 +12,8 @@
         <label for="rootUrl">Ed-Fi API Root URL:</label>
         <input type="url" class="form-control" id="rootUrl" asp-for="RootUrl" />
         <small id="urllHelp" class="form-text text-muted">This URL is meant to be the root of the Ed-Fi that you are interacting with.</small>
-        <small id="urlInfo" class="form-text text-muted">Ed-Fi public deployment Suite 3 version 5.0.0 root url: <a href="https://api.ed-fi.org/v5.0.0/api/" target="_blank">https://api.ed-fi.org/v5.0.0/api/</a></small>
-        <small id="urlInfo" class="form-text text-muted">Additional Ed-Fi api information can be viewed at the metadata endpoint: <a href="https://api.ed-fi.org/v5.0.0/api/metadata" target="_blank">https://api.ed-fi.org/v5.0.0/api/metadata</a></small>
+        <small id="urlInfo" class="form-text text-muted">Ed-Fi public deployment Suite 3 version 5.2 root url: <a href="https://api.ed-fi.org/v5.2/api/" target="_blank">https://api.ed-fi.org/v5.2/api/</a></small>
+        <small id="urlInfo" class="form-text text-muted">Additional Ed-Fi api information can be viewed at the metadata endpoint: <a href="https://api.ed-fi.org/v5.2/api/metadata" target="_blank">https://api.ed-fi.org/v5.2/api/metadata</a></small>
     </div>
     <div class="form-group">
         <label for="apiKey">Ed-Fi API Key:</label>
@@ -31,6 +31,8 @@
 
 @section Scripts {
     <script>
+        var addSpinner = window.addSpinner;
+        var removeSpinner = window.removeSpinner;
         $(document).ready(DocumentReadyActivities);
 
         function DocumentReadyActivities() {
@@ -39,6 +41,7 @@
         }
 
         function TestConnection() {
+            addSpinner($(this), "Testing");
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("TestConnection")",
@@ -54,6 +57,7 @@
         }
 
         function SaveSettings() {
+            addSpinner($(this), "Saving");
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("SaveSettings")",
@@ -69,9 +73,11 @@
         }
 
         function TestConnectionSuccess(response, textStatus, jqXHR) {
+            removeSpinner($("#btnTest"), "Test Connection");
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
+            dvAlert.removeClass('alert-danger');
             dvAlert.addClass('alert-success alert-dismissible fade show');
             dvAlert.html('<strong>' + textStatus + '</strong>');
             dvAlert.append('<div>The connection was tested by attempting to authenticate with the information provided above.</div>');
@@ -91,7 +97,7 @@
                             var $li = $('<li>').append(i + ': ' + item).appendTo(dvAlert);
                     }
                 });
-            dvAlert.append('More information about authentication can be found in the <a href="https://techdocs.ed-fi.org/display/ODSAPIS3V500/Authentication" target="_blank">API Client Developers\' Guide - Authentication</a>');
+            dvAlert.append('More information about authentication can be found in the <a href="https://techdocs.ed-fi.org/display/ODSAPIS3V520/Authentication" target="_blank">API Client Developers\' Guide - Authentication</a>');
             dvAlert.append('<button type="button" id="alertClose" class="close">&times;</button>');
             $('#alertClose').click(function () {
                 dvAlert.removeClass('show');
@@ -100,9 +106,11 @@
         }
 
         function SaveSettingsSuccess(response, textStatus, jqXHR) {
+            removeSpinner($("#btnSave"), "Save");
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
+            dvAlert.removeClass('alert-danger');
             dvAlert.addClass('alert-success alert-dismissible fade show');
             dvAlert.html('<strong>' + textStatus + '</strong>');
             dvAlert.append('<div>Information saved.</div>');
@@ -118,9 +126,12 @@
         }
 
         function AjaxError(response, textStatus, jqXHR) {
+            removeSpinner($("#btnTest"), "Test Connection");
+            removeSpinner($("#btnSave"), "Save");
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
+            dvAlert.removeClass('alert-success');
             dvAlert.addClass('alert-danger alert-dismissible fade show');
             dvAlert.html('<strong>Error</strong>');
             $('<div>').append(textStatus + ' - ' + response.responseText).appendTo(dvAlert);

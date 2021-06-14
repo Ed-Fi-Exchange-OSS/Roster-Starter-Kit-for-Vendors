@@ -11,7 +11,7 @@ Operations
 Load / Reload
 
 <p> Get Schools from the configured Ed - Fi API (This will overwrite the currently stored schools</p>
-<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadSchools")'">Get Schools</button></div>
+<div><button id="btnLoadSchools" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadSchools")'">Get Schools</button></div>
 @if (Model.IsExtendedInfoAvailable)
 {
     await Html.RenderPartialAsync("_ExtendedInfoResponsePage", Model.GeneralInfo);
@@ -58,3 +58,13 @@ Load / Reload
         </tbody>
     </table>
 </form>
+@section Scripts {
+    <script>
+        var addSpinner = window.addSpinner;
+        $(document).ready(function () {
+            $("#btnLoadSchools").click(function () {
+                addSpinner($(this), "Loading Schools");
+            });
+        });
+    </script>
+}
