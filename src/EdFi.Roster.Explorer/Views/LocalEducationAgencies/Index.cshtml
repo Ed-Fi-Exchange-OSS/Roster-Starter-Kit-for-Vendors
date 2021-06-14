@@ -10,7 +10,7 @@ Operations
 Load / Reload
 <p> Get Local Education Agencies from the configured Ed - Fi API (This will overwrite the currently stored local education agencies)</p>
 
-<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadLeas")'">Get Local Education Agencies</button></div>
+<div><button id="btnLoadLeas" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadLeas")'">Get Local Education Agencies</button></div>
 
 @if (Model.IsExtendedInfoAvailable)
 {
@@ -59,3 +59,13 @@ Load / Reload
     </table>
 
 </form>
+@section Scripts {
+    <script>
+        var addSpinner = window.addSpinner;
+        $(document).ready(function () {
+            $("#btnLoadLeas").click(function () {
+                addSpinner($(this), "Loading Local Education Agencies");
+            });
+        });
+    </script>
+}

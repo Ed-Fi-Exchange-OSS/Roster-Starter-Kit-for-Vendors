@@ -10,7 +10,7 @@ Operations
 
 Load / Reload
 <p> Get Students From Ed - Fi Api (This will overwrite the currently stored student records)</p>
-<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadStudents")'">Get Students</button></div>
+<div><button id="btnLoadStudents" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadStudents")'">Get Students</button></div>
 @if (Model.IsExtendedInfoAvailable)
 {
     await Html.RenderPartialAsync("_ExtendedInfoResponsePage", Model.GeneralInfo);
@@ -61,3 +61,13 @@ Load / Reload
         </tbody>
     </table>
 </form>
+@section Scripts {
+    <script>
+        var addSpinner = window.addSpinner;
+        $(document).ready(function () {
+            $("#btnLoadStudents").click(function () {
+                addSpinner($(this), "Loading Students");
+            });
+        });
+    </script>
+}

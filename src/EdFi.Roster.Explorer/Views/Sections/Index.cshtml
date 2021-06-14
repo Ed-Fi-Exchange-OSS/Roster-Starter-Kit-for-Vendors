@@ -11,7 +11,7 @@ Operations
 Load / Reload
 <p> Get Sections From Ed - Fi Api (This will overwrite the currently stored section records)</p>
 
-<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadSections")'">Get Sections</button></div>
+<div><button id="btnLoadSections" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadSections")'">Get Sections</button></div>
 
 @if (Model.IsExtendedInfoAvailable)
 {
@@ -63,3 +63,13 @@ Load / Reload
         </tbody>
     </table>
 </form>
+@section Scripts {
+    <script>
+        var addSpinner = window.addSpinner;
+        $(document).ready(function () {
+            $("#btnLoadSections").click(function () {
+                addSpinner($(this), "Loading Sections");
+            });
+        });
+    </script>
+}

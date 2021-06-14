@@ -10,7 +10,7 @@ Operations
 
 Load / Reload
 <p> Get Staff From Ed - Fi Api (This will overwrite the currently stored staff records)</p>
-<div><button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadStaff")'">Get Staff</button></div>
+<div><button id="btnLoadStaff" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("LoadStaff")'">Get Staff</button></div>
 
 @if (Model.IsExtendedInfoAvailable)
 {
@@ -71,3 +71,13 @@ Load / Reload
         </tbody>
     </table>
 </form>
+@section Scripts {
+    <script>
+        var addSpinner = window.addSpinner;
+        $(document).ready(function () {
+            $("#btnLoadStaff").click(function () {
+                addSpinner($(this), "Loading Staff");
+            });
+        });
+    </script>
+}
