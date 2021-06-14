@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
@@ -79,30 +80,25 @@ namespace EdFi.Roster.ChangeQueries.Controllers
                 currentVersions.SingleOrDefault(x => x.ResourceType == resourceType);
             var minVersion = changeVersion?.ChangeVersion ?? 0;
 
-            DataSyncResponseModel response = null;
             if (minVersion >= availableVersion)
             {
-                response = new DataSyncResponseModel
+                return new DataSyncResponseModel
                 {
                     ResourceName = $"{noChangesMessage}{resourceType}"
                 };
             }
-            else
+
+            return resourceType switch
             {
-               
-                response = resourceType switch
-                {
-                    ResourceTypes.LocalEducationAgencies =>
-                        await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(minVersion,
-                            availableVersion),
-                    ResourceTypes.Schools => await _schoolService.RetrieveAndSyncSchools(minVersion, availableVersion),
-                    ResourceTypes.Staff => await _staffService.RetrieveAndSyncStaff(minVersion, availableVersion),
-                    ResourceTypes.Students => await _studentService.RetrieveAndSyncStudents(minVersion, availableVersion),
-                    ResourceTypes.Sections => await _sectionService.RetrieveAndSyncSections(minVersion, availableVersion),
-                    _ => response
-                };
-            }
-            return response;
+                ResourceTypes.LocalEducationAgencies =>
+                    await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(minVersion,
+                        availableVersion),
+                ResourceTypes.Schools => await _schoolService.RetrieveAndSyncSchools(minVersion, availableVersion),
+                ResourceTypes.Staff => await _staffService.RetrieveAndSyncStaff(minVersion, availableVersion),
+                ResourceTypes.Students => await _studentService.RetrieveAndSyncStudents(minVersion, availableVersion),
+                ResourceTypes.Sections => await _sectionService.RetrieveAndSyncSections(minVersion, availableVersion),
+                _ => throw new Exception($"Cannot attempt sync for unexpected resource type: {resourceType}")
+            };
         }
     }
 }
