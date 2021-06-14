@@ -64,7 +64,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
     <script>
         var expand = function (event) {
             event.preventDefault();
@@ -87,5 +86,6 @@
         $(document).on('click', '.collapsible', expand);
         $(document).on('load', '.prettify', prettifyContent);
     </script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
