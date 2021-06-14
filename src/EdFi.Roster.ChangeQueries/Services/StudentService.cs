@@ -8,17 +8,16 @@ using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
 using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
-using DeletedResource = EdFi.Roster.Sdk.Models.Resources.DeletedResource;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class StaffService
+    public class StudentService
     {
         private readonly IDataService _dataService;
         private readonly ApiService _apiService;
         private readonly ChangeQueryService _changeQueryService;
 
-        public StaffService(IDataService dataService
+        public StudentService(IDataService dataService
             , ApiService apiService
             , ChangeQueryService changeQueryService)
         {
@@ -27,54 +26,56 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
-        public async Task<IEnumerable<EdFiStaff>> ReadAllAsync()
+        public async Task<IEnumerable<EdFiStudent>> ReadAllAsync()
         {
-            var staffResources = await _dataService.ReadAllAsync<RosterStaffResource>();
-            return staffResources.Select(staff => JsonConvert.DeserializeObject<EdFiStaff>(staff.Content)).ToList();
+            var students = await _dataService.ReadAllAsync<RosterStudentResource>();
+            return students.Select(st => JsonConvert.DeserializeObject<EdFiStudent>(st.Content)).ToList();
         }
 
-        public async Task<DataSyncResponseModel> RetrieveAndSyncStaff(long minVersion, long maxVersion)
+        public async Task<DataSyncResponseModel> RetrieveAndSyncStudents(long minVersion, long maxVersion)
         {
+
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
                 { "maxChangeVersion", maxVersion.ToString() } };
 
             var response =
-                await _apiService.GetAllResources<StaffsApi, EdFiStaff>(
-                    $"{ApiRoutes.StaffsResource}", queryParams,
+                await _apiService.GetAllResources<StudentsApi, EdFiStudent>(
+                    $"{ApiRoutes.StudentsResource}", queryParams,
                     async (api, offset, limit) =>
-                        await api.GetStaffsWithHttpInfoAsync(
+                        await api.GetStudentsWithHttpInfoAsync(
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync retrieved records to local db
-            var staffResources = response.FullDataSet.Select(staff =>
-                new RosterStaffResource { Content = JsonConvert.SerializeObject(staff), ResourceId = staff.Id }).ToList();
-            var addedRecords = await _dataService.AddOrUpdateAllAsync(staffResources);
+            var students = response.FullDataSet.Select(student =>
+                new RosterStudentResource
+                { Content = JsonConvert.SerializeObject(student), ResourceId = student.Id }).ToList();
+            var addedRecords = await _dataService.AddOrUpdateAllAsync(students);
 
             var deletesResponse =
-                await _apiService.GetAllResources<StaffsApi, DeletedResource>(
-                    $"{ApiRoutes.StaffsResource}/deletes", queryParams,
+                await _apiService.GetAllResources<StudentsApi, DeletedResource>(
+                    $"{ApiRoutes.StudentsResource}/deletes", queryParams,
                     async (api, offset, limit) =>
-                        await api.DeletesStaffsWithHttpInfoAsync(
+                        await api.DeletesStudentsWithHttpInfoAsync(
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync deleted records to local db
-            var deletedStaffCount = 0;
+            var deletedStudentsCount = 0;
             if (deletesResponse.FullDataSet.Any())
             {
-                var deletedStaffResources = deletesResponse.FullDataSet.Select(staff => staff.Id).ToList();
-                await _dataService.DeleteAllAsync<RosterStaffResource>(deletedStaffResources);
-                deletedStaffCount = deletedStaffResources.Count;
+                var deletedStudents = deletesResponse.FullDataSet.Select(student => student.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterStudentResource>(deletedStudents);
+                deletedStudentsCount = deletedStudents.Count;
             }
 
             // Save latest change version 
-            await _changeQueryService.Save(maxVersion, ResourceTypes.Staff);
+            await _changeQueryService.Save(maxVersion, ResourceTypes.Students);
 
             return new DataSyncResponseModel
             {
-                ResourceName = ResourceTypes.Staff,
+                ResourceName = ResourceTypes.Students,
                 AddedRecordsCount = addedRecords,
                 UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
-                DeletedRecordsCount = deletedStaffCount
+                DeletedRecordsCount = deletedStudentsCount
             };
         }
     }

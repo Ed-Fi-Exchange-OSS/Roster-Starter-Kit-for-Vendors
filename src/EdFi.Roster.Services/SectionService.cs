@@ -46,11 +46,13 @@ namespace EdFi.Roster.Services
             var offset = 0;
             var response = new ExtendedInfoResponse<List<Section>>();
             int currResponseRecordCount = 0;
-
+            var queryParams = new Dictionary<string, string> { { "offset", offset.ToString() }, { "limit", limit.ToString() } };
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.SectionsComposite, offset, limit);
+                queryParams["offset"] = offset.ToString();
+                queryParams["limit"] = limit.ToString();
+                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.SectionsComposite, queryParams);
                 ApiResponse<List<Section>> currentApiResponse = null;
                 try
                 {

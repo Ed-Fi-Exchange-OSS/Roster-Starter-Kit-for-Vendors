@@ -23,7 +23,7 @@ namespace EdFi.Roster.ChangeQueries.Services
         }
 
         public async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TApiAccessor, TResource>(
-            string apiRoute, GetPageAsync<TApiAccessor, TResource> getPageAsync)
+            string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<TApiAccessor, TResource> getPageAsync)
             where TApiAccessor : IApiAccessor
             where TResource : class
         {
@@ -32,10 +32,24 @@ namespace EdFi.Roster.ChangeQueries.Services
             var offset = 0;
             var currResponseRecordCount = 0;
             var response = new ExtendedInfoResponse<List<TResource>>();
+
+            queryParams ??= new Dictionary<string, string>();
             do
             {
                 var errorMessage = string.Empty;
-                var responseUri = _apiFacade.BuildResponseUri(apiRoute, offset, limit);
+
+                if (!queryParams.ContainsKey("offset"))
+                    queryParams.Add("offset", offset.ToString());
+                else
+                    queryParams["offset"] = offset.ToString();
+
+                if(!queryParams.ContainsKey("limit"))
+                    queryParams.Add("limit", limit.ToString());
+                else
+                    queryParams["limit"] = limit.ToString();
+
+                var responseUri = _apiFacade.BuildResponseUri(apiRoute, queryParams);
+
                 ApiResponse<List<TResource>> currentApiResponse = null;
                 try
                 {
