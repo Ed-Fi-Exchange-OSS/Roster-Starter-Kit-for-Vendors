@@ -31,6 +31,7 @@
 
 @section Scripts {
     <script>
+        var addSpinner = window.addSpinner;
         $(document).ready(DocumentReadyActivities);
 
         function DocumentReadyActivities() {
@@ -39,6 +40,7 @@
         }
 
         function TestConnection() {
+            addSpinner($(this), "Testing");
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("TestConnection")",
@@ -54,6 +56,7 @@
         }
 
         function SaveSettings() {
+            addSpinner($(this), "Saving");
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("SaveSettings")",
@@ -69,6 +72,7 @@
         }
 
         function TestConnectionSuccess(response, textStatus, jqXHR) {
+            RemoveSpinner($("#btnTest"), "Test Connection");
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
@@ -101,6 +105,7 @@
         }
 
         function SaveSettingsSuccess(response, textStatus, jqXHR) {
+            RemoveSpinner($("#btnSave"), "Save");
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
@@ -120,6 +125,8 @@
         }
 
         function AjaxError(response, textStatus, jqXHR) {
+            RemoveSpinner($("#btnTest"), "Test Connection");
+            RemoveSpinner($("#btnSave"), "Save");
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
@@ -132,6 +139,11 @@
                 dvAlert.removeClass('show');
                 dvAlert.addClass('hide');
             });
+        }
+
+        function RemoveSpinner(btnElement, btnText) {
+            btnElement.prop("disabled", false);
+            btnElement[0].innerHTML = btnText;
         }
     </script>
 }
