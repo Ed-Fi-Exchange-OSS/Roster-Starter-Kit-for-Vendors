@@ -12,18 +12,21 @@ namespace EdFi.Roster.ChangeQueries.Controllers
     {
         private readonly ChangeQueryService _changeQueryService;
         private readonly LocalEducationAgencyService _localEducationAgencyService;
+        private readonly StudentService _studentService;
         private readonly SchoolService _schoolService;
         private readonly SectionService _sectionService;
         private readonly StaffService _staffService;
 
         public ChangeQueryController(ChangeQueryService changeQueryService
         , LocalEducationAgencyService localEducationAgencyService
+        , StudentService studentService
         , SchoolService schoolService
         , SectionService sectionService
         , StaffService staffService)
         {
             _changeQueryService = changeQueryService;
             _localEducationAgencyService = localEducationAgencyService;
+            _studentService = studentService;
             _schoolService = schoolService;
             _sectionService = sectionService;
             _staffService = staffService;
@@ -51,37 +54,14 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         public async Task<IActionResult> SyncData()
         {
             var availableVersion = await _changeQueryService.GetAvailableVersionAsync();
-            var currentVersions = await _changeQueryService.ReadCurrentVersionsForResourcesAsync();
-
-            var responses = new List<DataSyncResponseModel>();
-
-            var leaChangeVersion =
-                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.LocalEducationAgencies);
-            var leaMinVersion = leaChangeVersion?.ChangeVersion ?? 0;
-            var leaResponse = await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(leaMinVersion, availableVersion);
-
-            responses.Add(leaResponse);
-
-            var schoolChangeVersion =
-                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.Schools);
-            var schoolMinVersion = schoolChangeVersion?.ChangeVersion ?? 0;
-            var schoolResponse = await _schoolService.RetrieveAndSyncSchools(schoolMinVersion, availableVersion);
-
-            responses.Add(schoolResponse);
-
-            var sectionChangeVersion =
-                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.Sections);
-            var sectionMinVersion = sectionChangeVersion?.ChangeVersion ?? 0;
-            var sectionResponse = await _sectionService.RetrieveAndSyncSections(sectionMinVersion, availableVersion);
-
-            responses.Add(sectionResponse);
-
-            var staffChangeVersion =
-                currentVersions.SingleOrDefault(x => x.ResourceType == ResourceTypes.Staff);
-            var staffMinVersion = staffChangeVersion?.ChangeVersion ?? 0;
-            var staffResponse = await _staffService.RetrieveAndSyncStaff(staffMinVersion, availableVersion);
-
-            responses.Add(staffResponse);
+            var responses = new List<DataSyncResponseModel>
+            {
+                await RunRetrieveAndSyncService(ResourceTypes.LocalEducationAgencies, availableVersion),
+                await RunRetrieveAndSyncService(ResourceTypes.Schools, availableVersion),
+                await RunRetrieveAndSyncService(ResourceTypes.Staff, availableVersion),
+                await RunRetrieveAndSyncService(ResourceTypes.Students, availableVersion),
+                await RunRetrieveAndSyncService(ResourceTypes.Sections, availableVersion)
+            };
 
             var changeQueryModel = new ChangeQueryViewModel
             {
@@ -89,6 +69,40 @@ namespace EdFi.Roster.ChangeQueries.Controllers
                 SyncResponses = responses
             };
             return View("Index", changeQueryModel);
+        }
+
+        private async Task<DataSyncResponseModel> RunRetrieveAndSyncService(string resourceType, long availableVersion)
+        {
+            var noChangesMessage = "No pending changes to sync for ";
+            var currentVersions = await _changeQueryService.ReadCurrentVersionsForResourcesAsync();
+            var changeVersion =
+                currentVersions.SingleOrDefault(x => x.ResourceType == resourceType);
+            var minVersion = changeVersion?.ChangeVersion ?? 0;
+
+            DataSyncResponseModel response = null;
+            if (minVersion >= availableVersion)
+            {
+                response = new DataSyncResponseModel
+                {
+                    ResourceName = $"{noChangesMessage}{resourceType}"
+                };
+            }
+            else
+            {
+               
+                response = resourceType switch
+                {
+                    ResourceTypes.LocalEducationAgencies =>
+                        await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(minVersion,
+                            availableVersion),
+                    ResourceTypes.Schools => await _schoolService.RetrieveAndSyncSchools(minVersion, availableVersion),
+                    ResourceTypes.Staff => await _staffService.RetrieveAndSyncStaff(minVersion, availableVersion),
+                    ResourceTypes.Students => await _studentService.RetrieveAndSyncStudents(minVersion, availableVersion),
+                    ResourceTypes.Sections => await _sectionService.RetrieveAndSyncSections(minVersion, availableVersion),
+                    _ => response
+                };
+            }
+            return response;
         }
     }
 }
