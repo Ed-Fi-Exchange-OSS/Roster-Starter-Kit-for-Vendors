@@ -77,6 +77,16 @@
             var content = JSON.stringify($(this).InnerHTML(),undefined,4);
             $(this).InnerHTML(content);
         };
+        var addSpinner = function(btnElement, spinnerText) {
+            btnElement.prop("disabled", true);
+            btnElement.html(
+                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${spinnerText}...`
+            );
+        };
+        var removeSpinner = function(btnElement, btnText) {
+            btnElement.prop("disabled", false);
+            btnElement.html(btnText);
+        };
         $(document).ready(function () {
             $(document).on('click', '.sign', expand);
             $(document).on('click', '.collapsible', expand);
