@@ -69,7 +69,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             var changeQueryModel = new ChangeQueryViewModel
             {
                 HasPendingChanges = false,
-                ChangeSummaryMessage = "Please find sync status for individual resources.",
+                ChangeSummaryMessage = "Please review the sync status for individual resources below.",
                 SyncResponses = responses
             };
             return View("Index", changeQueryModel);
