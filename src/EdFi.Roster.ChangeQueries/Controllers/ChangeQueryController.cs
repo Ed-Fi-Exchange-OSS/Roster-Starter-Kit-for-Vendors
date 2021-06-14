@@ -40,12 +40,14 @@ namespace EdFi.Roster.ChangeQueries.Controllers
 
             var changeQueryModel = new ChangeQueryViewModel
             {
+                HasPendingChanges = false,
                 ChangeSummaryMessage = "No pending changes to sync. Please come back later for updates."
             };
 
 
             if (currentVersions.Count < ResourceTypes.ResourceTypeCount() || currentVersions.Select(x => x.ChangeVersion).Any(x => x < availableVersion))
             {
+                changeQueryModel.HasPendingChanges = true;
                 changeQueryModel.ChangeSummaryMessage = "There are pending changes to sync. Please click the Sync button to update your records.";
             }
 
@@ -66,6 +68,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
 
             var changeQueryModel = new ChangeQueryViewModel
             {
+                HasPendingChanges = false,
                 ChangeSummaryMessage = "Please find sync status for individual resources.",
                 SyncResponses = responses
             };
