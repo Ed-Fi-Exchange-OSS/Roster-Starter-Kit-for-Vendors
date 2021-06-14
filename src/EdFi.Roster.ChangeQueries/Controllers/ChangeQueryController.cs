@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using EdFi.Roster.ChangeQueries.ActionFilters;
 using EdFi.Roster.ChangeQueries.Models;
 using EdFi.Roster.ChangeQueries.Services;
 using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 
 namespace EdFi.Roster.ChangeQueries.Controllers
 {
+    [ValidateApiConnection]
     public class ChangeQueryController : Controller
     {
         private readonly ChangeQueryService _changeQueryService;

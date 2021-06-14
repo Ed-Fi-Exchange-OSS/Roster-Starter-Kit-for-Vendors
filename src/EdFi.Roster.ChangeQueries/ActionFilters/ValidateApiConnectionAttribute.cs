@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.ChangeQueries.ActionFilters
 {
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
     public class ValidateApiConnectionAttribute : TypeFilterAttribute
     {
         public ValidateApiConnectionAttribute()
