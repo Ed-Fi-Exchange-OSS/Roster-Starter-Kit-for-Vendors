@@ -72,6 +72,7 @@
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
+            dvAlert.removeClass('alert-danger');
             dvAlert.addClass('alert-success alert-dismissible fade show');
             dvAlert.html('<strong>' + textStatus + '</strong>');
             dvAlert.append('<div>The connection was tested by attempting to authenticate with the information provided above.</div>');
@@ -103,6 +104,7 @@
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
+            dvAlert.removeClass('alert-danger');
             dvAlert.addClass('alert-success alert-dismissible fade show');
             dvAlert.html('<strong>' + textStatus + '</strong>');
             dvAlert.append('<div>Information saved.</div>');
@@ -121,6 +123,7 @@
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');
+            dvAlert.removeClass('alert-success');
             dvAlert.addClass('alert-danger alert-dismissible fade show');
             dvAlert.html('<strong>Error</strong>');
             $('<div>').append(textStatus + ' - ' + response.responseText).appendTo(dvAlert);
