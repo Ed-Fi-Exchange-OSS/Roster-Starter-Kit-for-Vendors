@@ -14,12 +14,14 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         private readonly BearerTokenService _bearerTokenService;
         private readonly ApiSettingsService _apiSettingsService;
         private readonly ChangeQueryService _changeQueryService;
+        private readonly IDataService _dataService;
 
-        public EdFiApiSettings(BearerTokenService bearerTokenService, ApiSettingsService apiSettingsService, ChangeQueryService changeQueryService)
+        public EdFiApiSettings(BearerTokenService bearerTokenService, ApiSettingsService apiSettingsService, ChangeQueryService changeQueryService, IDataService dataService)
         {
             _bearerTokenService = bearerTokenService;
             _apiSettingsService = apiSettingsService;
             _changeQueryService = changeQueryService;
+            _dataService = dataService;
         }
 
         [HttpGet]
@@ -40,7 +42,21 @@ namespace EdFi.Roster.ChangeQueries.Controllers
                 return testConnectionResult;
             }
             await _apiSettingsService.Save(model);
+
+            DeleteResources();
+
             return new JsonResult(model);
+        }
+
+        private void DeleteResources()
+        {
+            _dataService.ClearRecords<RosterLocalEducationAgencyResource>();
+            _dataService.ClearRecords<RosterSchoolResource>();
+            _dataService.ClearRecords<RosterSectionResource>();
+            _dataService.ClearRecords<RosterStaffResource>();
+            _dataService.ClearRecords<RosterStudentResource>();
+            _dataService.ClearRecords<ChangeQuery>();
+            _dataService.ClearRecords<ApiLogEntry>();
         }
 
         [HttpPost]
