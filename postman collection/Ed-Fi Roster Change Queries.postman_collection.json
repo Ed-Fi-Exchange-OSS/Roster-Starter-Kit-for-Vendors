@@ -1,0 +1,2447 @@
+{
+	"info": {
+		"_postman_id": "eaf02e7c-394e-4230-b465-5e065ded682b",
+		"name": "Ed-Fi Roster Change Queries",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local Education Agencies",
+			"item": [
+				{
+					"name": "Get AvailableChangeVersions  - Initial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"pm.environment.set('original_change_version', responseItem.NewestChangeVersion);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Local Education Agencies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of local education agencies\", () => {\r",
+									"    pm.expect(jsonResponse.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(jsonResponse) {\r",
+									"    // Will try to find the school specified in the variables, if not found, it will use the first lea from the response\r",
+									"    let item = jsonResponse.find(s => s.nameOfInstitution == pm.environment.get(\"lea_name\"));\r",
+									"    if(!item) item = jsonResponse[0];\r",
+									"    delete item._etag;\r",
+									"\r",
+									"    pm.environment.set(\"lea_id\", item.id);\r",
+									"    pm.environment.set(\"lea\", JSON.stringify(item));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/localEducationAgencies?maxChangeVersion={{original_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"localEducationAgencies"
+							],
+							"query": [
+								{
+									"key": "maxChangeVersion",
+									"value": "{{original_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"pm.test(\"Change version not modified\", () => {",
+									"    const responseItem = pm.response.json();",
+									"    pm.expect(responseItem.NewestChangeVersion).to.eq(pm.environment.get(\"original_change_version\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Local Education Agency",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let leaJson = JSON.parse(pm.environment.get('lea'));\r",
+									"\r",
+									"addressToEdit = leaJson.addresses.findIndex(a => a.addressTypeDescriptor == \"uri://ed-fi.org/AddressTypeDescriptor#Physical\");\r",
+									"\r",
+									"const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;\r",
+									"\r",
+									"leaJson.addresses[addressToEdit].postalCode = random(10000, 99999).toString();\r",
+									"console.log(`Generated value: ${leaJson.addresses[addressToEdit].postalCode}`);\r",
+									"\r",
+									"pm.variables.set(\"updated\", JSON.stringify(leaJson));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updated}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/localEducationAgencies/{{lea_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"localEducationAgencies",
+								"{{lea_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"",
+									"pm.test(\"Change version modified\", () => {",
+									"    pm.expect(responseItem.NewestChangeVersion).to.be.gt(pm.environment.get(\"original_change_version\"));",
+									"});",
+									"",
+									"pm.environment.set('latest_change_version', responseItem.NewestChangeVersion);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Local Education Agency with change version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let responseJson = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response contains modified lea only\", () => {\r",
+									"    pm.expect(typeof(responseJson)).to.eq(\"object\");\r",
+									"    pm.expect(responseJson.id).to.eq(pm.environment.get(\"lea_id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"LEA is modified\", () => {\r",
+									"    pm.expect(JSON.stringify(responseJson)).not.to.eq(pm.environment.get(\"lea\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/localEducationAgencies/{{lea_id}}?minChangeVersion={{original_change_version}}&maxChangeVersion={{latest_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"localEducationAgencies",
+								"{{lea_id}}"
+							],
+							"query": [
+								{
+									"key": "minChangeVersion",
+									"value": "{{original_change_version}}"
+								},
+								{
+									"key": "maxChangeVersion",
+									"value": "{{latest_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rollback Update Local Education Agency",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{lea}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/localEducationAgencies/{{lea_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"localEducationAgencies",
+								"{{lea_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Local Education Agency",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"local education agency should have original address\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).to.eq(pm.environment.get(\"lea\"));\r",
+									"});\r",
+									"\r",
+									"if(pm.response.code === status) {\r",
+									"    pm.environment.unset(\"lea\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/localEducationAgencies/{{lea_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"localEducationAgencies",
+								"{{lea_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Schools",
+			"item": [
+				{
+					"name": "Get AvailableChangeVersions  - Initial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"pm.environment.set('original_change_version', responseItem.NewestChangeVersion);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Schools",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of schools\", () => {\r",
+									"    pm.expect(jsonResponse.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(jsonResponse) {\r",
+									"    // Will try to find the school specified in the variables, if not found, it will use the first school from the response\r",
+									"    let item = jsonResponse.find(s => s.nameOfInstitution == pm.environment.get(\"school_name\"));\r",
+									"    if(!item) item = jsonResponse[0];\r",
+									"    delete item._etag;\r",
+									"\r",
+									"    pm.environment.set(\"school_id\", item.id);\r",
+									"    pm.environment.set(\"school\", JSON.stringify(item));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/schools?maxChangeVersion={{original_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"schools"
+							],
+							"query": [
+								{
+									"key": "maxChangeVersion",
+									"value": "{{original_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"pm.test(\"Change version not modified\", () => {",
+									"    const responseItem = pm.response.json();",
+									"    pm.expect(responseItem.NewestChangeVersion).to.eq(pm.environment.get(\"original_change_version\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update School",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let schoolJson = JSON.parse(pm.environment.get('school'));\r",
+									"\r",
+									"addressToEdit = (schoolJson.addresses.findIndex(a => a.addressTypeDescriptor == \"uri://ed-fi.org/AddressTypeDescriptor#Physical\") > -1)? schoolJson.addresses.findIndex(a => a.addressTypeDescriptor == \"uri://ed-fi.org/AddressTypeDescriptor#Physical\") :  schoolJson.addresses.findIndex(a => a.addressTypeDescriptor == \"uri://ed-fi.org/AddressTypeDescriptor#Mailing\");\r",
+									"\r",
+									"const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;\r",
+									"\r",
+									"if(addressToEdit !== -1) {\r",
+									"    schoolJson.addresses[addressToEdit].postalCode = random(10000, 99999).toString();\r",
+									"    console.log(`Generated value: ${schoolJson.addresses[addressToEdit].postalCode}`);\r",
+									"\r",
+									"    pm.variables.set(\"updated\", JSON.stringify(schoolJson));\r",
+									"} else {\r",
+									"    console.error(\"Unable to update school\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updated}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/schools/{{school_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"schools",
+								"{{school_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"",
+									"pm.test(\"Change version modified\", () => {",
+									"    pm.expect(responseItem.NewestChangeVersion).to.be.gt(pm.environment.get(\"original_change_version\"));",
+									"});",
+									"",
+									"pm.environment.set('latest_change_version', responseItem.NewestChangeVersion);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "School with change version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response contains modified school only\", () => {\r",
+									"    pm.expect(typeof(jsonResponse)).to.eq(\"object\");\r",
+									"    pm.expect(jsonResponse.id).to.eq(pm.environment.get(\"school_id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"School is modified\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).not.to.eq(pm.environment.get(\"school\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/schools/{{school_id}}?minChangeVersion={{original_change_version}}&maxChangeVersion={{latest_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"schools",
+								"{{school_id}}"
+							],
+							"query": [
+								{
+									"key": "minChangeVersion",
+									"value": "{{original_change_version}}"
+								},
+								{
+									"key": "maxChangeVersion",
+									"value": "{{latest_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rollback Update School",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{school}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/schools/{{school_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"schools",
+								"{{school_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get School",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"School should have original data\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    console.log(jsonResponse);\r",
+									"    console.log(pm.environment.get(\"school\"));\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).to.eq(pm.environment.get(\"school\"));\r",
+									"});\r",
+									"\r",
+									"if(pm.response.code === status) {\r",
+									"    pm.environment.unset(\"school\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/schools/{{school_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"schools",
+								"{{school_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Staff",
+			"item": [
+				{
+					"name": "Get AvailableChangeVersions  - Initial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"pm.environment.set('original_change_version', responseItem.NewestChangeVersion);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of staff\", () => {\r",
+									"    pm.expect(jsonResponse.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(jsonResponse) {\r",
+									"    // Will try to find the school specified in the variables, if not found, it will use the first staff from the response\r",
+									"    let item = jsonResponse.find(s => s.loginId == pm.environment.get(\"staff_login_id\"));\r",
+									"    if(!item) item = jsonResponse[0];\r",
+									"    delete item._etag;\r",
+									"\r",
+									"    pm.environment.set(\"staff_id\", item.id);\r",
+									"    pm.environment.set(\"staff\", JSON.stringify(item));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/staffs?maxChangeVersion={{original_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"staffs"
+							],
+							"query": [
+								{
+									"key": "maxChangeVersion",
+									"value": "{{original_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"pm.test(\"Change version not modified\", () => {",
+									"    const responseItem = pm.response.json();",
+									"    pm.expect(responseItem.NewestChangeVersion).to.eq(pm.environment.get(\"original_change_version\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let staffJson = JSON.parse(pm.environment.get('staff'));\r",
+									"\r",
+									"const random = (min, max) => Math.floor(Math.random() * (max - min)) + min;\r",
+									"\r",
+									"staffJson.birthDate = random(1950, 2020) + \"/\" + random(01, 12) + \"/\" + random(01, 30);\r",
+									"console.log(`Generated value: ${staffJson.birthDate}`);\r",
+									"\r",
+									"pm.variables.set(\"updated\", JSON.stringify(staffJson));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updated}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/staffs/{{staff_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"staffs",
+								"{{staff_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"",
+									"pm.test(\"Change version modified\", () => {",
+									"    pm.expect(responseItem.NewestChangeVersion).to.be.gt(pm.environment.get(\"original_change_version\"));",
+									"});",
+									"",
+									"pm.environment.set('latest_change_version', responseItem.NewestChangeVersion);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Staff with change version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let response = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response contains modified staff only\", () => {\r",
+									"    pm.expect(typeof(response)).to.eq(\"object\");\r",
+									"    pm.expect(response.id).to.eq(pm.environment.get(\"staff_id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"staff is modified\", () => {\r",
+									"    pm.expect(JSON.stringify(response)).not.to.eq(pm.environment.get(\"staff\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/staffs/{{staff_id}}?minChangeVersion={{original_change_version}}&maxChangeVersion={{latest_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"staffs",
+								"{{staff_id}}"
+							],
+							"query": [
+								{
+									"key": "minChangeVersion",
+									"value": "{{original_change_version}}"
+								},
+								{
+									"key": "maxChangeVersion",
+									"value": "{{latest_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rollback Update Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{staff}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/staffs/{{staff_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"staffs",
+								"{{staff_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Staff",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"staff should have original birth date\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).to.eq(pm.environment.get(\"staff\"));\r",
+									"});\r",
+									"\r",
+									"if(pm.response.code === status) {\r",
+									"    pm.environment.unset(\"staff\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/staffs/{{staff_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"staffs",
+								"{{staff_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sections",
+			"item": [
+				{
+					"name": "Get AvailableChangeVersions  - Initial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"pm.environment.set('original_change_version', responseItem.NewestChangeVersion);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Sections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of sections\", () => {\r",
+									"    pm.expect(jsonResponse.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(jsonResponse) {\r",
+									"    // Will try to find the school specified in the variables, if not found, it will use the first staff from the response\r",
+									"    let item = jsonResponse.find(s => s.sectionName == pm.environment.get(\"section_name\"));\r",
+									"    if(!item) item = jsonResponse[0];\r",
+									"    delete item._etag;\r",
+									"\r",
+									"    pm.environment.set(\"section_id\", item.id);\r",
+									"    pm.environment.set(\"section\", JSON.stringify(item));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/sections?maxChangeVersion={{original_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"sections"
+							],
+							"query": [
+								{
+									"key": "maxChangeVersion",
+									"value": "{{original_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"pm.test(\"Change version not modified\", () => {",
+									"    const responseItem = pm.response.json();",
+									"    pm.expect(responseItem.NewestChangeVersion).to.eq(pm.environment.get(\"original_change_version\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Sections",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let sectionJson = JSON.parse(pm.environment.get('section'));\r",
+									"\r",
+									"const random = (min, max) => (Math.floor(Math.random() * (max - min)) + min) / 100;\r",
+									"\r",
+									"sectionJson.availableCredits = random(1000, 2000);\r",
+									"console.log(`Generated value: ${sectionJson.availableCredits}`);\r",
+									"\r",
+									"pm.variables.set(\"updated\", JSON.stringify(sectionJson));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updated}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/sections/{{section_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"sections",
+								"{{section_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"",
+									"pm.test(\"Change version modified\", () => {",
+									"    pm.expect(responseItem.NewestChangeVersion).to.be.gt(pm.environment.get(\"original_change_version\"));",
+									"});",
+									"",
+									"pm.environment.set('latest_change_version', responseItem.NewestChangeVersion);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sections with change version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response contains modified staff only\", () => {\r",
+									"    pm.expect(typeof(jsonResponse)).to.eq(\"object\");\r",
+									"    pm.expect(jsonResponse.id).to.eq(pm.environment.get(\"section_id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"section is modified\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).not.to.eq(pm.environment.get(\"section\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/sections/{{section_id}}?minChangeVersion={{original_change_version}}&maxChangeVersion={{latest_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"sections",
+								"{{section_id}}"
+							],
+							"query": [
+								{
+									"key": "minChangeVersion",
+									"value": "{{original_change_version}}"
+								},
+								{
+									"key": "maxChangeVersion",
+									"value": "{{latest_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rollback Update Section",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{section}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/sections/{{section_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"sections",
+								"{{section_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Section",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Section should have original data\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).to.eq(pm.environment.get(\"section\"));\r",
+									"});\r",
+									"\r",
+									"if(pm.response.code === status) {\r",
+									"    pm.environment.unset(\"section\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/sections/{{section_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"sections",
+								"{{section_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Students",
+			"item": [
+				{
+					"name": "Get AvailableChangeVersions  - Initial",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"pm.environment.set('original_change_version', responseItem.NewestChangeVersion);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All Students",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Check list of students\", () => {\r",
+									"    pm.expect(jsonResponse.length).to.be.gte(0);\r",
+									"});\r",
+									"\r",
+									"if(jsonResponse) {\r",
+									"    // Will try to find the school specified in the variables, if not found, it will use the first staff from the response\r",
+									"    let item = jsonResponse.find(s => s.studentUniqueId == pm.environment.get(\"student_unique_id\"));\r",
+									"    if(!item) item = jsonResponse[0];\r",
+									"    delete item._etag;\r",
+									"\r",
+									"    pm.environment.set(\"student_id\", item.id);\r",
+									"    pm.environment.set(\"student\", JSON.stringify(item));\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/students?maxChangeVersion={{original_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"students"
+							],
+							"query": [
+								{
+									"key": "maxChangeVersion",
+									"value": "{{original_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Get All",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"pm.test(\"Change version not modified\", () => {",
+									"    const responseItem = pm.response.json();",
+									"    pm.expect(responseItem.NewestChangeVersion).to.eq(pm.environment.get(\"original_change_version\"));",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let studentJson = JSON.parse(pm.environment.get('student'));\r",
+									"\r",
+									"const random = (min, max) => (Math.floor(Math.random() * (max - min)) + min);\r",
+									"\r",
+									"studentJson.birthDate = random(1950, 2020) + \"-\" + random(01, 12) + \"-\" + random(01, 30);\r",
+									"console.log(`Generated value: ${studentJson.birthDate}`);\r",
+									"\r",
+									"pm.variables.set(\"updated\", JSON.stringify(studentJson));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{updated}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/students/{{student_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"students",
+								"{{student_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get AvailableChangeVersions  - After Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;",
+									"pm.test(`Status code is ${status}`, () => {",
+									"    pm.response.to.have.status(status);",
+									"});",
+									"",
+									"const responseItem = pm.response.json();",
+									"",
+									"pm.test(\"Change version modified\", () => {",
+									"    pm.expect(responseItem.NewestChangeVersion).to.be.gt(pm.environment.get(\"original_change_version\"));",
+									"});",
+									"",
+									"pm.environment.set('latest_change_version', responseItem.NewestChangeVersion);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/changeQueries/v1/AvailableChangeVersions",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"changeQueries",
+								"v1",
+								"AvailableChangeVersions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Student with change version",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Response contains modified staff only\", () => {\r",
+									"    pm.expect(typeof(jsonResponse)).to.eq(\"object\");\r",
+									"    pm.expect(jsonResponse.id).to.eq(pm.environment.get(\"student_id\"));\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Student is modified\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).not.to.eq(pm.environment.get(\"student\"));\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/students/{{student_id}}?minChangeVersion={{original_change_version}}&maxChangeVersion={{latest_change_version}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"students",
+								"{{student_id}}"
+							],
+							"query": [
+								{
+									"key": "minChangeVersion",
+									"value": "{{original_change_version}}"
+								},
+								{
+									"key": "maxChangeVersion",
+									"value": "{{latest_change_version}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Rollback Update Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 204;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{{student}}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/students/{{student_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"students",
+								"{{student_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let status = 200;\r",
+									"pm.test(`Status code is ${status}`, () => {\r",
+									"    pm.response.to.have.status(status);\r",
+									"});\r",
+									"\r",
+									"let jsonResponse = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Student should have original data\", () => {\r",
+									"    delete jsonResponse._etag;\r",
+									"    pm.expect(JSON.stringify(jsonResponse)).to.eq(pm.environment.get(\"student\"));\r",
+									"});\r",
+									"\r",
+									"if(pm.response.code === status) {\r",
+									"    pm.environment.unset(\"student\");\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{API_URL}}/data/v3/ed-fi/students/{{student_id}}",
+							"host": [
+								"{{API_URL}}"
+							],
+							"path": [
+								"data",
+								"v3",
+								"ed-fi",
+								"students",
+								"{{student_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "tokenName",
+				"value": "auth_token",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{client_secret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{client_id}}",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{token_URL}}",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
