@@ -5,6 +5,8 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<p id="apiConnectionStatus" class="alert-danger">@ViewData["ApiConnectionStatus"]</p>
+
 <p>Use this page to configure the connection to an Ed-Fi API.</p>
 
 <form method="post">
@@ -107,6 +109,7 @@
 
         function SaveSettingsSuccess(response, textStatus, jqXHR) {
             removeSpinner($("#btnSave"), "Save");
+            $("#apiConnectionStatus").empty();
             var dvAlert = $("#divInfoAlert");
             dvAlert.empty();
             dvAlert.removeClass('hide');

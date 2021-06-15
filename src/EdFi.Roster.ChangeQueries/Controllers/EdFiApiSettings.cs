@@ -1,6 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
+using EdFi.Roster.ChangeQueries.Models;
 using EdFi.Roster.ChangeQueries.Services;
 using EdFi.Roster.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -25,8 +26,14 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(ApiConnectionStatus status = ApiConnectionStatus.Success)
         {
+            ViewData["ApiConnectionStatus"] = status switch
+            {
+                ApiConnectionStatus.NotConfigured => "Please connect to a sample ODS / API before proceeding.",
+                ApiConnectionStatus.Error => "The application could not connect to the ODS / API. Please review your connection settings and ensure the ODS / API is running and accessible.",
+                _ => ViewData["ApiConnectionStatus"]
+            };
             var model = await _apiSettingsService.Read();
             return View(model);
         }

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EdFi.Roster.Explorer.ActionFilters;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using EdFi.Roster.Services;
@@ -24,6 +25,8 @@ namespace EdFi.Roster.Explorer.Controllers
                 IsExtendedInfoAvailable = false
             });
         }
+
+        [ValidateApiConnection]
         public async Task<IActionResult> LoadStudents()
         {
             var response = await _studentService.GetAllStudentsWithExtendedInfoAsync();

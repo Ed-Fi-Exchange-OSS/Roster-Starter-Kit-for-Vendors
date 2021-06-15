@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
+using EdFi.Roster.Explorer.ActionFilters;
 using EdFi.Roster.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ namespace EdFi.Roster.Explorer.Controllers
             _studentService = studentService;
         }
 
+        [ValidateApiConnection]
         public IActionResult Index()
         {
             return View();
