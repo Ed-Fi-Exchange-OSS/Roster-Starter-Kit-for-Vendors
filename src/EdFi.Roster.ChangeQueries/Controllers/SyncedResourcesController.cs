@@ -35,7 +35,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             where TEntityModel : RosterDataRecord
         {
             var entities = await _dataService.ReadAllAsync<TEntityModel>();
-            var deserializedApiModels = entities.Select(lea => JsonConvert.DeserializeObject<TApiModel>(lea.Content)).ToList();
+            var deserializedApiModels = entities.Select(x => JsonConvert.DeserializeObject<TApiModel>(x.Content)).ToList();
 
             return deserializedApiModels;
         }
