@@ -42,7 +42,7 @@ namespace EdFi.Roster.Services
 
         public async Task<ExtendedInfoResponse<List<LocalEducationAgency>>> GetAllLocalEducationAgenciesWithExtendedInfoAsync()
         {
-            var leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>();
+            var api = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>();
             var limit = 100;
             var offset = 0;
             var response = new ExtendedInfoResponse<List<LocalEducationAgency>>();
@@ -57,15 +57,15 @@ namespace EdFi.Roster.Services
                 ApiResponse<List<LocalEducationAgency>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+                    currentApiResponse = await api.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
                 }
                 catch (ApiException exception)
                 {
                     errorMessage = exception.Message;
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
-                        leaApi = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>(true);
-                        currentApiResponse = await leaApi.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+                        api = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>(true);
+                        currentApiResponse = await api.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
                         errorMessage = string.Empty;
                     }
                 }

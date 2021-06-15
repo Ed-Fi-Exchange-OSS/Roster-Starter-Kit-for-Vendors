@@ -41,7 +41,7 @@ namespace EdFi.Roster.Services
 
         public async Task<ExtendedInfoResponse<List<Section>>> GetAllSectionsWithExtendedInfoAsync()
         {
-            var sectionsApi = await _apiFacade.GetApiClassInstance<SectionsApi>();
+            var api = await _apiFacade.GetApiClassInstance<SectionsApi>();
             var limit = 100;
             var offset = 0;
             var response = new ExtendedInfoResponse<List<Section>>();
@@ -56,15 +56,15 @@ namespace EdFi.Roster.Services
                 ApiResponse<List<Section>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await sectionsApi.GetSectionsWithHttpInfoAsync(offset, limit);
+                    currentApiResponse = await api.GetSectionsWithHttpInfoAsync(offset, limit);
                 }
                 catch (ApiException exception)
                 {
                     errorMessage = exception.Message;
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
-                        sectionsApi = await _apiFacade.GetApiClassInstance<SectionsApi>(true);
-                        currentApiResponse = await sectionsApi.GetSectionsWithHttpInfoAsync(offset, limit);
+                        api = await _apiFacade.GetApiClassInstance<SectionsApi>(true);
+                        currentApiResponse = await api.GetSectionsWithHttpInfoAsync(offset, limit);
                         errorMessage = string.Empty;
                     }
                 }
