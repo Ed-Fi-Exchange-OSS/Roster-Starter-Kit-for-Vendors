@@ -8,7 +8,6 @@ using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
 using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
-using DeletedResource = EdFi.Roster.Sdk.Models.Resources.DeletedResource;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
