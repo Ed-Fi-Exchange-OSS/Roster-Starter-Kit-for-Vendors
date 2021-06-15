@@ -1,4 +1,4 @@
-﻿
+
 @{
     ViewData["Title"] = "Get Full Roster";
 }
@@ -203,9 +203,11 @@
                 },
                 dataType: "json",
                 success: function (response, textStatus, jqXHR) {
-                    AjaxSuccess(response, textStatus, jqXHR, resourceName)
+                    AjaxSuccess(response, textStatus, jqXHR, resourceName);
                 },
-                error: AjaxError
+                error: function (response, textStatus, jqXHR) {
+                    alert("A background request against " + urlIn + " has failed. See your browser's developer tools for diagnostic information.");
+                }
             });
         }
 
@@ -228,10 +230,6 @@
             dvTotalRecordsRow.collapse('show');
             dvResultsRow.collapse('show');
             $('#dvLoading' + resultsName).collapse('hide');
-        }
-
-        function AjaxError(response, textStatus, jqXHR) {
-            alert(textStatus);
         }
 
     </script>
