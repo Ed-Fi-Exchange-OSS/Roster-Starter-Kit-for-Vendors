@@ -27,12 +27,6 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
-        public async Task<IEnumerable<EdFiSection>> ReadAllAsync()
-        {
-            var sections = await _dataService.ReadAllAsync<RosterSectionResource>();
-            return sections.Select(section => JsonConvert.DeserializeObject<EdFiSection>(section.Content)).ToList();
-        }
-
         public async Task<DataSyncResponseModel> RetrieveAndSyncSections(long minVersion, long maxVersion)
         {
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },

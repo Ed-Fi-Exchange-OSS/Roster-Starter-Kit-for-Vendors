@@ -26,12 +26,6 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
-        public async Task<IEnumerable<EdFiStudent>> ReadAllAsync()
-        {
-            var students = await _dataService.ReadAllAsync<RosterStudentResource>();
-            return students.Select(st => JsonConvert.DeserializeObject<EdFiStudent>(st.Content)).ToList();
-        }
-
         public async Task<DataSyncResponseModel> RetrieveAndSyncStudents(long minVersion, long maxVersion)
         {
 

@@ -26,12 +26,6 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
-        public async Task<IEnumerable<EdFiLocalEducationAgency>> ReadAllAsync()
-        {
-            var leas = await _dataService.ReadAllAsync<RosterLocalEducationAgencyResource>();
-            return leas.Select(lea => JsonConvert.DeserializeObject<EdFiLocalEducationAgency>(lea.Content)).ToList();
-        }
-
         public async Task<DataSyncResponseModel> RetrieveAndSyncLocalEducationAgencies(long minVersion, long maxVersion)
         {
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
