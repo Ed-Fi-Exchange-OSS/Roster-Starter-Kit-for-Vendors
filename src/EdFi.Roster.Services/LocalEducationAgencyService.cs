@@ -40,9 +40,16 @@ namespace EdFi.Roster.Services
             return leas.Select(lea => JsonConvert.DeserializeObject<LocalEducationAgency>(lea.Content)).ToList();
         }
 
+        private delegate Task<ApiResponse<List<TResource>>> GetPageAsync<in TApiAccessor, TResource>(TApiAccessor api, int offset, int limit)
+            where TApiAccessor : IApiAccessor;
+
         public async Task<ExtendedInfoResponse<List<LocalEducationAgency>>> GetAllLocalEducationAgenciesWithExtendedInfoAsync()
         {
             var apiRoute = ApiRoutes.LocalEducationAgenciesComposite;
+            GetPageAsync<LocalEducationAgenciesApi, LocalEducationAgency> getPageAsync =
+                async (api, offset, limit) =>
+                    await api.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+
             var api = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>();
             var limit = 100;
             var offset = 0;
@@ -58,7 +65,7 @@ namespace EdFi.Roster.Services
                 ApiResponse<List<LocalEducationAgency>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await api.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+                    currentApiResponse = await getPageAsync(api, offset, limit);
                 }
                 catch (ApiException exception)
                 {
@@ -66,7 +73,7 @@ namespace EdFi.Roster.Services
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
                         api = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>(true);
-                        currentApiResponse = await api.GetLocalEducationAgenciesWithHttpInfoAsync(offset, limit);
+                        currentApiResponse = await getPageAsync(api, offset, limit);
                         errorMessage = string.Empty;
                     }
                 }

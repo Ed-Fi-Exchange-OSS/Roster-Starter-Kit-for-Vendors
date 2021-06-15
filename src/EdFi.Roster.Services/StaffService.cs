@@ -39,9 +39,16 @@ namespace EdFi.Roster.Services
             await _rosterDataService.SaveAsync(staffList);
         }
 
+        private delegate Task<ApiResponse<List<TResource>>> GetPageAsync<in TApiAccessor, TResource>(TApiAccessor api, int offset, int limit)
+            where TApiAccessor : IApiAccessor;
+
         public async Task<ExtendedInfoResponse<List<Staff>>> GetAllStaffWithExtendedInfoAsync()
         {
             var apiRoute = ApiRoutes.StaffsComposite;
+            GetPageAsync<StaffsApi, Staff> getPageAsync =
+                async (api, offset, limit) =>
+                    await api.GetStaffsWithHttpInfoAsync(offset, limit);
+
             var api = await _apiFacade.GetApiClassInstance<StaffsApi>();
             var limit = 100;
             var offset = 0;
@@ -57,7 +64,7 @@ namespace EdFi.Roster.Services
                 ApiResponse<List<Staff>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await api.GetStaffsWithHttpInfoAsync(offset, limit);
+                    currentApiResponse = await getPageAsync(api, offset, limit);
                 }
                 catch (ApiException exception)
                 {
@@ -65,7 +72,7 @@ namespace EdFi.Roster.Services
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
                         api = await _apiFacade.GetApiClassInstance<StaffsApi>(true); 
-                        currentApiResponse = await api.GetStaffsWithHttpInfoAsync(offset, limit);
+                        currentApiResponse = await getPageAsync(api, offset, limit);
                         errorMessage = string.Empty;
                     }
                 }

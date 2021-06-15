@@ -40,9 +40,16 @@ namespace EdFi.Roster.Services
             return schools.Select(school => JsonConvert.DeserializeObject<School>(school.Content)).ToList();
         }
 
+        private delegate Task<ApiResponse<List<TResource>>> GetPageAsync<in TApiAccessor, TResource>(TApiAccessor api, int offset, int limit)
+            where TApiAccessor : IApiAccessor;
+
         public async Task<ExtendedInfoResponse<List<School>>> GetAllSchoolsWithExtendedInfoAsync()
         {
             var apiRoute = ApiRoutes.SchoolsComposite;
+            GetPageAsync<SchoolsApi, School> getPageAsync =
+                async (api, offset, limit) =>
+                    await api.GetSchoolsWithHttpInfoAsync(offset, limit);
+
             var api = await _apiFacade.GetApiClassInstance<SchoolsApi>();
             var limit = 100;
             var offset = 0;
@@ -58,7 +65,7 @@ namespace EdFi.Roster.Services
                 ApiResponse<List<School>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await api.GetSchoolsWithHttpInfoAsync(offset, limit); 
+                    currentApiResponse = await getPageAsync(api, offset, limit);
                 }
                 catch (ApiException exception)
                 {
@@ -66,7 +73,7 @@ namespace EdFi.Roster.Services
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
                         api = await _apiFacade.GetApiClassInstance<SchoolsApi>(true);
-                        currentApiResponse = await api.GetSchoolsWithHttpInfoAsync(offset, limit);
+                        currentApiResponse = await getPageAsync(api, offset, limit);
                         errorMessage = string.Empty;
                     }
                 }
