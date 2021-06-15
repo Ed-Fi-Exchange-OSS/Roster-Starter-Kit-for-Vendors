@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.Explorer.Controllers
 {
-    [ValidateApiConnection]
     public class GetFullRosterController : Controller
     {
         private readonly LocalEducationAgencyService _localEducationAgencyService;
@@ -27,11 +26,11 @@ namespace EdFi.Roster.Explorer.Controllers
             _studentService = studentService;
         }
 
+        [ValidateApiConnection]
         public IActionResult Index()
         {
             return View();
         }
-
 
         [HttpGet("GetLeasAsync")]
         public async Task<IActionResult> GetLeasAsync()
