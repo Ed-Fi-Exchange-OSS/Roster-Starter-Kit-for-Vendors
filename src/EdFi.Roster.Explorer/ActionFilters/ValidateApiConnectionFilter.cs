@@ -1,4 +1,3 @@
-using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
 using EdFi.Roster.Explorer.Models;
@@ -32,14 +31,17 @@ namespace EdFi.Roster.Explorer.ActionFilters
                 return;
             }
 
-            var response = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
-
-            if (response.StatusCode != HttpStatusCode.OK)
+            try
+            {
+                await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
+            }
+            catch
             {
                 routeDictionary["status"] = ApiConnectionStatus.Error;
                 context.Result = new RedirectToRouteResult(routeDictionary);
                 return;
             }
+
             await next();
         }
     }
