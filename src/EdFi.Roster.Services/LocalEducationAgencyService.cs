@@ -42,6 +42,7 @@ namespace EdFi.Roster.Services
 
         public async Task<ExtendedInfoResponse<List<LocalEducationAgency>>> GetAllLocalEducationAgenciesWithExtendedInfoAsync()
         {
+            var apiRoute = ApiRoutes.LocalEducationAgenciesComposite;
             var api = await _apiFacade.GetApiClassInstance<LocalEducationAgenciesApi>();
             var limit = 100;
             var offset = 0;
@@ -53,7 +54,7 @@ namespace EdFi.Roster.Services
                 var errorMessage = string.Empty;
                 queryParams["offset"] = offset.ToString();
                 queryParams["limit"] = limit.ToString();
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.LocalEducationAgenciesComposite, queryParams);
+                var responseUri = _apiFacade.BuildResponseUri(apiRoute, queryParams);
                 ApiResponse<List<LocalEducationAgency>> currentApiResponse = null;
                 try
                 {

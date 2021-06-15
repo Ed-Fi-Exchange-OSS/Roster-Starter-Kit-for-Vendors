@@ -41,6 +41,7 @@ namespace EdFi.Roster.Services
 
         public async Task<ExtendedInfoResponse<List<Staff>>> GetAllStaffWithExtendedInfoAsync()
         {
+            var apiRoute = ApiRoutes.StaffsComposite;
             var api = await _apiFacade.GetApiClassInstance<StaffsApi>();
             var limit = 100;
             var offset = 0;
@@ -52,7 +53,7 @@ namespace EdFi.Roster.Services
                 var errorMessage = string.Empty;
                 queryParams["offset"] = offset.ToString();
                 queryParams["limit"] = limit.ToString();
-                var responseUri = _apiFacade.BuildResponseUri(ApiRoutes.StaffsComposite, queryParams);
+                var responseUri = _apiFacade.BuildResponseUri(apiRoute, queryParams);
                 ApiResponse<List<Staff>> currentApiResponse = null;
                 try
                 {
