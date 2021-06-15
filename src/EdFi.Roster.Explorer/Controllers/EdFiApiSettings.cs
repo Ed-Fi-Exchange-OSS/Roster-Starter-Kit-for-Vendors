@@ -25,9 +25,8 @@ namespace EdFi.Roster.Explorer.Controllers
         {
             ViewData["ApiConnectionStatus"] = status switch
             {
-                ApiConnectionStatus.NoData => "Please save valid ODS / API connection details, before trying to connect.",
-                ApiConnectionStatus.Error => "Error while connecting to ODS / API. Please make sure saved connection " +
-                                             "details are valid and ODS / API is up and running.",
+                ApiConnectionStatus.NotConfigured => "Please connect to a sample ODS / API before proceeding.",
+                ApiConnectionStatus.Error => "The application could not connect to the ODS / API. Please review your connection settings and ensure the ODS / API is running and accessible.",
                 _ => ViewData["ApiConnectionStatus"]
             };
             var model = await _apiSettingsService.Read();

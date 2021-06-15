@@ -27,7 +27,7 @@ namespace EdFi.Roster.ChangeQueries.ActionFilters
 
             if (string.IsNullOrEmpty(apiSettings.RootUrl))
             {
-                routeDictionary["status"] = ApiConnectionStatus.NoData;
+                routeDictionary["status"] = ApiConnectionStatus.NotConfigured;
                 context.Result = new RedirectToRouteResult(routeDictionary);
                 return;
             }
