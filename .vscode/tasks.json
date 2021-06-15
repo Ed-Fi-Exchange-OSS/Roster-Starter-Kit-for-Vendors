@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build enrollment",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -14,7 +14,19 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "publish",
+            "label": "build change queries",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/src/EdFi.Roster.ChangeQueries/EdFi.Roster.ChangeQueries.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish enrollment",
             "command": "dotnet",
             "type": "process",
             "args": [
@@ -26,7 +38,19 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "watch",
+            "label": "publish change queries",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/src/EdFi.Roster.ChangeQueries/EdFi.Roster.ChangeQueries.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch enrollment",
             "command": "dotnet",
             "type": "process",
             "options": {
@@ -36,6 +60,22 @@
                 "watch",
                 "run",
                 "${workspaceFolder}/src/EdFi.Roster.Explorer/EdFi.Roster.Explorer.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch change queries",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "cwd": "${workspaceRoot}/src/EdFi.Roster.ChangeQueries"
+            },
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/src/EdFi.Roster.ChangeQueries/EdFi.Roster.ChangeQueries.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
