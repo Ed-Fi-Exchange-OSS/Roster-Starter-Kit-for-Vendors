@@ -13,10 +13,7 @@
             "args": [],
             "cwd": "${workspaceFolder}/src/EdFi.Roster.Explorer",
             "console": "internalConsole",
-            "stopAtEntry": false,
-            "env": {
-                "ASPNETCORE_URLS": "http://localhost:5001"
-            }
+            "stopAtEntry": false
         },
         {
             "name": "ChangeQueries",
@@ -27,10 +24,7 @@
             "args": [],
             "cwd": "${workspaceFolder}/src/EdFi.Roster.ChangeQueries",
             "console": "internalConsole",
-            "stopAtEntry": false,
-            "env": {
-                "ASPNETCORE_URLS": "http://localhost:5002"
-            }
+            "stopAtEntry": false
         }
     ]
 }
