@@ -5,20 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Enrollment",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build",
+            "preLaunchTask": "build enrollment",
             "program": "${workspaceFolder}/src/EdFi.Roster.Explorer/bin/Debug/netcoreapp3.1/EdFi.Roster.Explorer.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/EdFi.Roster.Explorer",
             "console": "internalConsole",
-            "stopAtEntry": false
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_URLS": "http://localhost:5001"
+            }
         },
         {
-            "name": ".NET Core Attach",
+            "name": "ChangeQueries",
             "type": "coreclr",
-            "request": "attach"
+            "request": "launch",
+            "preLaunchTask": "build change queries",
+            "program": "${workspaceFolder}/src/EdFi.Roster.ChangeQueries/bin/Debug/netcoreapp3.1/EdFi.Roster.ChangeQueries.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/EdFi.Roster.ChangeQueries",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_URLS": "http://localhost:5002"
+            }
         }
     ]
 }
