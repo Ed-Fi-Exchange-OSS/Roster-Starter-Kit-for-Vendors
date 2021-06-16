@@ -35,7 +35,7 @@ namespace EdFi.Roster.Services
             var students = await _studentService.ReadAllAsync();
 
             var returnLeaRoster = new LocalEducationAgencyRoster();
-            returnLeaRoster.LocalEducationAgency = leas.ToList()[0];
+            returnLeaRoster.LocalEducationAgency = leas[0];
 
             returnLeaRoster.SchoolRosters = (from s in schools
                                              select new SchoolRoster
