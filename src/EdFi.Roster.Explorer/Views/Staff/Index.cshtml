@@ -1,4 +1,4 @@
-﻿@model ExtendedInfoResponse<List<Staff>>
+@model ExtendedInfoResponse<List<Staff>>
 
 @{
     ViewData["Title"] = "Staff";
@@ -45,11 +45,31 @@ Load / Reload
                     </td>
                     <td>
                         @{
-                            var tempDescriptor = item.EducationOrganizationAssignments[0].StaffClassificationDescriptor;
-                            tempDescriptor = tempDescriptor.Substring(tempDescriptor.IndexOf("#", StringComparison.InvariantCulture) + 1);
+                            string staffClassifications;
+
+                            if (item.EducationOrganizationAssignments == null)
+                            {
+                                staffClassifications = "";
+                            }
+                            else
+                            {
+                                staffClassifications = string.Join(", ",
+                                    item.EducationOrganizationAssignments
+                                        .Select(assignment => assignment?.StaffClassificationDescriptor ?? "")
+                                        .Select(classification =>
+                                        {
+                                            var hashIndex = classification.IndexOf("#", StringComparison.InvariantCulture);
+                                            if (hashIndex >= 0)
+                                            {
+                                                classification = classification.Substring(hashIndex + 1);
+                                            }
+
+                                            return classification;
+                                        }));
+                            }
                         }
 
-                        @Html.DisplayFor(modelItem => tempDescriptor)
+                        @staffClassifications
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
