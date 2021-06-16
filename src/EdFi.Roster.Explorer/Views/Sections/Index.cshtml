@@ -1,4 +1,4 @@
-﻿@model ExtendedInfoResponse<List<Section>>
+@model ExtendedInfoResponse<List<Section>>
 
 @{
     ViewData["Title"] = "Sections";
@@ -35,16 +35,16 @@ Load / Reload
             {
                 <tr class="parent-row">
                     <td>
-                        @Html.DisplayFor(modelItem => item.LocalCourseCode)
+                        @item.LocalCourseCode
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SectionIdentifier)
+                        @item.SectionIdentifier
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LocalCourseTitle)
+                        @item.LocalCourseTitle
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @item.Id
                     </td>
                     <td style="text-align:justify">
                         <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
@@ -54,7 +54,7 @@ Load / Reload
                     <td colspan="12">
                         <table class="table table-striped table-hover table-bordered table-responsive">
                             <tbody class="content-tbody">
-                            <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
+                                <tr><td><pre class="json-container prettify">@item.ToJson()</pre></td></tr>
                             </tbody>
                         </table>
                     </td>
