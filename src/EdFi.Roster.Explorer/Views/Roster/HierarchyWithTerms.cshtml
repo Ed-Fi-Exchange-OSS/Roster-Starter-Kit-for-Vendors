@@ -1,4 +1,4 @@
-﻿@model EdFi.Roster.Explorer.Models.RosterViewModel
+@model EdFi.Roster.Explorer.Models.RosterViewModel
 @{
     ViewData["Title"] = "Ed-Fi Roster - Hierarchy View (with Terms)";
 }
@@ -21,7 +21,7 @@
 <p>Use this page to view the Full Hirarcy View of the Roster.</p>
 
 <form>
-    <h3>@Model.Roster.LocalEducationAgency.NameOfInstitution</h3>
+    <h3>@Model.Roster.LocalEducationAgencyName</h3>
     <div class="just-padding">
         <div class="list-group pl-2 list-group-root well">
             @for (int i = 0; i < Model.Roster.SchoolRosters.Count; i++)

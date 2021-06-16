@@ -1,13 +1,11 @@
-﻿using EdFi.Roster.Sdk.Models.EnrollmentComposites;
-using System;
+using EdFi.Roster.Sdk.Models.EnrollmentComposites;
 using System.Collections.Generic;
-using System.Text;
 
 namespace EdFi.Roster.Models
 {
     public class LocalEducationAgencyRoster
     {
-        public LocalEducationAgency LocalEducationAgency { get; set; }
+        public string LocalEducationAgencyName { get; set; }
         public List<SchoolRoster> SchoolRosters { get; set; }
     }
 

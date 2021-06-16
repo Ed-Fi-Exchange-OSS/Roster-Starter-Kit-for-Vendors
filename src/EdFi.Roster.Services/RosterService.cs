@@ -1,4 +1,4 @@
-﻿using EdFi.Roster.Models;
+using EdFi.Roster.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,7 +35,7 @@ namespace EdFi.Roster.Services
             var students = await _studentService.ReadAllAsync();
 
             var returnLeaRoster = new LocalEducationAgencyRoster();
-            returnLeaRoster.LocalEducationAgency = leas[0];
+            returnLeaRoster.LocalEducationAgencyName = leas.FirstOrDefault()?.NameOfInstitution;
 
             returnLeaRoster.SchoolRosters = (from s in schools
                                              select new SchoolRoster
