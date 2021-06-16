@@ -13,12 +13,12 @@
 </style>
 
 <div>
-    <a class="nav-link p-0" asp-area="" asp-controller="Roster" asp-action="Index"><- Back to Rosters</a>
+    <a class="nav-link p-0" asp-area="" asp-controller="Roster" asp-action="Index">&lt;- Back to Rosters</a>
 </div>
 
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to view the Full Hirarcy View of the Roster.</p>
+<p>Use this page to view the Full Hierarchy View of the Roster.</p>
 
 <form>
     <h3>@Model.Roster.LocalEducationAgencyName</h3>
@@ -30,7 +30,7 @@
                     <i class="glyphicon glyphicon-chevron-right"></i>@Model.Roster.SchoolRosters[i].School.NameOfInstitution
                 </a>
                 <div class="list-group pl-2 collapse" id="roster-@i">
-                    @for (int j = 0; j < @Model.Roster.SchoolRosters[i].SectionsFull.Count; j++)
+                    @for (int j = 0; j < Model.Roster.SchoolRosters[i].SectionsFull.Count; j++)
                     {
                         <a href="#roster-@i-@j" class="list-group-item" data-toggle="collapse">
                             <i class="glyphicon glyphicon-chevron-right"></i>
