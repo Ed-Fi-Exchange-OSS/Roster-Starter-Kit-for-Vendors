@@ -8,6 +8,12 @@
 <div>
     <button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("ClearLogs")'">Clear Logs</button>
     <button class="btn btn-primary btn" onclick="document.location.href='@Url.Action("RawLog")'">View Raw Logs</button>
+    <div class="form-check float-right">
+        <input class="form-check-input" type="checkbox" value="" id="hideAuthCheck" checked>
+        <label class="form-check-label" for="hideAuthCheck">
+            Hide Authentication API Calls
+        </label>
+    </div>
 </div>
 <div class="con">
     
@@ -24,7 +30,7 @@
         <tbody>
         @foreach (var item in Model)
         {
-            <tr class="parent-row">
+            <tr class="@(item.Uri.Contains("oauth/token") ? "parent-row authentication-request" : "parent-row")">
                 <td>
                     @Html.DisplayFor(modelItem => item.LogDateTime)
                 </td>
@@ -54,3 +60,23 @@
         </tbody>
     </table>
 </div>
+@section Scripts {
+    <script>
+        var toggleAuthApiCalls = function() {
+            if (this.checked) {
+                $(".authentication-request").hide("slow");
+                $(".authentication-request").each(function() {
+                    $(this).removeClass("expand");
+                    $(this).next("tr").hide("slow");
+                });
+            } else {
+                $(".authentication-request").show("slow");
+            }
+        };
+
+        $(document).ready(function () {
+            $(".authentication-request").hide();
+            $("#hideAuthCheck").change(toggleAuthApiCalls);
+        });
+    </script>
+}
