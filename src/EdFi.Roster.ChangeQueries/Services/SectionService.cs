@@ -11,7 +11,11 @@ namespace EdFi.Roster.ChangeQueries.Services
 {
     public class SectionService : ApiService<SectionsApi, EdFiSection, RosterSectionResource>
     {
-        public SectionService(IDataService dataService, IResponseHandleService responseHandleService, IApiFacade apiFacade, ChangeQueryService changeQueryService)
+        public SectionService(
+            IDataService dataService,
+            IResponseHandleService responseHandleService,
+            IApiFacade apiFacade,
+            ChangeQueryService changeQueryService)
             : base(dataService, responseHandleService, apiFacade, changeQueryService)
         {
         }
