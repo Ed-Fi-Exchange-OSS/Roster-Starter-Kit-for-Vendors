@@ -6,11 +6,12 @@ using EdFi.Roster.ChangeQueries.Models;
 using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
+using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class StaffService : ApiService<StaffsApi>
+    public class StaffService : ApiService<StaffsApi, EdFiStaff, RosterStaffResource>
     {
         private readonly IDataService _dataService;
         private readonly ChangeQueryService _changeQueryService;
@@ -46,7 +47,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 new RosterStaffResource
                 {
                     Content = JsonConvert.SerializeObject(x),
-                    ResourceId = x.Id
+                    ResourceId = GetResourceId(x)
                 }).ToList();
             var countAdded = await _dataService.AddOrUpdateAllAsync(records);
 
@@ -77,5 +78,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 DeletedRecordsCount = countDeleted
             };
         }
+
+        protected override string GetResourceId(EdFiStaff resource) => resource.Id;
     }
 }

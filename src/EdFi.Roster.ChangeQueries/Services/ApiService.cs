@@ -7,13 +7,15 @@ using EdFi.Roster.Sdk.Client;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public abstract class ApiService<TApiAccessor>
+    public abstract class ApiService<TApiAccessor, TResource, TRecord>
         where TApiAccessor : IApiAccessor
+        where TResource : class
+        where TRecord : RosterDataRecord, new()
     {
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public delegate Task<ApiResponse<List<TResource>>> GetPageAsync<TResource>(TApiAccessor api, int offset, int limit);
+        public delegate Task<ApiResponse<List<T>>> GetPageAsync<T>(TApiAccessor api, int offset, int limit);
 
         protected ApiService(IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
@@ -25,15 +27,15 @@ namespace EdFi.Roster.ChangeQueries.Services
         protected abstract string ApiRoute { get; }
         protected abstract string ResourceType { get; }
 
-        protected async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TResource>(
-            string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<TResource> getPageAsync)
-            where TResource : class
+        protected async Task<ExtendedInfoResponse<List<T>>> GetAllResources<T>(
+            string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<T> getPageAsync)
+            where T : class
         {
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
             var offset = 0;
             var currResponseRecordCount = 0;
-            var response = new ExtendedInfoResponse<List<TResource>>();
+            var response = new ExtendedInfoResponse<List<T>>();
 
             queryParams ??= new Dictionary<string, string>();
             do
@@ -52,7 +54,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
                 var responseUri = _apiFacade.BuildResponseUri(apiRoute, queryParams);
 
-                ApiResponse<List<TResource>> currentApiResponse = null;
+                ApiResponse<List<T>> currentApiResponse = null;
                 try
                 {
                      currentApiResponse = await getPageAsync(api, offset, limit);
@@ -77,5 +79,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             return response;
         }
+
+        protected abstract string GetResourceId(TResource resource);
     }
 }
