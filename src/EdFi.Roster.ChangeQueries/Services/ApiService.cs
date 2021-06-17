@@ -76,7 +76,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             {
                 ResourceName = ResourceType,
                 AddedRecordsCount = countAdded,
-                UpdatedRecordsCount = response.FullDataSet.Count - countAdded,
+                UpdatedRecordsCount = response.GeneralInfo.TotalRecords - countAdded,
                 DeletedRecordsCount = countDeleted
             };
         }
@@ -129,6 +129,8 @@ namespace EdFi.Roster.ChangeQueries.Services
                 response = await _responseHandleService.Handle(currentApiResponse, response, responseUri, errorMessage);
             } while (currResponseRecordCount >= limit);
 
+            response.GeneralInfo.TotalRecords = response.FullDataSet.Count;
+            response.GeneralInfo.ResponseData = JsonConvert.SerializeObject(response.FullDataSet, Formatting.Indented);
             return response;
         }
     }
