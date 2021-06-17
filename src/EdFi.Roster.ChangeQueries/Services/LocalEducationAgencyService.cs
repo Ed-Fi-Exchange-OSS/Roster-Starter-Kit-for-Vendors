@@ -26,6 +26,9 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
+        protected override string ApiRoute => ApiRoutes.LocalEducationAgenciesResource;
+        protected override string ResourceType => ResourceTypes.LocalEducationAgencies;
+
         public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minVersion, long maxVersion)
         {
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
@@ -33,7 +36,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             var response =
                 await GetAllResources(
-                    $"{ApiRoutes.LocalEducationAgenciesResource}", queryParams,
+                    $"{ApiRoute}", queryParams,
                     async (api, offset, limit) =>
                         await api.GetLocalEducationAgenciesWithHttpInfoAsync(
                             offset, limit, (int?)minVersion, (int?)maxVersion));
@@ -49,7 +52,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             var deletesResponse =
                 await GetAllResources(
-                    $"{ApiRoutes.LocalEducationAgenciesResource}/deletes", queryParams,
+                    $"{ApiRoute}/deletes", queryParams,
                     async (api, offset, limit) =>
                         await api.DeletesLocalEducationAgenciesWithHttpInfoAsync(
                             offset, limit, (int?) minVersion, (int?) maxVersion));
@@ -64,11 +67,11 @@ namespace EdFi.Roster.ChangeQueries.Services
             }
 
             // Save latest change version 
-            await _changeQueryService.Save(maxVersion, ResourceTypes.LocalEducationAgencies);
+            await _changeQueryService.Save(maxVersion, ResourceType);
 
             return new DataSyncResponseModel
             {
-                ResourceName = ResourceTypes.LocalEducationAgencies,
+                ResourceName = ResourceType,
                 AddedRecordsCount = countAdded,
                 UpdatedRecordsCount = response.FullDataSet.Count - countAdded,
                 DeletedRecordsCount = countDeleted

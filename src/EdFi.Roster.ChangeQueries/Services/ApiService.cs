@@ -22,6 +22,9 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
+        protected abstract string ApiRoute { get; }
+        protected abstract string ResourceType { get; }
+
         protected async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TResource>(
             string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<TResource> getPageAsync)
             where TResource : class

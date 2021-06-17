@@ -26,6 +26,9 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
+        protected override string ApiRoute => ApiRoutes.StaffsResource;
+        protected override string ResourceType => ResourceTypes.Staff;
+
         public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minVersion, long maxVersion)
         {
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
@@ -33,7 +36,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             var response =
                 await GetAllResources(
-                    $"{ApiRoutes.StaffsResource}", queryParams,
+                    $"{ApiRoute}", queryParams,
                     async (api, offset, limit) =>
                         await api.GetStaffsWithHttpInfoAsync(
                             offset, limit, (int?)minVersion, (int?)maxVersion));
@@ -49,7 +52,7 @@ namespace EdFi.Roster.ChangeQueries.Services
 
             var deletesResponse =
                 await GetAllResources(
-                    $"{ApiRoutes.StaffsResource}/deletes", queryParams,
+                    $"{ApiRoute}/deletes", queryParams,
                     async (api, offset, limit) =>
                         await api.DeletesStaffsWithHttpInfoAsync(
                             offset, limit, (int?)minVersion, (int?)maxVersion));
@@ -64,11 +67,11 @@ namespace EdFi.Roster.ChangeQueries.Services
             }
 
             // Save latest change version 
-            await _changeQueryService.Save(maxVersion, ResourceTypes.Staff);
+            await _changeQueryService.Save(maxVersion, ResourceType);
 
             return new DataSyncResponseModel
             {
-                ResourceName = ResourceTypes.Staff,
+                ResourceName = ResourceType,
                 AddedRecordsCount = countAdded,
                 UpdatedRecordsCount = response.FullDataSet.Count - countAdded,
                 DeletedRecordsCount = countDeleted
