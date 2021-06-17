@@ -34,18 +34,23 @@ namespace EdFi.Roster.Services
 
         public async Task<ExtendedInfoResponse<List<TResource>>> GetAllResourcesWithExtendedInfoAsync()
         {
+            var queryParams = new Dictionary<string, string>();
+
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
             var offset = 0;
             var response = new ExtendedInfoResponse<List<TResource>>();
             int currResponseRecordCount = 0;
-            var queryParams = new Dictionary<string, string> { { "offset", offset.ToString() }, { "limit", limit.ToString() } };
+
             do
             {
                 var errorMessage = string.Empty;
+
                 queryParams["offset"] = offset.ToString();
                 queryParams["limit"] = limit.ToString();
+
                 var responseUri = _apiFacade.BuildResponseUri(ApiRoute, queryParams);
+
                 ApiResponse<List<TResource>> currentApiResponse = null;
                 try
                 {

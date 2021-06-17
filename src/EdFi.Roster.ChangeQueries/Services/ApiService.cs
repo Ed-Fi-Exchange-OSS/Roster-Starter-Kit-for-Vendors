@@ -95,29 +95,22 @@ namespace EdFi.Roster.ChangeQueries.Services
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
             var offset = 0;
-            var currResponseRecordCount = 0;
             var response = new ExtendedInfoResponse<List<T>>();
+            int currResponseRecordCount = 0;
 
             do
             {
                 var errorMessage = string.Empty;
 
-                if (!queryParams.ContainsKey("offset"))
-                    queryParams.Add("offset", offset.ToString());
-                else
-                    queryParams["offset"] = offset.ToString();
-
-                if(!queryParams.ContainsKey("limit"))
-                    queryParams.Add("limit", limit.ToString());
-                else
-                    queryParams["limit"] = limit.ToString();
+                queryParams["offset"] = offset.ToString();
+                queryParams["limit"] = limit.ToString();
 
                 var responseUri = _apiFacade.BuildResponseUri(apiRoute, queryParams);
 
                 ApiResponse<List<T>> currentApiResponse = null;
                 try
                 {
-                     currentApiResponse = await getPageAsync(api, offset, limit, (int)minChangeVersion, (int)maxChangeVersion);
+                    currentApiResponse = await getPageAsync(api, offset, limit, (int)minChangeVersion, (int)maxChangeVersion);
                 }
                 catch (ApiException exception)
                 {
@@ -134,7 +127,6 @@ namespace EdFi.Roster.ChangeQueries.Services
                 currResponseRecordCount = currentApiResponse.Data.Count;
                 offset += limit;
                 response = await _responseHandleService.Handle(currentApiResponse, response, responseUri, errorMessage);
-
             } while (currResponseRecordCount >= limit);
 
             return response;
