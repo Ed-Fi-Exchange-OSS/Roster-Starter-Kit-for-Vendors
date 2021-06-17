@@ -26,7 +26,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             _changeQueryService = changeQueryService;
         }
 
-        public async Task<DataSyncResponseModel> RetrieveAndSyncStudents(long minVersion, long maxVersion)
+        public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minVersion, long maxVersion)
         {
 
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
