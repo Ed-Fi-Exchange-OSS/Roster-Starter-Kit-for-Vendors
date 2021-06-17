@@ -18,7 +18,7 @@ namespace EdFi.Roster.Services
         {
         }
 
-        public async Task<ExtendedInfoResponse<List<LocalEducationAgency>>> GetAllLocalEducationAgenciesWithExtendedInfoAsync()
+        public async Task<ExtendedInfoResponse<List<LocalEducationAgency>>> GetAllResourcesWithExtendedInfoAsync()
         {
             return await GetAllResourcesWithExtendedInfoAsync(
                 ApiRoutes.LocalEducationAgenciesComposite,

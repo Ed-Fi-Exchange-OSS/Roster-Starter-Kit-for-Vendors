@@ -18,7 +18,7 @@ namespace EdFi.Roster.Services
         {
         }
 
-        public async Task<ExtendedInfoResponse<List<Staff>>> GetAllStaffWithExtendedInfoAsync()
+        public async Task<ExtendedInfoResponse<List<Staff>>> GetAllResourcesWithExtendedInfoAsync()
         {
             return await GetAllResourcesWithExtendedInfoAsync(
                 ApiRoutes.StaffsComposite,

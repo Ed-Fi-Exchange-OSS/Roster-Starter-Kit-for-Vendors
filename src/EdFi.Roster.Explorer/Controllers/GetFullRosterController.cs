@@ -35,7 +35,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [HttpGet("GetLeasAsync")]
         public async Task<IActionResult> GetLeasAsync()
         { 
-            var response = await _localEducationAgencyService.GetAllLocalEducationAgenciesWithExtendedInfoAsync();
+            var response = await _localEducationAgencyService.GetAllResourcesWithExtendedInfoAsync();
             await _localEducationAgencyService.Save(response.FullDataSet);
             return Ok(response.GeneralInfo);
         }
@@ -43,7 +43,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [HttpGet("GetSchoolsAsync")]
         public async Task<IActionResult> GetSchoolsAsync()
         {
-            var response = await _schoolService.GetAllSchoolsWithExtendedInfoAsync();
+            var response = await _schoolService.GetAllResourcesWithExtendedInfoAsync();
             await _schoolService.Save(response.FullDataSet);
             return Ok(response.GeneralInfo);
         }
@@ -51,7 +51,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [HttpGet("GetSectionsAsync")]
         public async Task<IActionResult> GetSectionsAsync()
         {
-            var response = await _sectionService.GetAllSectionsWithExtendedInfoAsync();
+            var response = await _sectionService.GetAllResourcesWithExtendedInfoAsync();
             await _sectionService.Save(response.FullDataSet);
             return Ok(response.GeneralInfo);
         }
@@ -59,7 +59,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [HttpGet("GetStaffAsync")]
         public async Task<IActionResult> GetStaffAsync()
         {
-            var response = await _staffService.GetAllStaffWithExtendedInfoAsync();
+            var response = await _staffService.GetAllResourcesWithExtendedInfoAsync();
             await _staffService.Save(response.FullDataSet);
             return Ok(response.GeneralInfo);
         }
@@ -67,7 +67,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [HttpGet("GetStudentsAsync")]
         public async Task<IActionResult> GetStudentsAsync()
         {
-            var response = await _studentService.GetAllStudentsWithExtendedInfoAsync();
+            var response = await _studentService.GetAllResourcesWithExtendedInfoAsync();
             await _studentService.Save(response.FullDataSet);
             return Ok(response.GeneralInfo);
         }

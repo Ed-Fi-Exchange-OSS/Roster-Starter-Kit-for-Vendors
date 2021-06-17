@@ -29,7 +29,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [ValidateApiConnection]
         public async Task<IActionResult> LoadSections()
         {
-            var response = await _sectionsService.GetAllSectionsWithExtendedInfoAsync();
+            var response = await _sectionsService.GetAllResourcesWithExtendedInfoAsync();
             await _sectionsService.Save(response.FullDataSet);
             response.IsExtendedInfoAvailable = true;
             return View("Index", response);

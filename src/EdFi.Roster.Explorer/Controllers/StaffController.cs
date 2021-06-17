@@ -29,7 +29,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [ValidateApiConnection]
         public async Task<IActionResult> LoadStaff()
         {
-            var response = await _staffService.GetAllStaffWithExtendedInfoAsync();
+            var response = await _staffService.GetAllResourcesWithExtendedInfoAsync();
             await _staffService.Save(response.FullDataSet);
             response.IsExtendedInfoAvailable = true;
             return View("Index", response);

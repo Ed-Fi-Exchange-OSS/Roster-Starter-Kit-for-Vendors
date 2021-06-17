@@ -28,7 +28,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [ValidateApiConnection]
         public async Task<IActionResult> LoadStudents()
         {
-            var response = await _studentService.GetAllStudentsWithExtendedInfoAsync();
+            var response = await _studentService.GetAllResourcesWithExtendedInfoAsync();
             await _studentService.Save(response.FullDataSet);
             response.IsExtendedInfoAvailable = true;
             return View("Index", response);
