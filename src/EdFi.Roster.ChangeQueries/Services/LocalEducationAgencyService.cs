@@ -39,10 +39,13 @@ namespace EdFi.Roster.ChangeQueries.Services
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync retrieved records to local db
-            var leas = response.FullDataSet.Select(lea =>
+            var records = response.FullDataSet.Select(x =>
                 new RosterLocalEducationAgencyResource
-                    {Content = JsonConvert.SerializeObject(lea), ResourceId = lea.Id}).ToList();
-            var addedRecords = await _dataService.AddOrUpdateAllAsync(leas);
+                {
+                    Content = JsonConvert.SerializeObject(x),
+                    ResourceId = x.Id
+                }).ToList();
+            var countAdded = await _dataService.AddOrUpdateAllAsync(records);
 
             var deletesResponse =
                 await GetAllResources(
@@ -52,12 +55,12 @@ namespace EdFi.Roster.ChangeQueries.Services
                             offset, limit, (int?) minVersion, (int?) maxVersion));
 
             // Sync deleted records to local db
-            var deletedLeasCount = 0;
+            var countDeleted = 0;
             if (deletesResponse.FullDataSet.Any())
             {
-                var deletedLeas = deletesResponse.FullDataSet.Select(lea => lea.Id).ToList();
-                await _dataService.DeleteAllAsync<RosterLocalEducationAgencyResource>(deletedLeas);
-                deletedLeasCount = deletedLeas.Count;
+                var resourceIds = deletesResponse.FullDataSet.Select(x => x.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterLocalEducationAgencyResource>(resourceIds);
+                countDeleted = resourceIds.Count;
             }
 
             // Save latest change version 
@@ -66,9 +69,9 @@ namespace EdFi.Roster.ChangeQueries.Services
             return new DataSyncResponseModel
             {
                 ResourceName = ResourceTypes.LocalEducationAgencies,
-                AddedRecordsCount = addedRecords,
-                UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
-                DeletedRecordsCount = deletedLeasCount
+                AddedRecordsCount = countAdded,
+                UpdatedRecordsCount = response.FullDataSet.Count - countAdded,
+                DeletedRecordsCount = countDeleted
             };
         }
     }

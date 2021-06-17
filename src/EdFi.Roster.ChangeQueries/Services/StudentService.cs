@@ -28,7 +28,6 @@ namespace EdFi.Roster.ChangeQueries.Services
 
         public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minVersion, long maxVersion)
         {
-
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
                 { "maxChangeVersion", maxVersion.ToString() } };
 
@@ -40,10 +39,13 @@ namespace EdFi.Roster.ChangeQueries.Services
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync retrieved records to local db
-            var students = response.FullDataSet.Select(student =>
+            var records = response.FullDataSet.Select(x =>
                 new RosterStudentResource
-                { Content = JsonConvert.SerializeObject(student), ResourceId = student.Id }).ToList();
-            var addedRecords = await _dataService.AddOrUpdateAllAsync(students);
+                {
+                    Content = JsonConvert.SerializeObject(x),
+                    ResourceId = x.Id
+                }).ToList();
+            var countAdded = await _dataService.AddOrUpdateAllAsync(records);
 
             var deletesResponse =
                 await GetAllResources(
@@ -53,12 +55,12 @@ namespace EdFi.Roster.ChangeQueries.Services
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync deleted records to local db
-            var deletedStudentsCount = 0;
+            var countDeleted = 0;
             if (deletesResponse.FullDataSet.Any())
             {
-                var deletedStudents = deletesResponse.FullDataSet.Select(student => student.Id).ToList();
-                await _dataService.DeleteAllAsync<RosterStudentResource>(deletedStudents);
-                deletedStudentsCount = deletedStudents.Count;
+                var resourceIds = deletesResponse.FullDataSet.Select(x => x.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterStudentResource>(resourceIds);
+                countDeleted = resourceIds.Count;
             }
 
             // Save latest change version 
@@ -67,9 +69,9 @@ namespace EdFi.Roster.ChangeQueries.Services
             return new DataSyncResponseModel
             {
                 ResourceName = ResourceTypes.Students,
-                AddedRecordsCount = addedRecords,
-                UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
-                DeletedRecordsCount = deletedStudentsCount
+                AddedRecordsCount = countAdded,
+                UpdatedRecordsCount = response.FullDataSet.Count - countAdded,
+                DeletedRecordsCount = countDeleted
             };
         }
     }

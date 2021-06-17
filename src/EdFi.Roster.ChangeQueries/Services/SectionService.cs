@@ -39,9 +39,13 @@ namespace EdFi.Roster.ChangeQueries.Services
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync retrieved records to local db
-            var sections = response.FullDataSet.Select(section =>
-                new RosterSectionResource { Content = JsonConvert.SerializeObject(section), ResourceId = section.Id }).ToList();
-            var addedRecords = await _dataService.AddOrUpdateAllAsync(sections);
+            var records = response.FullDataSet.Select(x =>
+                new RosterSectionResource
+                {
+                    Content = JsonConvert.SerializeObject(x),
+                    ResourceId = x.Id
+                }).ToList();
+            var countAdded = await _dataService.AddOrUpdateAllAsync(records);
 
             var deletesResponse =
                 await GetAllResources(
@@ -51,12 +55,12 @@ namespace EdFi.Roster.ChangeQueries.Services
                             offset, limit, (int?)minVersion, (int?)maxVersion));
 
             // Sync deleted records to local db
-            var deletedSectionsCount = 0;
+            var countDeleted = 0;
             if (deletesResponse.FullDataSet.Any())
             {
-                var deletedSections = deletesResponse.FullDataSet.Select(section => section.Id).ToList();
-                await _dataService.DeleteAllAsync<RosterSectionResource>(deletedSections);
-                deletedSectionsCount = deletedSections.Count;
+                var resourceIds = deletesResponse.FullDataSet.Select(x => x.Id).ToList();
+                await _dataService.DeleteAllAsync<RosterSectionResource>(resourceIds);
+                countDeleted = resourceIds.Count;
             }
 
             // Save latest change version 
@@ -65,9 +69,9 @@ namespace EdFi.Roster.ChangeQueries.Services
             return new DataSyncResponseModel
             {
                 ResourceName = ResourceTypes.Sections,
-                AddedRecordsCount = addedRecords,
-                UpdatedRecordsCount = response.FullDataSet.Count - addedRecords,
-                DeletedRecordsCount = deletedSectionsCount
+                AddedRecordsCount = countAdded,
+                UpdatedRecordsCount = response.FullDataSet.Count - countAdded,
+                DeletedRecordsCount = countDeleted
             };
         }
     }
