@@ -45,12 +45,9 @@ namespace EdFi.Roster.ChangeQueries.Services
 
         protected abstract string GetResourceId(TResource resource);
 
-        public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minVersion, long maxVersion)
+        public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minChangeVersion, long maxChangeVersion)
         {
-            var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
-                { "maxChangeVersion", maxVersion.ToString() } };
-
-            var response = await GetAllResources(ApiRoute, queryParams, (int)minVersion, (int)maxVersion, GetChangesAsync);
+            var response = await GetAllResources(ApiRoute, minChangeVersion, maxChangeVersion, GetChangesAsync);
 
             // Sync retrieved records to local db
             var records = response.FullDataSet.Select(x =>
@@ -61,7 +58,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 }).ToList();
             var countAdded = await _dataService.AddOrUpdateAllAsync(records);
 
-            var deletesResponse = await GetAllResources($"{ApiRoute}/deletes", queryParams, (int)minVersion, (int)maxVersion, GetDeletionsAsync);
+            var deletesResponse = await GetAllResources($"{ApiRoute}/deletes", minChangeVersion, maxChangeVersion, GetDeletionsAsync);
 
             // Sync deleted records to local db
             var countDeleted = 0;
@@ -73,7 +70,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             }
 
             // Save latest change version 
-            await _changeQueryService.Save(maxVersion, ResourceType);
+            await _changeQueryService.Save(maxChangeVersion, ResourceType);
 
             return new DataSyncResponseModel
             {
@@ -85,18 +82,22 @@ namespace EdFi.Roster.ChangeQueries.Services
         }
 
         private async Task<ExtendedInfoResponse<List<T>>> GetAllResources<T>(
-            string apiRoute, Dictionary<string,string> queryParams,
-            int minChangeVersion, int maxChangeVersion,
+            string apiRoute, long minChangeVersion, long maxChangeVersion,
             GetPageAsync<T> getPageAsync)
             where T : class
         {
+            var queryParams = new Dictionary<string, string>
+            {
+                {"minChangeVersion", minChangeVersion.ToString()},
+                {"maxChangeVersion", maxChangeVersion.ToString()}
+            };
+
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
             var offset = 0;
             var currResponseRecordCount = 0;
             var response = new ExtendedInfoResponse<List<T>>();
 
-            queryParams ??= new Dictionary<string, string>();
             do
             {
                 var errorMessage = string.Empty;
@@ -116,7 +117,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 ApiResponse<List<T>> currentApiResponse = null;
                 try
                 {
-                     currentApiResponse = await getPageAsync(api, offset, limit, minChangeVersion, maxChangeVersion);
+                     currentApiResponse = await getPageAsync(api, offset, limit, (int)minChangeVersion, (int)maxChangeVersion);
                 }
                 catch (ApiException exception)
                 {
@@ -124,7 +125,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                     if (exception.ErrorCode.Equals((int) HttpStatusCode.Unauthorized))
                     {
                         api = await _apiFacade.GetApiClassInstance<TApiAccessor>(true);
-                        currentApiResponse = await getPageAsync(api, offset, limit, minChangeVersion, maxChangeVersion);
+                        currentApiResponse = await getPageAsync(api, offset, limit, (int)minChangeVersion, (int)maxChangeVersion);
                         errorMessage = string.Empty;
                     }
                 }
