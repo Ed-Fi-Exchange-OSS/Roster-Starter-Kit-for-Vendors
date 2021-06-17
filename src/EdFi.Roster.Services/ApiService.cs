@@ -28,10 +28,11 @@ namespace EdFi.Roster.Services
             _apiFacade = apiFacade;
         }
 
-        protected delegate Task<ApiResponse<List<TResource>>> GetPageAsync(TApiAccessor api, int offset, int limit);
+        protected abstract string ApiRoute { get; }
 
-        protected async Task<ExtendedInfoResponse<List<TResource>>> GetAllResourcesWithExtendedInfoAsync(
-            string apiRoute, GetPageAsync getPageAsync)
+        protected abstract Task<ApiResponse<List<TResource>>> GetPageAsync(TApiAccessor api, int offset, int limit);
+
+        public async Task<ExtendedInfoResponse<List<TResource>>> GetAllResourcesWithExtendedInfoAsync()
         {
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
             var limit = 100;
@@ -44,11 +45,11 @@ namespace EdFi.Roster.Services
                 var errorMessage = string.Empty;
                 queryParams["offset"] = offset.ToString();
                 queryParams["limit"] = limit.ToString();
-                var responseUri = _apiFacade.BuildResponseUri(apiRoute, queryParams);
+                var responseUri = _apiFacade.BuildResponseUri(ApiRoute, queryParams);
                 ApiResponse<List<TResource>> currentApiResponse = null;
                 try
                 {
-                    currentApiResponse = await getPageAsync(api, offset, limit);
+                    currentApiResponse = await GetPageAsync(api, offset, limit);
                 }
                 catch (ApiException exception)
                 {
@@ -56,7 +57,7 @@ namespace EdFi.Roster.Services
                     if (exception.ErrorCode.Equals((int)HttpStatusCode.Unauthorized))
                     {
                         api = await _apiFacade.GetApiClassInstance<TApiAccessor>(true);
-                        currentApiResponse = await getPageAsync(api, offset, limit);
+                        currentApiResponse = await GetPageAsync(api, offset, limit);
                         errorMessage = string.Empty;
                     }
                 }
