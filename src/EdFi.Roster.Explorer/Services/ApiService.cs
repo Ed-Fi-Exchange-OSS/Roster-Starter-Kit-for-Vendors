@@ -7,7 +7,7 @@ using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Client;
 using Newtonsoft.Json;
 
-namespace EdFi.Roster.Services
+namespace EdFi.Roster.Explorer.Services
 {
     public abstract class ApiService<TApiAccessor, TResource, TRecord>
         where TApiAccessor : IApiAccessor

@@ -1,4 +1,4 @@
-﻿namespace EdFi.Roster.Services
+﻿namespace EdFi.Roster.Explorer.Services
 {
     public interface IMarkerForEdFiRosterServices
     {

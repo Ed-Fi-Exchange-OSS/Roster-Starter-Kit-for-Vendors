@@ -1,9 +1,9 @@
-using EdFi.Roster.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EdFi.Roster.Models;
 
-namespace EdFi.Roster.Services
+namespace EdFi.Roster.Explorer.Services
 {
     public class RosterService
     {

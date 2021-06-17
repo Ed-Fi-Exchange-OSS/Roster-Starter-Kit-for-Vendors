@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using EdFi.Roster.Explorer.ActionFilters;
+using EdFi.Roster.Explorer.Services;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
-using EdFi.Roster.Services;
 
 namespace EdFi.Roster.Explorer.Controllers
 {
