@@ -11,18 +11,19 @@ using Newtonsoft.Json;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class StudentService
+    public class StudentService : ApiService
     {
         private readonly IDataService _dataService;
-        private readonly ApiService _apiService;
         private readonly ChangeQueryService _changeQueryService;
 
-        public StudentService(IDataService dataService
-            , ApiService apiService
-            , ChangeQueryService changeQueryService)
+        public StudentService(
+            IDataService dataService,
+            IResponseHandleService responseHandleService,
+            IApiFacade apiFacade,
+            ChangeQueryService changeQueryService)
+            : base(responseHandleService, apiFacade)
         {
             _dataService = dataService;
-            _apiService = apiService;
             _changeQueryService = changeQueryService;
         }
 
@@ -33,7 +34,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 { "maxChangeVersion", maxVersion.ToString() } };
 
             var response =
-                await _apiService.GetAllResources<StudentsApi, EdFiStudent>(
+                await GetAllResources<StudentsApi, EdFiStudent>(
                     $"{ApiRoutes.StudentsResource}", queryParams,
                     async (api, offset, limit) =>
                         await api.GetStudentsWithHttpInfoAsync(
@@ -46,7 +47,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             var addedRecords = await _dataService.AddOrUpdateAllAsync(students);
 
             var deletesResponse =
-                await _apiService.GetAllResources<StudentsApi, DeletedResource>(
+                await GetAllResources<StudentsApi, DeletedResource>(
                     $"{ApiRoutes.StudentsResource}/deletes", queryParams,
                     async (api, offset, limit) =>
                         await api.DeletesStudentsWithHttpInfoAsync(

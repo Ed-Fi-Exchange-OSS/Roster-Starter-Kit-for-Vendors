@@ -11,18 +11,19 @@ using Newtonsoft.Json;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class LocalEducationAgencyService
+    public class LocalEducationAgencyService : ApiService
     {
         private readonly IDataService _dataService;
-        private readonly ApiService _apiService;
         private readonly ChangeQueryService _changeQueryService;
 
-        public LocalEducationAgencyService(IDataService dataService
-            , ApiService apiService
-            , ChangeQueryService changeQueryService)
+        public LocalEducationAgencyService(
+            IDataService dataService,
+            IResponseHandleService responseHandleService,
+            IApiFacade apiFacade,
+            ChangeQueryService changeQueryService)
+            : base(responseHandleService, apiFacade)
         {
             _dataService = dataService;
-            _apiService = apiService;
             _changeQueryService = changeQueryService;
         }
 
@@ -32,7 +33,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 { "maxChangeVersion", maxVersion.ToString() } };
 
             var response =
-                await _apiService.GetAllResources<LocalEducationAgenciesApi, EdFiLocalEducationAgency>(
+                await GetAllResources<LocalEducationAgenciesApi, EdFiLocalEducationAgency>(
                     $"{ApiRoutes.LocalEducationAgenciesResource}", queryParams,
                     async (api, offset, limit) =>
                         await api.GetLocalEducationAgenciesWithHttpInfoAsync(
@@ -45,7 +46,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             var addedRecords = await _dataService.AddOrUpdateAllAsync(leas);
 
             var deletesResponse =
-                await _apiService.GetAllResources<LocalEducationAgenciesApi, DeletedResource>(
+                await GetAllResources<LocalEducationAgenciesApi, DeletedResource>(
                     $"{ApiRoutes.LocalEducationAgenciesResource}/deletes", queryParams,
                     async (api, offset, limit) =>
                         await api.DeletesLocalEducationAgenciesWithHttpInfoAsync(

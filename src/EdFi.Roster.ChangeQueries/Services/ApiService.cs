@@ -7,7 +7,7 @@ using EdFi.Roster.Sdk.Client;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class ApiService
+    public abstract class ApiService
     {
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
@@ -15,14 +15,14 @@ namespace EdFi.Roster.ChangeQueries.Services
         public delegate Task<ApiResponse<List<TResource>>> GetPageAsync<in TApiAccessor, TResource>(TApiAccessor api, int offset, int limit)
             where TApiAccessor : IApiAccessor;
 
-        public ApiService(IResponseHandleService responseHandleService
+        protected ApiService(IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
         {
             _responseHandleService = responseHandleService;
             _apiFacade = apiFacade;
         }
 
-        public async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TApiAccessor, TResource>(
+        protected async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TApiAccessor, TResource>(
             string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<TApiAccessor, TResource> getPageAsync)
             where TApiAccessor : IApiAccessor
             where TResource : class
