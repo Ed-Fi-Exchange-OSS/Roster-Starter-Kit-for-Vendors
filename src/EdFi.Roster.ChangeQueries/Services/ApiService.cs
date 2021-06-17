@@ -7,13 +7,13 @@ using EdFi.Roster.Sdk.Client;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public abstract class ApiService
+    public abstract class ApiService<TApiAccessor>
+        where TApiAccessor : IApiAccessor
     {
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public delegate Task<ApiResponse<List<TResource>>> GetPageAsync<in TApiAccessor, TResource>(TApiAccessor api, int offset, int limit)
-            where TApiAccessor : IApiAccessor;
+        public delegate Task<ApiResponse<List<TResource>>> GetPageAsync<TResource>(TApiAccessor api, int offset, int limit);
 
         protected ApiService(IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
@@ -22,9 +22,8 @@ namespace EdFi.Roster.ChangeQueries.Services
             _apiFacade = apiFacade;
         }
 
-        protected async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TApiAccessor, TResource>(
-            string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<TApiAccessor, TResource> getPageAsync)
-            where TApiAccessor : IApiAccessor
+        protected async Task<ExtendedInfoResponse<List<TResource>>> GetAllResources<TResource>(
+            string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<TResource> getPageAsync)
             where TResource : class
         {
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();

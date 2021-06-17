@@ -6,12 +6,11 @@ using EdFi.Roster.ChangeQueries.Models;
 using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
-using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class LocalEducationAgencyService : ApiService
+    public class LocalEducationAgencyService : ApiService<LocalEducationAgenciesApi>
     {
         private readonly IDataService _dataService;
         private readonly ChangeQueryService _changeQueryService;
@@ -33,7 +32,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 { "maxChangeVersion", maxVersion.ToString() } };
 
             var response =
-                await GetAllResources<LocalEducationAgenciesApi, EdFiLocalEducationAgency>(
+                await GetAllResources(
                     $"{ApiRoutes.LocalEducationAgenciesResource}", queryParams,
                     async (api, offset, limit) =>
                         await api.GetLocalEducationAgenciesWithHttpInfoAsync(
@@ -46,7 +45,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             var addedRecords = await _dataService.AddOrUpdateAllAsync(leas);
 
             var deletesResponse =
-                await GetAllResources<LocalEducationAgenciesApi, DeletedResource>(
+                await GetAllResources(
                     $"{ApiRoutes.LocalEducationAgenciesResource}/deletes", queryParams,
                     async (api, offset, limit) =>
                         await api.DeletesLocalEducationAgenciesWithHttpInfoAsync(

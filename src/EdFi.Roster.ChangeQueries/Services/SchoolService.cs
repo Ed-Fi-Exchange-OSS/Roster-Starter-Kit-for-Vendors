@@ -6,12 +6,11 @@ using EdFi.Roster.ChangeQueries.Models;
 using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
-using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
-    public class SchoolService : ApiService
+    public class SchoolService : ApiService<SchoolsApi>
     {
         private readonly IDataService _dataService;
         private readonly ChangeQueryService _changeQueryService;
@@ -33,7 +32,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 { "maxChangeVersion", maxVersion.ToString() } };
 
             var response =
-                await GetAllResources<SchoolsApi, EdFiSchool>(
+                await GetAllResources(
                     $"{ApiRoutes.SchoolsResource}", queryParams,
                     async (api, offset, limit) =>
                         await api.GetSchoolsWithHttpInfoAsync(
@@ -45,7 +44,7 @@ namespace EdFi.Roster.ChangeQueries.Services
             var addedRecords = await _dataService.AddOrUpdateAllAsync(schools);
 
             var deletesResponse =
-                await GetAllResources<SchoolsApi, DeletedResource>(
+                await GetAllResources(
                     $"{ApiRoutes.SchoolsResource}/deletes", queryParams,
                     async (api, offset, limit) =>
                         await api.DeletesSchoolsWithHttpInfoAsync(
