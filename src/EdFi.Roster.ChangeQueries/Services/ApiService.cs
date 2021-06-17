@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EdFi.Common;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Client;
+using EdFi.Roster.Sdk.Models.Resources;
 
 namespace EdFi.Roster.ChangeQueries.Services
 {
@@ -15,7 +16,7 @@ namespace EdFi.Roster.ChangeQueries.Services
         private readonly IResponseHandleService _responseHandleService;
         private readonly IApiFacade _apiFacade;
 
-        public delegate Task<ApiResponse<List<T>>> GetPageAsync<T>(TApiAccessor api, int offset, int limit);
+        protected delegate Task<ApiResponse<List<T>>> GetPageAsync<T>(TApiAccessor api, int offset, int limit, int minChangeVersion, int maxChangeVersion);
 
         protected ApiService(IResponseHandleService responseHandleService
             , IApiFacade apiFacade)
@@ -27,8 +28,13 @@ namespace EdFi.Roster.ChangeQueries.Services
         protected abstract string ApiRoute { get; }
         protected abstract string ResourceType { get; }
 
+        protected abstract Task<ApiResponse<List<TResource>>> GetChangesAsync(TApiAccessor api, int offset, int limit, int minChangeVersion, int maxChangeVersion);
+        protected abstract Task<ApiResponse<List<DeletedResource>>> GetDeletionsAsync(TApiAccessor api, int offset, int limit, int minChangeVersion, int maxChangeVersion);
+
         protected async Task<ExtendedInfoResponse<List<T>>> GetAllResources<T>(
-            string apiRoute, Dictionary<string,string> queryParams, GetPageAsync<T> getPageAsync)
+            string apiRoute, Dictionary<string,string> queryParams,
+            int minChangeVersion, int maxChangeVersion,
+            GetPageAsync<T> getPageAsync)
             where T : class
         {
             var api = await _apiFacade.GetApiClassInstance<TApiAccessor>();
@@ -57,7 +63,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 ApiResponse<List<T>> currentApiResponse = null;
                 try
                 {
-                     currentApiResponse = await getPageAsync(api, offset, limit);
+                     currentApiResponse = await getPageAsync(api, offset, limit, minChangeVersion, maxChangeVersion);
                 }
                 catch (ApiException exception)
                 {
@@ -65,7 +71,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                     if (exception.ErrorCode.Equals((int) HttpStatusCode.Unauthorized))
                     {
                         api = await _apiFacade.GetApiClassInstance<TApiAccessor>(true);
-                        currentApiResponse = await getPageAsync(api, offset, limit);
+                        currentApiResponse = await getPageAsync(api, offset, limit, minChangeVersion, maxChangeVersion);
                         errorMessage = string.Empty;
                     }
                 }

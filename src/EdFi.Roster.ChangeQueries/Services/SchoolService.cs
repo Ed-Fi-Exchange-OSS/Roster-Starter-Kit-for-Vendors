@@ -6,6 +6,7 @@ using EdFi.Roster.ChangeQueries.Models;
 using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Api.Resources;
+using EdFi.Roster.Sdk.Client;
 using EdFi.Roster.Sdk.Models.Resources;
 using Newtonsoft.Json;
 
@@ -28,19 +29,21 @@ namespace EdFi.Roster.ChangeQueries.Services
         }
 
         protected override string ApiRoute => ApiRoutes.SchoolsResource;
+
         protected override string ResourceType => ResourceTypes.Schools;
+
+        protected override async Task<ApiResponse<List<EdFiSchool>>> GetChangesAsync(SchoolsApi api, int offset, int limit, int minChangeVersion, int maxChangeVersion)
+            => await api.GetSchoolsWithHttpInfoAsync(offset, limit, minChangeVersion, maxChangeVersion);
+
+        protected override async Task<ApiResponse<List<DeletedResource>>> GetDeletionsAsync(SchoolsApi api, int offset, int limit, int minChangeVersion, int maxChangeVersion)
+            => await api.DeletesSchoolsWithHttpInfoAsync(offset, limit, minChangeVersion, maxChangeVersion);
 
         public async Task<DataSyncResponseModel> RetrieveAndSyncResources(long minVersion, long maxVersion)
         {
             var queryParams = new Dictionary<string, string> { { "minChangeVersion", minVersion.ToString() },
                 { "maxChangeVersion", maxVersion.ToString() } };
 
-            var response =
-                await GetAllResources(
-                    $"{ApiRoute}", queryParams,
-                    async (api, offset, limit) =>
-                        await api.GetSchoolsWithHttpInfoAsync(
-                            offset, limit, (int?)minVersion, (int?)maxVersion));
+            var response = await GetAllResources(ApiRoute, queryParams, (int)minVersion, (int)maxVersion, GetChangesAsync);
 
             // Sync retrieved records to local db
             var records = response.FullDataSet.Select(x =>
@@ -51,12 +54,7 @@ namespace EdFi.Roster.ChangeQueries.Services
                 }).ToList();
             var countAdded = await _dataService.AddOrUpdateAllAsync(records);
 
-            var deletesResponse =
-                await GetAllResources(
-                    $"{ApiRoute}/deletes", queryParams,
-                    async (api, offset, limit) =>
-                        await api.DeletesSchoolsWithHttpInfoAsync(
-                            offset, limit, (int?)minVersion, (int?)maxVersion));
+            var deletesResponse = await GetAllResources($"{ApiRoute}/deletes", queryParams, (int)minVersion, (int)maxVersion, GetDeletionsAsync);
 
             // Sync deleted records to local db
             var countDeleted = 0;
