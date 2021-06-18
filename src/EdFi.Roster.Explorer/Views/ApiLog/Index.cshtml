@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ApiLogEntry>
+@model IEnumerable<ApiLogEntry>
 
 @{
     ViewData["Title"] = "API Call Logs";
@@ -32,16 +32,16 @@
         {
             <tr class="@(item.Uri.Contains("oauth/token") ? "parent-row authentication-request" : "parent-row")">
                 <td>
-                    @Html.DisplayFor(modelItem => item.LogDateTime)
+                    @item.LogDateTime
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StatusCode)
+                    @item.StatusCode
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Method)
+                    @item.Method
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Uri)
+                    @item.Uri
                 </td>
                 <td style="text-align:justify">
                     <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
@@ -62,10 +62,10 @@
 </div>
 @section Scripts {
     <script>
-        var toggleAuthApiCalls = function() {
+        var toggleAuthApiCalls = function () {
             if (this.checked) {
                 $(".authentication-request").hide("slow");
-                $(".authentication-request").each(function() {
+                $(".authentication-request").each(function () {
                     $(this).removeClass("expand");
                     $(this).next("tr").hide("slow");
                 });

@@ -1,4 +1,4 @@
-﻿@model ExtendedInfoResponse<List<Staff>>
+@model ExtendedInfoResponse<List<Staff>>
 
 @{
     ViewData["Title"] = "Staff";
@@ -22,7 +22,7 @@ Load / Reload
     <table class="table">
         <thead>
             <tr>
-                <th>Staff UniqueId</th>
+                <th>Staff Unique Id</th>
                 <th>First Name</th>
                 <th>Last Surname</th>
                 <th>Staff Classification</th>
@@ -35,24 +35,44 @@ Load / Reload
             {
                 <tr class="parent-row">
                     <td>
-                        @Html.DisplayFor(modelItem => item.StaffUniqueId)
+                        @item.StaffUniqueId
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
+                        @item.FirstName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastSurname)
+                        @item.LastSurname
                     </td>
                     <td>
                         @{
-                            var tempDescriptor = item.EducationOrganizationAssignments[0].StaffClassificationDescriptor;
-                            tempDescriptor = tempDescriptor.Substring(tempDescriptor.IndexOf("#", StringComparison.InvariantCulture) + 1);
+                            string staffClassifications;
+
+                            if (item.EducationOrganizationAssignments == null)
+                            {
+                                staffClassifications = "";
+                            }
+                            else
+                            {
+                                staffClassifications = string.Join(", ",
+                                    item.EducationOrganizationAssignments
+                                        .Select(assignment => assignment?.StaffClassificationDescriptor ?? "")
+                                        .Select(classification =>
+                                        {
+                                            var hashIndex = classification.IndexOf("#", StringComparison.InvariantCulture);
+                                            if (hashIndex >= 0)
+                                            {
+                                                classification = classification.Substring(hashIndex + 1);
+                                            }
+
+                                            return classification;
+                                        }));
+                            }
                         }
 
-                        @Html.DisplayFor(modelItem => tempDescriptor)
+                        @staffClassifications
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @item.Id
                     </td>
                     <td style="text-align:justify">
                         <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>

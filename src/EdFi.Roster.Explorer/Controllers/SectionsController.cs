@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using EdFi.Roster.Explorer.ActionFilters;
 using EdFi.Roster.Models;
@@ -22,7 +21,7 @@ namespace EdFi.Roster.Explorer.Controllers
             var sections = await _sectionsService.ReadAllAsync();
             return View(new ExtendedInfoResponse<List<Section>>
             {
-                FullDataSet = sections.ToList(),
+                FullDataSet = sections,
                 IsExtendedInfoAvailable = false
             });
         }

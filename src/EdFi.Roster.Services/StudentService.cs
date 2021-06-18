@@ -26,7 +26,7 @@ namespace EdFi.Roster.Services
             _apiFacade = apiFacade;
         }
 
-        public async Task<IEnumerable<Student>> ReadAllAsync()
+        public async Task<List<Student>> ReadAllAsync()
         {
             var students = await _dataService.ReadAllAsync<RosterStudentComposite>();
             return students.Select(st => JsonConvert.DeserializeObject<Student>(st.Content)).ToList();

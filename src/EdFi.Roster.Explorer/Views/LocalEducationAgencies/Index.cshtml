@@ -1,4 +1,4 @@
-﻿@model ExtendedInfoResponse<List<LocalEducationAgency>>
+@model ExtendedInfoResponse<List<LocalEducationAgency>>
 
 @{
     ViewData["Title"] = "Local Education Agencies";
@@ -33,13 +33,13 @@ Load / Reload
             {
                 <tr class="parent-row">
                     <td>
-                        @Html.DisplayFor(modelItem => item.LocalEducationAgencyId)
+                        @item.LocalEducationAgencyId
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.NameOfInstitution)
+                        @item.NameOfInstitution
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @item.Id
                     </td>
                     <td style="text-align:justify">
                         <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>

@@ -1,4 +1,4 @@
-﻿@model EdFi.Roster.Explorer.Models.RosterViewModel
+@model EdFi.Roster.Explorer.Models.RosterViewModel
 @{
     ViewData["Title"] = "Ed-Fi Roster - Hierarchy View (By Staff)";
 }
@@ -12,14 +12,14 @@
     }
 </style>
 <div>
-    <a class="nav-link p-0" asp-area="" asp-controller="Roster" asp-action="Index"><- Back to Rosters</a>
+    <a class="nav-link p-0" asp-area="" asp-controller="Roster" asp-action="Index">&lt;- Back to Rosters</a>
 </div>
 <h1>@ViewData["Title"]</h1>
 
-<p>Use this page to view the Full Hirarcy View of the Roster.</p>
+<p>Use this page to view the Full Hierarchy View of the Roster.</p>
 
 <form>
-    <h3>@Model.Roster.LocalEducationAgency.NameOfInstitution</h3>
+    <h3>@Model.Roster.LocalEducationAgencyName</h3>
     <div class="just-padding">
         <div class="list-group pl-2 list-group-root well">
             @for (int i = 0; i < Model.Roster.SchoolRosters.Count; i++)
@@ -28,7 +28,7 @@
                     <i class="glyphicon glyphicon-chevron-right"></i>@Model.Roster.SchoolRosters[i].School.NameOfInstitution
                 </a>
                 <div class="list-group pl-2 collapse" id="roster-@i">
-                    @for (int j = 0; j < @Model.Roster.SchoolRosters[i].StaffSections.Count; j++)
+                    @for (int j = 0; j < Model.Roster.SchoolRosters[i].StaffSections.Count; j++)
                     {
                         <a href="#roster-@i-@j" class="list-group-item" data-toggle="collapse">
                             <i class="glyphicon glyphicon-chevron-right"></i>
@@ -37,7 +37,7 @@
                         </a>
                         <div class="list-group pl-2 collapse" id="roster-@i-@j">
 
-                            @for (int x = 0; x < @Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull.Count; x++)
+                            @for (int x = 0; x < Model.Roster.SchoolRosters[i].StaffSections[j].SectionsFull.Count; x++)
                             {
                                 <a href="#roster-@i-@j-@x" class="list-group-item" data-toggle="collapse">
                                     <i class="glyphicon glyphicon-chevron-right"></i>

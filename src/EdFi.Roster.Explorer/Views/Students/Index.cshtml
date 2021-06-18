@@ -1,4 +1,4 @@
-﻿@model ExtendedInfoResponse<List<Student>>
+@model ExtendedInfoResponse<List<Student>>
 
 @{
     ViewData["Title"] = "Students";
@@ -21,9 +21,9 @@ Load / Reload
     <table class="table">
         <thead>
             <tr>
-                <th>StudentUniqueId</th>
-                <th>FirstName</th>
-                <th>LastSurname</th>
+                <th>Student Unique Id</th>
+                <th>First Name</th>
+                <th>Last Surname</th>
                 <th>Api Resource Id</th>
                 <th>Json Payload</th>
             </tr>
@@ -33,16 +33,16 @@ Load / Reload
             {
                 <tr class="parent-row">
                     <td>
-                        @Html.DisplayFor(modelItem => item.StudentUniqueId)
+                        @item.StudentUniqueId
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FirstName)
+                        @item.FirstName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.LastSurname)
+                        @item.LastSurname
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @item.Id
                     </td>
                     <td style="text-align: justify">
                         <span class="sign btn btn-outline-primary" style="margin-right: 5px"></span>
