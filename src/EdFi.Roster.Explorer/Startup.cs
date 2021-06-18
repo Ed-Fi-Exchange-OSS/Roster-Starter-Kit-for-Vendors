@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using EdFi.Common;
 using EdFi.Roster.Data;
-using EdFi.Roster.Services;
+using EdFi.Roster.Explorer.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

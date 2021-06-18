@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EdFi.Roster.Explorer.Models;
-using EdFi.Roster.Services;
+using EdFi.Roster.Explorer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.Explorer.Controllers

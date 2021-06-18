@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.Explorer", "EdFi.Roster.Explorer\EdFi.Roster.Explorer.csproj", "{9ED9BF65-CC4F-40D8-A7F5-0A6C84789ACE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.Services", "EdFi.Roster.Services\EdFi.Roster.Services.csproj", "{ED110C64-3163-41FC-AB15-50DFC9A4B8F9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.Models", "EdFi.Roster.Models\EdFi.Roster.Models.csproj", "{00506D24-8278-409A-A0CA-75A7715F341E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EdFi.Roster.Data", "EdFi.Roster.Data\EdFi.Roster.Data.csproj", "{53A519A1-015C-49C9-956B-164D8BDA50BB}"
@@ -27,10 +25,6 @@ Global
 		{9ED9BF65-CC4F-40D8-A7F5-0A6C84789ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9ED9BF65-CC4F-40D8-A7F5-0A6C84789ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9ED9BF65-CC4F-40D8-A7F5-0A6C84789ACE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED110C64-3163-41FC-AB15-50DFC9A4B8F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED110C64-3163-41FC-AB15-50DFC9A4B8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED110C64-3163-41FC-AB15-50DFC9A4B8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED110C64-3163-41FC-AB15-50DFC9A4B8F9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00506D24-8278-409A-A0CA-75A7715F341E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00506D24-8278-409A-A0CA-75A7715F341E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00506D24-8278-409A-A0CA-75A7715F341E}.Release|Any CPU.ActiveCfg = Release|Any CPU

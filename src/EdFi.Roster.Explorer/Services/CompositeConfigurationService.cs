@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using EdFi.Common;
 using EdFi.Roster.Sdk.Client;
 
-namespace EdFi.Roster.Services
+namespace EdFi.Roster.Explorer.Services
 {
     public class CompositeConfigurationService : IConfigurationService
     {

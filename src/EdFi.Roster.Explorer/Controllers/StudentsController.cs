@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EdFi.Roster.Explorer.ActionFilters;
+using EdFi.Roster.Explorer.Services;
 using EdFi.Roster.Models;
 using EdFi.Roster.Sdk.Models.EnrollmentComposites;
-using EdFi.Roster.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EdFi.Roster.Explorer.Controllers
@@ -28,7 +28,7 @@ namespace EdFi.Roster.Explorer.Controllers
         [ValidateApiConnection]
         public async Task<IActionResult> LoadStudents()
         {
-            var response = await _studentService.GetAllStudentsWithExtendedInfoAsync();
+            var response = await _studentService.GetAllResourcesWithExtendedInfoAsync();
             await _studentService.Save(response.FullDataSet);
             response.IsExtendedInfoAvailable = true;
             return View("Index", response);

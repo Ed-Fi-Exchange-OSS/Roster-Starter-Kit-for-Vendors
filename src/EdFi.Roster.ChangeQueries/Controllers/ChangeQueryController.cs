@@ -96,12 +96,12 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             return resourceType switch
             {
                 ResourceTypes.LocalEducationAgencies =>
-                    await _localEducationAgencyService.RetrieveAndSyncLocalEducationAgencies(minVersion,
+                    await _localEducationAgencyService.RetrieveAndSyncResources(minVersion,
                         availableVersion),
-                ResourceTypes.Schools => await _schoolService.RetrieveAndSyncSchools(minVersion, availableVersion),
-                ResourceTypes.Staff => await _staffService.RetrieveAndSyncStaff(minVersion, availableVersion),
-                ResourceTypes.Students => await _studentService.RetrieveAndSyncStudents(minVersion, availableVersion),
-                ResourceTypes.Sections => await _sectionService.RetrieveAndSyncSections(minVersion, availableVersion),
+                ResourceTypes.Schools => await _schoolService.RetrieveAndSyncResources(minVersion, availableVersion),
+                ResourceTypes.Staff => await _staffService.RetrieveAndSyncResources(minVersion, availableVersion),
+                ResourceTypes.Students => await _studentService.RetrieveAndSyncResources(minVersion, availableVersion),
+                ResourceTypes.Sections => await _sectionService.RetrieveAndSyncResources(minVersion, availableVersion),
                 _ => throw new Exception($"Cannot attempt sync for unexpected resource type: {resourceType}")
             };
         }
