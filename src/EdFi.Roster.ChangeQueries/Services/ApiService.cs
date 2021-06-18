@@ -77,7 +77,10 @@ namespace EdFi.Roster.ChangeQueries.Services
                 ResourceName = ResourceType,
                 AddedRecordsCount = countAdded,
                 UpdatedRecordsCount = response.GeneralInfo.TotalRecords - countAdded,
-                DeletedRecordsCount = countDeleted
+                DeletedRecordsCount = countDeleted,
+
+                ChangeDetails = response.GeneralInfo,
+                DeletionDetails = deletesResponse.GeneralInfo
             };
         }
 
