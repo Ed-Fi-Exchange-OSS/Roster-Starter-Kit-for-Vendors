@@ -91,7 +91,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
                     "if you navigate directly to the given URL in another browser window, that you " +
                     "arrive at the ODS / API's root JSON document including its " +
                     "version metadata. The attempt to access the /oauth/token authentication endpoint returned: " +
-                    $"{(int) response.StatusCode} ({response.StatusCode}) {response.Data.Error}");
+                    $"{(int) response.StatusCode} ({response.StatusCode}) {response.Data?.Error}");
             }
 
             var changeQueryResponse =

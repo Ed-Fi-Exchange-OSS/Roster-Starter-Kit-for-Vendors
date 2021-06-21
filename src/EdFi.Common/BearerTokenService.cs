@@ -45,14 +45,16 @@ namespace EdFi.Common
 
         private async Task LogDetails(IRestRequest bearerTokenRequest, IRestResponse<BearerTokenResponse> bearerTokenResponse)
         {
+            var data = bearerTokenResponse.Data;
+
             var apiLogEntry = new ApiLogEntry
             {
                 LogDateTime = DateTime.Now,
                 Method = bearerTokenRequest.Method.ToString(),
                 StatusCode = bearerTokenResponse.StatusCode.ToString(),
-                Content = string.IsNullOrEmpty(bearerTokenResponse.Data.Error)
+                Content = string.IsNullOrEmpty(data?.Error)
                     ? "Access token retrieved successfully"
-                    : bearerTokenResponse.Data.Error,
+                    : data?.Error,
                 Uri = bearerTokenResponse.ResponseUri.ToString()
             };
             await _apiLogService.WriteLog(apiLogEntry);
@@ -63,10 +65,12 @@ namespace EdFi.Common
             if (AccessToken != null && !refreshToken) return AccessToken;
             var response = await GetNewBearerTokenResponse(apiSettings);
 
-            if (!string.IsNullOrEmpty(response.Data.Error) || response.StatusCode != HttpStatusCode.OK)
-                throw new ApiException((int)response.StatusCode, response.Data.Error);
+            var data = response.Data;
 
-            AccessToken = response.Data.AccessToken;
+            if (data == null || !string.IsNullOrEmpty(data?.Error) || response.StatusCode != HttpStatusCode.OK)
+                throw new ApiException((int)response.StatusCode, data?.Error);
+
+            AccessToken = data.AccessToken;
             return AccessToken;
         }
     }

@@ -37,8 +37,8 @@ namespace EdFi.Roster.ChangeQueries.ActionFilters
             {
                 var bearerTokenResponse = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
 
-                if (!string.IsNullOrEmpty(bearerTokenResponse.Data.Error) || bearerTokenResponse.StatusCode != HttpStatusCode.OK)
-                    throw new ApiException((int) bearerTokenResponse.StatusCode, bearerTokenResponse.Data.Error);
+                if (!string.IsNullOrEmpty(bearerTokenResponse.Data?.Error) || bearerTokenResponse.StatusCode != HttpStatusCode.OK)
+                    throw new ApiException((int) bearerTokenResponse.StatusCode, bearerTokenResponse.Data?.Error);
             }
             catch
             {
