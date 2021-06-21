@@ -6,7 +6,7 @@
 
 @if (Model.HasPendingChanges)
 {
-    <div><div><button id="btnSyncData" class="btn btn-primary btn" onclick="document.location.href='@Url.Action("SyncData")'">Sync Data</button></div></div>
+    <div><div><button id="btnSyncData" class="btn btn-primary btn">Sync Data</button></div></div>
 }
 
 @if (Model.SyncResponses != null)

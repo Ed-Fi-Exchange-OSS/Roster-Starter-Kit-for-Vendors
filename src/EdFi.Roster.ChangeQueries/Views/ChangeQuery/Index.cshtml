@@ -7,7 +7,9 @@
 <h1>Change Queries</h1>
 <p> Sync data from the configured Ed - Fi API</p>
 
-@{ await Html.RenderPartialAsync("_SyncData", Model); }
+<div id="syncDataResults">
+    @{ await Html.RenderPartialAsync("_SyncData", Model); }
+</div>
 
 @section Scripts {
     <script>
@@ -15,6 +17,19 @@
         $(document).ready(function () {
             $("#btnSyncData").click(function () {
                 addSpinner($(this), "Syncing");
+
+                var url = '@Url.Action("SyncData")';
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    dataType: "html",
+                    success: function (response, textStatus, jqXHR) {
+                        $("#syncDataResults").html(response);
+                    },
+                    error: function (response, textStatus, jqXHR) {
+                        alert("A background request against " + url + " has failed. See your browser's developer tools for diagnostic information.");
+                    }
+                });
             });
 
             $("[id^='btnCallDetails']").on('click', function () {
