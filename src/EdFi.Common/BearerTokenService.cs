@@ -52,9 +52,7 @@ namespace EdFi.Common
                 LogDateTime = DateTime.Now,
                 Method = bearerTokenRequest.Method.ToString(),
                 StatusCode = bearerTokenResponse.StatusCode.ToString(),
-                Content = string.IsNullOrEmpty(data?.Error)
-                    ? "Access token retrieved successfully"
-                    : data?.Error,
+                Content = $"{(int) bearerTokenResponse.StatusCode} ({bearerTokenResponse.StatusCode}) {data?.Error}",
                 Uri = bearerTokenResponse.ResponseUri.ToString()
             };
             await _apiLogService.WriteLog(apiLogEntry);
