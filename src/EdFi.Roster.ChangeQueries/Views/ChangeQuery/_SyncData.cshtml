@@ -1,0 +1,86 @@
+@model ChangeQueryViewModel
+
+<div class="alert alert-info" role="alert">
+    @Model.ChangeSummaryMessage
+</div>
+
+@if (Model.HasPendingChanges)
+{
+    <div><div><button id="btnSyncData" class="btn btn-primary btn">Sync Data</button></div></div>
+}
+
+@if (Model.SyncResponses != null)
+{
+    var itemId = 0;
+    foreach (var item in Model.SyncResponses)
+    {
+        itemId++;
+        <div class="row mt-5">
+            <div class="col">
+                <div class="card">
+                    <h2 class="card-header">
+                        @item.ResourceName
+                    </h2>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <table class="table table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th>Total API Calls</th>
+                                        <th>Total Records Returned</th>
+                                        <th>Added Records</th>
+                                        <th>Updated Records</th>
+                                        <th>Deleted Records</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-center">@(item.ChangeDetails.Pages.Count + item.DeletionDetails.Pages.Count)</td>
+                                        <td class="text-center">@(item.ChangeDetails.TotalRecords + item.DeletionDetails.TotalRecords)</td>
+                                        <td class="text-center">@item.AddedRecordsCount</td>
+                                        <td class="text-center">@item.UpdatedRecordsCount</td>
+                                        <td class="text-center">@item.DeletedRecordsCount</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <input id="btnCallDetails@(itemId)" class="btn btn-link btn-xs pb-2 ml-2" type="button" data-toggle="collapse" data-target="#callDetails@(itemId)" aria-expanded="false" aria-controls="collapseExample" value="Show call details">
+                        </div>
+                        <div class="row">
+                            <div id="callDetails@(itemId)" class="collapse mt-1">
+                                <strong>Changes</strong>
+                                <ul class="list-group">
+                                    @{int pageNumber = 1;}
+                                    @foreach (var pageData in item.ChangeDetails.Pages)
+                                    {
+                                        <li class="list-group-item">
+                                            <div>Page @pageNumber: Returned @pageData.RecordsCount Records</div>
+                                            <div>Url: @pageData.ResponseUri</div>
+                                        </li>
+                                        pageNumber++;
+                                    }
+                                </ul>
+
+                                <strong>Deletions</strong>
+                                <ul class="list-group">
+                                    @{pageNumber = 1;}
+                                    @foreach (var pageData in item.DeletionDetails.Pages)
+                                    {
+                                        <li class="list-group-item">
+                                            <div>Page @pageNumber: Returned @pageData.RecordsCount Records</div>
+                                            <div>Url: @pageData.ResponseUri</div>
+                                        </li>
+                                        pageNumber++;
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}

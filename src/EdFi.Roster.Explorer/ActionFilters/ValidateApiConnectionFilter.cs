@@ -1,6 +1,8 @@
+using System.Net;
 using System.Threading.Tasks;
 using EdFi.Common;
 using EdFi.Roster.Explorer.Models;
+using EdFi.Roster.Sdk.Client;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Routing;
@@ -33,7 +35,10 @@ namespace EdFi.Roster.Explorer.ActionFilters
 
             try
             {
-                await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
+                var bearerTokenResponse = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
+
+                if (!string.IsNullOrEmpty(bearerTokenResponse.Data?.Error) || bearerTokenResponse.StatusCode != HttpStatusCode.OK)
+                    throw new ApiException((int) bearerTokenResponse.StatusCode, bearerTokenResponse.Data?.Error);
             }
             catch
             {

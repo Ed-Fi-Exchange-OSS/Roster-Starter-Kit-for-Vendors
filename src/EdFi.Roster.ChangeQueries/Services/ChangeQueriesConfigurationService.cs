@@ -28,10 +28,16 @@ namespace EdFi.Roster.ChangeQueries.Services
                 urlRoute = ApiRoutes.ChangeQueriesBase;
             }
 
+            var rootUrl = apiSettings.RootUrl;
+            var normalizedRootUrl =
+                rootUrl.EndsWith("/")
+                    ? rootUrl
+                    : rootUrl + "/";
+
             return new Configuration
             {
                 AccessToken = token,
-                BasePath = Path.Combine(apiSettings.RootUrl, urlRoute)
+                BasePath = normalizedRootUrl + urlRoute
             };
         }
     }

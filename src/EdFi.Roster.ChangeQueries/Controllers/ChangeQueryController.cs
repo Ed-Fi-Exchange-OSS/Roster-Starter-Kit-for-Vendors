@@ -10,7 +10,6 @@ using EdFi.Roster.ChangeQueries.Services.ApiSdk;
 
 namespace EdFi.Roster.ChangeQueries.Controllers
 {
-    [ValidateApiConnection]
     public class ChangeQueryController : Controller
     {
         private readonly ChangeQueryService _changeQueryService;
@@ -35,6 +34,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             _staffService = staffService;
         }
 
+        [ValidateApiConnection]
         public async Task<IActionResult> Index()
         {
             var availableVersion = await _changeQueryService.GetAvailableVersionAsync();
@@ -56,6 +56,7 @@ namespace EdFi.Roster.ChangeQueries.Controllers
             return View(changeQueryModel);
         }
 
+        [HttpPost]
         public async Task<IActionResult> SyncData()
         {
             var availableVersion = await _changeQueryService.GetAvailableVersionAsync();
@@ -74,7 +75,8 @@ namespace EdFi.Roster.ChangeQueries.Controllers
                 ChangeSummaryMessage = "Please review the sync status for individual resources below.",
                 SyncResponses = responses
             };
-            return View("Index", changeQueryModel);
+
+            return PartialView("_SyncData", changeQueryModel);
         }
 
         private async Task<DataSyncResponseModel> RunRetrieveAndSyncService(string resourceType, long availableVersion)

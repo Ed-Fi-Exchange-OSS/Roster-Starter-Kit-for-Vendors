@@ -29,12 +29,6 @@ namespace EdFi.Common
 
             var bearerTokenResponse = oauthClient.Execute<BearerTokenResponse>(bearerTokenRequest);
 
-            if (!string.IsNullOrEmpty(bearerTokenResponse.Data.Error) || bearerTokenResponse.StatusCode != HttpStatusCode.OK)
-            {
-                await LogDetails(bearerTokenRequest, bearerTokenResponse);
-                throw new ApiException((int)bearerTokenResponse.StatusCode, bearerTokenResponse.Data.Error);
-            }
-
             await LogDetails(bearerTokenRequest, bearerTokenResponse);
 
             var headersMap = new Multimap<string, string>();
@@ -51,14 +45,14 @@ namespace EdFi.Common
 
         private async Task LogDetails(IRestRequest bearerTokenRequest, IRestResponse<BearerTokenResponse> bearerTokenResponse)
         {
+            var data = bearerTokenResponse.Data;
+
             var apiLogEntry = new ApiLogEntry
             {
                 LogDateTime = DateTime.Now,
                 Method = bearerTokenRequest.Method.ToString(),
                 StatusCode = bearerTokenResponse.StatusCode.ToString(),
-                Content = string.IsNullOrEmpty(bearerTokenResponse.Data.Error)
-                    ? "Access token retrieved successfully"
-                    : bearerTokenResponse.Data.Error,
+                Content = $"{(int) bearerTokenResponse.StatusCode} ({bearerTokenResponse.StatusCode}) {data?.Error}",
                 Uri = bearerTokenResponse.ResponseUri.ToString()
             };
             await _apiLogService.WriteLog(apiLogEntry);
@@ -68,7 +62,13 @@ namespace EdFi.Common
         {
             if (AccessToken != null && !refreshToken) return AccessToken;
             var response = await GetNewBearerTokenResponse(apiSettings);
-            AccessToken = response.Data.AccessToken;
+
+            var data = response.Data;
+
+            if (data == null || !string.IsNullOrEmpty(data?.Error) || response.StatusCode != HttpStatusCode.OK)
+                throw new ApiException((int)response.StatusCode, data?.Error);
+
+            AccessToken = data.AccessToken;
             return AccessToken;
         }
     }

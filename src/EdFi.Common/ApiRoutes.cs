@@ -16,7 +16,7 @@ namespace EdFi.Common
         public static string SchoolsResource => "ed-fi/schools";
         public static string StaffsResource => "ed-fi/staffs";
         public static string StudentsResource => "ed-fi/students";
-        public static string SectionsResource => "ed-fi/sections/";
+        public static string SectionsResource => "ed-fi/sections";
 
         public static string AvailableChangeVersions => "availableChangeVersions";
     }

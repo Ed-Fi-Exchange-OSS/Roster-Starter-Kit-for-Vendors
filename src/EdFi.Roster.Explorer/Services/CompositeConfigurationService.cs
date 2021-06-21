@@ -21,10 +21,17 @@ namespace EdFi.Roster.Explorer.Services
         {
             var apiSettings = await _apiSettingsService.Read();
             var token = await _bearerTokenService.GetBearerToken(apiSettings, refreshToken);
+
+            var rootUrl = apiSettings.RootUrl;
+            var normalizedRootUrl =
+                rootUrl.EndsWith("/")
+                    ? rootUrl
+                    : rootUrl + "/";
+
             return new Configuration
             {
                 AccessToken = token,
-                BasePath = Path.Combine(apiSettings.RootUrl, ApiRoutes.EnrollmentCompositesBase)
+                BasePath = normalizedRootUrl + ApiRoutes.EnrollmentCompositesBase
             };
         }
     }
