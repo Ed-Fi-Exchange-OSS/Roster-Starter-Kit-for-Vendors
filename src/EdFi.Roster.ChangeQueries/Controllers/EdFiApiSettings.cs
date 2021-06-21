@@ -83,21 +83,29 @@ namespace EdFi.Roster.ChangeQueries.Controllers
         {
             var response = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
 
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
-                var changeQueryResponse =
-                    await _changeQueryService.TestChangeQueryApiAsync(apiSettings, response.Data.AccessToken);
-
-                if (changeQueryResponse.StatusCode != HttpStatusCode.OK)
-                {
-                    return StatusCode((int) changeQueryResponse.StatusCode,
-                        changeQueryResponse.StatusCode == HttpStatusCode.NotFound ?
-                        "It looks like this ODS doesn't have Change Queries enabled. Review your Root URL and check that your ODS has Change Queries enabled."
-                        : JsonConvert.SerializeObject(changeQueryResponse));
-                }
+                return StatusCode((int) response.StatusCode,
+                    "The connection was tested by attempting to authenticate with the information provided above, " +
+                    "but the attempt failed. Please review the values above and confirm that " +
+                    "if you navigate directly to the given URL in another browser window, that you " +
+                    "arrive at the ODS / API's root JSON document including its " +
+                    "version metadata. The attempt to access the /oauth/token authentication endpoint returned: " +
+                    $"{(int) response.StatusCode} ({response.StatusCode}) {response.Data.Error}");
             }
 
-            return StatusCode((int) response.StatusCode, JsonConvert.SerializeObject(response));
+            var changeQueryResponse =
+                await _changeQueryService.TestChangeQueryApiAsync(apiSettings, response.Data.AccessToken);
+
+            if (changeQueryResponse.StatusCode != HttpStatusCode.OK)
+            {
+                return StatusCode((int) changeQueryResponse.StatusCode,
+                    changeQueryResponse.StatusCode == HttpStatusCode.NotFound
+                        ? "It looks like this ODS doesn't have Change Queries enabled. Review your Root URL and check that your ODS has Change Queries enabled."
+                        : JsonConvert.SerializeObject(changeQueryResponse));
+            }
+
+            return StatusCode((int)response.StatusCode, JsonConvert.SerializeObject(response));
         }
     }
 }

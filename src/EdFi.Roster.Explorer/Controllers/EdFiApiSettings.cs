@@ -63,6 +63,18 @@ namespace EdFi.Roster.Explorer.Controllers
         private async Task<ObjectResult> TestApiConnection(ApiSettings apiSettings)
         {
             var response = await _bearerTokenService.GetNewBearerTokenResponse(apiSettings);
+
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                return StatusCode((int) response.StatusCode,
+                    "The connection was tested by attempting to authenticate with the information provided above, " +
+                    "but the attempt failed. Please review the values above and confirm that " +
+                    "if you navigate directly to the given URL in another browser window, that you " +
+                    "arrive at the ODS / API's root JSON document including its " +
+                    "version metadata. The attempt to access the /oauth/token authentication endpoint returned: " +
+                    $"{(int) response.StatusCode} ({response.StatusCode}) {response.Data.Error}");
+            }
+
             return StatusCode((int)response.StatusCode, JsonConvert.SerializeObject(response));
         }
     }
