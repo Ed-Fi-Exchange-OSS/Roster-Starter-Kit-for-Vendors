@@ -4,36 +4,35 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <div class="text-md-center p-5">
-        <h5>Using an SDK generated from the <a href="https://api.ed-fi.org/v5.2/docs/" target="_blank">Ed-Fi ODS / API Suite 3 v5.2</a> <a href="https://api.ed-fi.org/v5.2/api/metadata/data/v3/resources/swagger.json" target="_blank">Resource OpenApi specification</a>, this starter kit app is a demonstration of some of the capabilities Ed-Fi Change Queries API, a few different views of the that data, and some Ed-Fi API Client best practices. This starter kit application does not implement any security measures to protect student data or API key and secret information. DO NOT USE WITH REAL DATA. This demonstrative application is pre configured to use the Ed-Fi public deployment of the Ed-Fi ODS/API Suite 3 v5.2</h5>
+    <div class="text-md-left p-5">
+        Using an SDK generated from the <a href="https://api.ed-fi.org/v5.2/docs/" target="_blank">Ed-Fi ODS / API Suite 3 v5.2</a> <a href="https://api.ed-fi.org/v5.2/api/metadata/data/v3/resources/swagger.json" target="_blank">Resource OpenApi specification</a>, this starter kit app is a demonstration of some of the capabilities Ed-Fi Change Queries API, a few different views of the that data, and some Ed-Fi API Client best practices. This starter kit application does not implement any security measures to protect student data or API key/secret information and it is assumed the application vendor provides those measures along with organization principles. This demostrative application is pre-configured to use the Ed-Fi public deployment of the Ed-Fi ODS/API Suite 3 v5.2.  Once comfortable with the workflow using public Ed-Fi API documentation, you are positioned to integrate within your own applicaton for use for production Ed-Fi implementations.
     </div>
     <div>
-        <h6 class="text-lg-left">Top Navigation Menu Items</h6>
+        <h6 class="text-lg-left">Menu Items</h6>
         <p class="text-left">
             <ul class="text-left justify-content-end">
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi Api Settings</a> - Page that enables the configuration of the url, key and secret of the API that this starter kit example application will interact with
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi API Settings</a> - Page that enables the configuration of the url, key and secret of the API that this starter kit example application will interact with
                 </li>
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="ChangeQuery" asp-action="Index">Change Queries</a> - Page that enables us to sync changes using the Change Query API endpoints
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="ChangeQuery" asp-action="Index">Change Queries</a> - Page that enables us to sync changes using the Change Query API endpoints
                 </li>
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="ApiLog" asp-action="Index">Logs</a> - This shows a log of API transactions
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="ApiLog" asp-action="Index">Logs</a> - This shows a log of API transactions
+                </li>
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="LocalEducationAgencies">LEAs</a> - Shows local education agencies that have been synced from the configured Ed-Fi API
                 </li>
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="SyncedResources" asp-action="LocalEducationAgencies">LEAs</a> - Shows local education agencies that have been synced from the configured Ed-Fi API
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Schools">Schools</a> - Shows schools that have been synced from the configured Ed-Fi API
                 </li>
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Schools">Schools</a> - Shows schools that have been synced from the configured Ed-Fi API
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Staff">Staff</a> - Shows staff members that have been synced from the configured Ed-Fi API
                 </li>
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Staff">Staff</a> - Shows staff members that have been synced from the configured Ed-Fi API
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Students">Students</a> - Shows students that have been synced from the configured Ed-Fi API
                 </li>
                 <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Students">Students</a> - Shows students that have been synced from the configured Ed-Fi API
-                </li>
-                <li>
-                    <a class="nav-item text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Sections">Sections</a> - Shows sections that have been synced from the configured Ed-Fi API
+                    <a class="nav-item text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Sections">Sections</a> - Shows sections that have been synced from the configured Ed-Fi API
                 </li>
             </ul>
         </p>

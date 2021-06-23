@@ -3,15 +3,28 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Ed-Fi ChangeQueries</title>
+    <title>Ed-Fi Roster - Change Queries</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        a.menu-item { font-weight: bold;}
+    </style>
+    <!-- BEGIN Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXHRWYR051"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-SXHRWYR051');
+    </script>
+    <!--END Global site tag (gtag.js) - Google Analytics -->
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ed-Fi ChangeQueries</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Ed-Fi Roster - Change Queries</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -19,31 +32,31 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi Api Settings</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi API Settings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ChangeQuery" asp-action="Index">Change Queries</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="ChangeQuery" asp-action="Index">Change Queries</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ApiLog" asp-action="Index">API Logs</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="ApiLog" asp-action="Index">API Logs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SyncedResources" asp-action="LocalEducationAgencies">LEAs</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="LocalEducationAgencies">LEAs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Schools">Schools</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Schools">Schools</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Staff">Staff</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Staff">Staff</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Students">Students</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Students">Students</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="SyncedResources" asp-action="Sections">Sections</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="SyncedResources" asp-action="Sections">Sections</a>
                         </li>
                     </ul>
                 </div>
@@ -58,7 +71,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - Ed-Fi Alliance
+            &copy; 2021 - Ed-Fi Alliance - Released under the <a href="https://github.com/Ed-Fi-Alliance-OSS/Roster-Starter-Kit-for-Vendors/blob/main/LICENSE" target="_new">Apache 2.0 License</a> and source code is available on <a href="https://github.com/Ed-Fi-Alliance-OSS/Roster-Starter-Kit-for-Vendors" target="_new">Ed-Fi Alliance Open Source Software GitHub</a>.
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
