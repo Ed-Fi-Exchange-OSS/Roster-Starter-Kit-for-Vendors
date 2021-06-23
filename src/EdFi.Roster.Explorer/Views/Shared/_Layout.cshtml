@@ -6,6 +6,20 @@
     <title>@ViewData["Title"] - Ed-Fi Roster</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        a.menu-item { font-weight: bold;}
+    </style>
+
+    <!-- BEGIN Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SXHRWYR051"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-SXHRWYR051');
+    </script>
+    <!--END Global site tag (gtag.js) - Google Analytics -->
 </head>
 <body>
     <header>
@@ -19,34 +33,34 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi Api Settings</a>
+                            <a class="nav-link text-dar menu-item" asp-area="" asp-controller="EdFiApiSettings" asp-action="Index">Ed-Fi API Settings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="GetFullRoster" asp-action="Index">Full Roster</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="GetFullRoster" asp-action="Index">Full Roster</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="LocalEducationAgencies" asp-action="Index">LEAs</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="LocalEducationAgencies" asp-action="Index">LEAs</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Schools" asp-action="Index">Schools</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Schools" asp-action="Index">Schools</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Staff" asp-action="Index">Staff</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Staff" asp-action="Index">Staff</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Sections" asp-action="Index">Sections</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Sections" asp-action="Index">Sections</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Roster" asp-action="Index">Roster</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="Roster" asp-action="Index">Roster</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ApiLog" asp-action="Index">API Logs</a>
+                            <a class="nav-link text-dark menu-item" asp-area="" asp-controller="ApiLog" asp-action="Index">API Logs</a>
                         </li>
                     </ul>
                 </div>
@@ -61,7 +75,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - Ed-Fi Alliance
+            &copy; 2021 - Ed-Fi Alliance - Released under the <a href="https://github.com/Ed-Fi-Alliance-OSS/Roster-Starter-Kit-for-Vendors/blob/main/LICENSE" target="_new">Apache 2.0 License</a> and source code is available on <a href="https://github.com/Ed-Fi-Alliance-OSS/Roster-Starter-Kit-for-Vendors" target="_new">Ed-Fi Alliance Open Source Software GitHub</a>.
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
