@@ -25,7 +25,7 @@ This is simply a local cache of data for demonstration purposes and can safely b
 
 ## Code Generation
 
-This solution includes an ODS / API SDK using code generation. For a detailed walk-through of the code generation process, please see [Generating Client Libraries Using OpenAPI Generator](https://techdocs.ed-fi.org/display/SK/Generating+Client+Libraries+Using+OpenAPI+Generator)
+This solution includes an ODS / API SDK using code generation. For a detailed walk-through of the code generation process, please see [Generating an SDK - Ed-Fi Roster](https://techdocs.ed-fi.org/display/SG/Generating+an+SDK+-+Ed-Fi+Roster)
 
 The following commands generated the SDK in this solution:
 
