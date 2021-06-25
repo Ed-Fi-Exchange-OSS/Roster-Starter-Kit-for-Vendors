@@ -2,6 +2,17 @@
 
 The Roster Starter Kit provides a step-by-step process that can be used to integrate rostering via the Ed-Fi ODS / API into a technology provider platform.
 
+## Prerequisites
+
+[VS Code](https://code.visualstudio.com/)
+
+[GIT](https://git-scm.com/download/win)
+
+[.NET Core SDK v3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
+
+
+To get full instructions, please see the [Application Setup Guide](https://techdocs.ed-fi.org/display/SG/Ed-Fi+Roster+Sample+Application+Setup+Guide).
+
 ## Local Sample Databases
 
 This system uses local SQLite files to store data fetched from the ODS / API and to track its own progress during Change Queries sync operations.
@@ -60,17 +71,6 @@ java -jar openapi-generator-cli.jar generate `
     --additional-properties=targetFramework=netcoreapp3.1 `
     --additional-properties=modelPropertyNaming=PascalCase
 ```
-
-## Prerequisites
-
-[VS Code](https://code.visualstudio.com/)
-
-[GIT](https://git-scm.com/download/win)
-
-[.NET Core SDK v3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
-
-
-To get full instructions, please see the [Application Setup Guide](https://techdocs.ed-fi.org/display/SG/Ed-Fi+Roster+Sample+Application+Setup+Guide).
 
 ## Legal Information
 
