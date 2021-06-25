@@ -61,6 +61,17 @@ The following commands generated the SDK in this solution:
     --additional-properties=modelPropertyNaming=PascalCase
 ```
 
+## Prerequisites
+
+[VS Code](https://code.visualstudio.com/)
+
+[GIT](https://git-scm.com/download/win)
+
+[.NET Core SDK v3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
+
+
+To get full instructions, please see the [Application Setup Guide](https://techdocs.ed-fi.org/display/SG/Ed-Fi+Roster+Sample+Application+Setup+Guide).
+
 ## Legal Information
 
 Copyright (c) 2021 Ed-Fi Alliance, LLC and contributors.
