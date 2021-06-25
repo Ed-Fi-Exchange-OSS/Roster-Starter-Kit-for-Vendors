@@ -26,11 +26,11 @@ The following commands generated the SDK in this solution:
 Api.EnrollmentComposites --model-package Models.EnrollmentComposites -o csharp-netcore --additional-properties=netCoreProjectFile `
 --additional-properties=packageName='EdFi.Roster.Sdk' --additional-properties=targetFramework=netcoreapp3.1 --additional-properties=modelPropertyNaming=PascalCase
 >
-> java -jar .\\openapi-generator-cli.jar generate -g csharp-netcore -i https://api.ed-fi.org/v5.2/api/metadata/changequeries/v1/swagger.json --api-package `
+> java -jar openapi-generator-cli.jar generate -g csharp-netcore -i https://api.ed-fi.org/v5.2/api/metadata/changequeries/v1/swagger.json --api-package `
 Api.ChangeQueries --model-package Models.ChangeQueries -o csharp-netcore --additional-properties=netCoreProjectFile `
 --additional-properties=packageName='EdFi.Roster.Sdk' --additional-properties=targetFramework=netcoreapp3.1 --additional-properties=modelPropertyNaming=PascalCase
 >
-> java -jar .\\openapi-generator-cli.jar generate -g csharp-netcore -i https://api.ed-fi.org/v5.2/api/metadata/data/v3/resources/swagger.json --api-package `
+> java -jar openapi-generator-cli.jar generate -g csharp-netcore -i https://api.ed-fi.org/v5.2/api/metadata/data/v3/resources/swagger.json --api-package `
 Api.Resources --model-package Models.Resources -o csharp-netcore --additional-properties=netCoreProjectFile `
 --additional-properties=packageName='EdFi.Roster.Sdk' --additional-properties=targetFramework=netcoreapp3.1 --additional-properties=modelPropertyNaming=PascalCase
 
@@ -47,3 +47,5 @@ CONDITIONS OF ANY KIND, either express or implied. See the License for the
 specific language governing permissions and limitations under the License.
 
 See [NOTICES](NOTICES.md) for additional copyright and license notifications.
+
+This applicaton uses Google Analytics for usage monitoring and is covered under the Ed-Fi Terms of Use and Privacy Policy available here: https://www.ed-fi.org/terms-of-use-and-privacy-policy/.
