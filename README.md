@@ -2,6 +2,17 @@
 
 The Roster Starter Kit provides a step-by-step process that can be used to integrate rostering via the Ed-Fi ODS / API into a technology provider platform.
 
+## Prerequisites
+
+[VS Code](https://code.visualstudio.com/)
+
+[GIT](https://git-scm.com/download/win)
+
+[.NET Core SDK v3.1](https://dotnet.microsoft.com/download/dotnet/3.1)
+
+
+To get full instructions, please see the [Application Setup Guide](https://techdocs.ed-fi.org/display/SG/Ed-Fi+Roster+Sample+Application+Setup+Guide).
+
 ## Local Sample Databases
 
 This system uses local SQLite files to store data fetched from the ODS / API and to track its own progress during Change Queries sync operations.
@@ -9,26 +20,26 @@ This system uses local SQLite files to store data fetched from the ODS / API and
 This is simply a local cache of data for demonstration purposes and can safely be deleted/reset at any time. To reset this data at the command line, simply execute the following PowerShell command:
 
 ```PowerShell
-> ./reset-sample-databases.ps1
+./reset-sample-databases.ps1
 ```
 
 ## Code Generation
 
-This solution includes an ODS / API SDK using code generation. For a detailed walk-through of the code generation process, please see [Generating Client Libraries Using OpenAPI Generator](https://techdocs.ed-fi.org/display/SK/Generating+Client+Libraries+Using+OpenAPI+Generator)
+This solution includes an ODS / API SDK using code generation. For a detailed walk-through of the code generation process, please see [Generating an SDK - Ed-Fi Roster](https://techdocs.ed-fi.org/display/SG/Generating+an+SDK+-+Ed-Fi+Roster)
 
 The following commands generated the SDK in this solution:
 
 **One-Time Command to Fetch the Code Generator Tools**
 
 ```PowerShell
-> Invoke-WebRequest -OutFile openapi-generator-cli.jar `
+Invoke-WebRequest -OutFile openapi-generator-cli.jar `
      https://repo1.maven.org/maven2/org/openapitools/openapi-generator-cli/5.1.1/openapi-generator-cli-5.1.1.jar
 ```
 
 **Commands Which Generate the SDK**
 
 ```PowerShell
-> java -jar openapi-generator-cli.jar generate `
+java -jar openapi-generator-cli.jar generate `
      -g csharp-netcore `
      -i https://api.ed-fi.org/v5.2/api/metadata/composites/v1/ed-fi/enrollment/swagger.json `
      --api-package Api.EnrollmentComposites `
@@ -37,8 +48,8 @@ The following commands generated the SDK in this solution:
      --additional-properties=packageName='EdFi.Roster.Sdk' `
      --additional-properties=targetFramework=netcoreapp3.1 `
      --additional-properties=modelPropertyNaming=PascalCase
->
-> java -jar openapi-generator-cli.jar generate `
+
+java -jar openapi-generator-cli.jar generate `
     -g csharp-netcore `
     -i https://api.ed-fi.org/v5.2/api/metadata/changequeries/v1/swagger.json `
     --api-package Api.ChangeQueries `
@@ -48,8 +59,8 @@ The following commands generated the SDK in this solution:
     --additional-properties=packageName='EdFi.Roster.Sdk' `
     --additional-properties=targetFramework=netcoreapp3.1 `
     --additional-properties=modelPropertyNaming=PascalCase
->
-> java -jar openapi-generator-cli.jar generate `
+
+java -jar openapi-generator-cli.jar generate `
     -g csharp-netcore `
     -i https://api.ed-fi.org/v5.2/api/metadata/data/v3/resources/swagger.json `
     --api-package Api.Resources `
