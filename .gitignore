@@ -37,4 +37,3 @@ bld/
 **/.vscode/
 /src/EdFi.Roster.Explorer/RosterDatabase.db
 /src/EdFi.Roster.ChangeQueries/ChangeQueriesDatabase.db
-postman collection/Ed-Fi Roster Starter Kit v1.0 Postman Collection.zip
