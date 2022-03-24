@@ -61,8 +61,9 @@ function New-EdFiClient() {
 
 function Invoke-DotnetBuild() {
     # First need to add the SDK project to the solution file
-    &dotnet sln add "ed-fi-client-$ApiVersion/src/EdFi.Roster.Sdk/EdFi.Roster.Sdk.csproj"
-    &dotnet sln add "ed-fi-client-$ApiVersion/src/EdFi.Roster.Sdk.Test/EdFi.Roster.Sdk.Test.csproj"
+    &dotnet sln add ed-fi-client-$ApiVersion/src/EdFi.Roster.Sdk/EdFi.Roster.Sdk.csproj
+    &dotnet sln add ed-fi-client-$ApiVersion/src/EdFi.Roster.Sdk.Test/EdFi.Roster.Sdk.Test.csproj
+    &dotnet add reference ed-fi-client-$ApiVersion/src/EdFi.Roster.Sdk/EdFi.Roster.Sdk.csproj
     &dotnet build ./get-students-by-grade.sln
 }
 

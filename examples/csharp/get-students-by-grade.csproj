@@ -12,8 +12,4 @@
     <None Remove="ed-fi-client-*\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="ed-fi-client-5.3\src\EdFi.Roster.Sdk\EdFi.Roster.Sdk.csproj" />
-  </ItemGroup>
-
 </Project>
