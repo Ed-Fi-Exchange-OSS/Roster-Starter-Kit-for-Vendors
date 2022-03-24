@@ -37,3 +37,4 @@ bld/
 **/.vscode/
 /src/EdFi.Roster.Explorer/RosterDatabase.db
 /src/EdFi.Roster.ChangeQueries/ChangeQueriesDatabase.db
+examples/get-students-by-grade/Properties/launchSettings.json
