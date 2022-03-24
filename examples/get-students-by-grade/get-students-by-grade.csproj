@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ed-fi-client-5.3\**" />
-    <EmbeddedResource Remove="ed-fi-client-5.3\**" />
-    <None Remove="ed-fi-client-5.3\**" />
+    <Compile Remove="ed-fi-client-*\**" />
+    <EmbeddedResource Remove="ed-fi-client-*\**" />
+    <None Remove="ed-fi-client-*\**" />
   </ItemGroup>
 
   <ItemGroup>
