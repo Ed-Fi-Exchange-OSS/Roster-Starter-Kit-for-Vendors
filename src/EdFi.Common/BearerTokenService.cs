@@ -23,9 +23,9 @@ namespace EdFi.Common
         {
             var oauthClient = new RestClient(apiSettings.RootUrl);
             var bearerTokenRequest = new RestRequest("oauth/token", Method.POST);
-            bearerTokenRequest.AddParameter("Client_id", apiSettings.Key);
-            bearerTokenRequest.AddParameter("Client_secret", apiSettings.Secret);
-            bearerTokenRequest.AddParameter("Grant_type", "client_credentials");
+            bearerTokenRequest.AddParameter("client_id", apiSettings.Key);
+            bearerTokenRequest.AddParameter("client_secret", apiSettings.Secret);
+            bearerTokenRequest.AddParameter("grant_type", "client_credentials");
 
             var bearerTokenResponse = oauthClient.Execute<BearerTokenResponse>(bearerTokenRequest);
 
